@@ -1,0 +1,9 @@
+{
+  "email": "test2@test.com",
+  "password": "1234azertyuiop",
+  "confirmation": "1234azertyuiop",
+  "nom": "Dupont",
+  "prenom": "Jean",
+  "role": "senior",
+  "birth_date": "1990-05-15"
+}

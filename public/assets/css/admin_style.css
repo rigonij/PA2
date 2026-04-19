@@ -1,0 +1,16 @@
+p { font-size: 1.5rem; padding: 0.5rem; }
+.main { display: flex; min-height: 100vh; }
+.BarreLat { flex: 1 1 0; max-width: 280px; padding: 2rem 1rem; background-color: #000; }
+.BarreLat h3 { font-size : 0.75rem; text-transform: uppercase; margin-bottom: 0.5rem; color: #fff; }
+.BarreLat .menu { margin: 0 -1rem; }
+.BarreLat .menu .item { display: block; padding: 1rem; color: white; text-decoration: none; transition: 0.3s linear; }
+.BarreLat .menu .item:hover, .BarreLat .menu .item.actif { color: lightgreen; border-right: 5px solid lightgreen; }
+.menu-toggle { display: none; position: fixed; top: 2rem; right: 2rem; width: 60px; height:60px; border-radius: 99px; background-color: rgb(0, 0, 0); cursor: pointer; z-index: 1000; }
+.hamburger span { display: block; width: 30px; height: 4px; margin: 6px 0; background-color: #fff; }
+@media (max-width: 1024px) { .BarreLat { max-width: 240px; } }
+@media(max-width: 768px){
+    .menu-toggle { display: block; }
+    .main { padding-top: 4rem; }
+    .BarreLat { position:fixed; top: 0; left: -260px; height: 100vh; width: 100%; max-width: 260px; transition: 0.2s linear; z-index: 900; }
+    .BarreLat.open { left: 0; }
+}

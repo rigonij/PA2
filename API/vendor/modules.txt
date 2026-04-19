@@ -1,0 +1,13 @@
+# github.com/go-sql-driver/mysql v1.7.0
+## explicit; go 1.13
+github.com/go-sql-driver/mysql
+# github.com/stripe/stripe-go/v76 v76.25.0
+## explicit; go 1.13
+github.com/stripe/stripe-go/v76
+github.com/stripe/stripe-go/v76/checkout/session
+github.com/stripe/stripe-go/v76/form
+github.com/stripe/stripe-go/v76/webhook
+# golang.org/x/crypto v0.17.0
+## explicit; go 1.18
+golang.org/x/crypto/bcrypt
+golang.org/x/crypto/blowfish

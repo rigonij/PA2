@@ -1,0 +1,92 @@
+
+
+:root {
+    --sh-bg-color: #d8dadd;
+    --sh-blue: #6b82b3;
+    --sh-dark-blue: #2c4270;
+}
+/* public/assets/css/style.css */
+body {
+    background-color: var(--sh-bg-color);
+    font-family: Arial, sans-serif;
+}
+
+.navbar-custom {
+    background-color: var(--sh-blue);
+    padding: 10px 20px;
+}
+
+.category-title {
+    color: var(--sh-dark-blue);
+    font-weight: 900;
+    font-size: 2rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    text-transform: capitalize;
+}
+
+.slider-container {
+    display: flex;
+    align-items: center;
+}
+
+.cards-wrapper {
+    display: flex;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    gap: 1.5rem;
+    width: 100%;
+    padding: 10px 0;
+}
+
+.provider-card {
+    min-width: 250px;
+    max-width: 250px;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+}
+
+.card-img-placeholder {
+    height: 160px;
+    background: repeating-conic-gradient(#f8f9fa 0% 25%, #e9ecef 0% 50%) 50% / 20px 20px;
+    border: 1px solid white;
+}
+
+.card-body-custom {
+    background-color: var(--sh-blue);
+    color: white;
+    text-align: center;
+    padding: 15px 10px;
+}
+
+.card-body-custom h5 {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.btn-custom {
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
+    font-size: 0.8rem;
+    padding: 2px 10px;
+    margin: 2px;
+}
+
+.btn-custom:hover {
+    background-color: white;
+    color: var(--sh-blue);
+}
+
+.arrow-btn {
+    background: transparent;
+    border: none;
+    color: var(--sh-dark-blue);
+    font-size: 3rem;
+    padding: 0 10px;
+    cursor: pointer;
+}
+
+.arrow-btn:hover { color: var(--sh-blue); }

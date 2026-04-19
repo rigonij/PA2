@@ -1,0 +1,11 @@
+$env:DB_HOST = "127.0.0.1"
+$env:DB_PORT = "3306"
+$env:DB_USER = "pa_api"
+$env:DB_PASS = "pa_api_pwd_root"
+$env:DB_NAME = "projet_annuel"
+$env:API_PORT = "8081"
+$env:STRIPE_SECRET_KEY = $env:STRIPE_KEY
+$env:STRIPE_PUBLISHABLE_KEY = $env:STRIPE_KEY
+$env:STRIPE_WEBHOOK_SECRET = $env:STRIPE_KEY
+$env:APP_BASE_URL = "http://localhost/PA_2i2/public"
+go run .
