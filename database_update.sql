@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : ven. 27 mars 2026 à 16:56
+-- Généré le : sam. 02 mai 2026 à 05:12
 -- Version du serveur : 8.0.31
 -- Version de PHP : 8.0.26
 
@@ -39,7 +39,9 @@ CREATE TABLE IF NOT EXISTS `admin` (
 --
 
 INSERT INTO `admin` (`Id_USER`, `Role_Level`) VALUES
-(9, '2');
+(9, '2'),
+(20, NULL),
+(21, NULL);
 
 -- --------------------------------------------------------
 
@@ -71,6 +73,13 @@ CREATE TABLE IF NOT EXISTS `cart_item` (
   PRIMARY KEY (`Id_USER`,`Id_PRODUCT`),
   KEY `fk_cart_product` (`Id_PRODUCT`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `cart_item`
+--
+
+INSERT INTO `cart_item` (`Id_USER`, `Id_PRODUCT`, `Qty`, `Created_At`, `Updated_At`) VALUES
+(19, 1, 3, '2026-04-21 16:45:32', '2026-04-21 16:45:33');
 
 -- --------------------------------------------------------
 
@@ -148,18 +157,28 @@ CREATE TABLE IF NOT EXISTS `event` (
   `Location` varchar(100) DEFAULT NULL,
   `Event_Date` datetime DEFAULT NULL,
   `Max_Participants` int DEFAULT NULL,
+  `Validation_Status` tinyint(1) DEFAULT '0',
+  `Price_Cents` int DEFAULT '0',
+  `Is_Paid` tinyint(1) DEFAULT '0',
+  `Price` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id_EVENT`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb3;
 
 --
 -- Déchargement des données de la table `event`
 --
 
-INSERT INTO `event` (`Id_EVENT`, `Title`, `Location`, `Event_Date`, `Max_Participants`) VALUES
-(1, 'Atelier mémoire', 'Paris', '2026-04-02 14:00:00', 12),
-(2, 'Sortie culturelle', 'Musée du Louvre', '2026-04-05 10:30:00', 25),
-(3, 'Atelier mémoire', 'Paris', '2026-04-02 14:00:00', 12),
-(4, 'Sortie culturelle', 'Musée du Louvre', '2026-04-05 10:30:00', 25);
+INSERT INTO `event` (`Id_EVENT`, `Title`, `Location`, `Event_Date`, `Max_Participants`, `Validation_Status`, `Price_Cents`, `Is_Paid`, `Price`) VALUES
+(1, 'Atelier mémoire', 'Paris', '2026-04-02 14:00:00', 12, 0, 0, 0, 500),
+(3, 'Atelier mémoire', 'Paris', '2026-04-02 14:00:00', 12, 0, 0, 0, 0),
+(4, 'Sortie culturelle', 'Musée du Louvre', '2026-04-05 10:30:00', 25, 0, 0, 0, 0),
+(5, 'zori', 'ezrpbjrez', '2026-03-18 00:00:00', 87, 1, 0, 0, 0),
+(6, 'zevz', 'd', '2026-03-25 00:00:00', 2, 1, 0, 0, 0),
+(7, 'oj', 'oj', '2026-03-31 00:00:00', 2, 1, 0, 0, 0),
+(8, 'd', 'f', '2026-03-30 00:00:00', 1, 1, 0, 0, 0),
+(9, 'l', 'ih', '2026-04-20 00:00:00', 5, 1, 0, 0, 0),
+(10, 'test', 'labas', '2026-04-21 14:00:00', 3, 1, 0, 0, 0),
+(11, 'Test payant', 'Paris', '2026-05-01 14:00:00', 20, 1, 0, 0, 500);
 
 -- --------------------------------------------------------
 
@@ -175,6 +194,14 @@ CREATE TABLE IF NOT EXISTS `event_registration` (
   PRIMARY KEY (`Id_EVENT`,`Id_USER`),
   KEY `fk_eventreg_user` (`Id_USER`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `event_registration`
+--
+
+INSERT INTO `event_registration` (`Id_EVENT`, `Id_USER`, `Created_At`) VALUES
+(11, 19, '2026-04-15 10:59:34'),
+(9, 19, '2026-04-14 18:47:58');
 
 -- --------------------------------------------------------
 
@@ -194,12 +221,41 @@ CREATE TABLE IF NOT EXISTS `intervention` (
   `Id_SERVICE_TYPE` int NOT NULL,
   `Id_PROVIDER` int DEFAULT NULL,
   `Id_SENIOR` int NOT NULL,
+  `Admin_Approved` tinyint(1) NOT NULL DEFAULT '0',
+  `Provider_Approved` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id_INTERVENTION`),
   KEY `Id_INVOICE` (`Id_INVOICE`),
   KEY `Id_SERVICE_TYPE` (`Id_SERVICE_TYPE`),
   KEY `Id_PROVIDER` (`Id_PROVIDER`),
   KEY `Id_SENIOR` (`Id_SENIOR`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb3;
+
+--
+-- Déchargement des données de la table `intervention`
+--
+
+INSERT INTO `intervention` (`Id_INTERVENTION`, `Date_Start`, `Date_End`, `Status`, `Senior_Rating`, `Senior_Comment`, `Id_INVOICE`, `Id_SERVICE_TYPE`, `Id_PROVIDER`, `Id_SENIOR`, `Admin_Approved`, `Provider_Approved`) VALUES
+(23, '2026-04-13 19:00:00', '2026-04-13 20:00:00', 'Canceled', NULL, '', NULL, 3, 23, 19, 0, 0),
+(24, '2026-04-13 18:00:00', '2026-04-13 19:00:00', 'Canceled', NULL, '', NULL, 3, 23, 19, 0, 0),
+(25, '2026-04-20 13:00:00', '2026-04-20 14:00:00', 'Canceled', NULL, '', NULL, 3, 23, 19, 0, 0),
+(26, '2026-04-20 17:00:00', '2026-04-20 18:00:00', 'Canceled', NULL, '', NULL, 3, 23, 19, 0, 0),
+(27, '2026-04-20 15:00:00', '2026-04-20 16:00:00', 'Canceled', NULL, '', NULL, 3, 23, 19, 0, 0),
+(28, '2026-04-20 14:00:00', '2026-04-20 15:00:00', 'Canceled', NULL, '', NULL, 3, 23, 19, 0, 0),
+(29, '2026-04-20 15:00:00', '2026-04-20 16:00:00', 'Canceled', NULL, '', NULL, 3, 23, 19, 0, 0),
+(30, '2026-04-20 17:00:00', '2026-04-20 18:00:00', 'Canceled', NULL, '', NULL, 3, 23, 19, 0, 1),
+(31, '2026-04-20 15:00:00', '2026-04-20 16:00:00', 'Canceled', NULL, '', NULL, 3, 23, 19, 0, 1),
+(32, '2026-04-20 15:00:00', '2026-04-20 16:00:00', 'Canceled', NULL, '', NULL, 3, 23, 19, 0, 1),
+(33, '2026-04-20 15:00:00', '2026-04-20 16:00:00', 'Canceled', NULL, '', NULL, 3, 23, 19, 0, 1),
+(34, '2026-04-20 15:00:00', '2026-04-20 16:00:00', 'Canceled', NULL, '', NULL, 3, 23, 19, 0, 1),
+(35, '2026-04-20 12:00:00', '2026-04-20 13:00:00', 'Canceled', NULL, '', NULL, 3, 23, 19, 0, 1),
+(36, '2026-04-20 15:00:00', '2026-04-20 16:00:00', 'Canceled', NULL, '', NULL, 3, 23, 19, 1, 1),
+(37, '2026-04-20 14:00:00', '2026-04-20 15:00:00', 'Canceled', NULL, '', NULL, 3, 23, 19, 1, 1),
+(38, '2026-04-20 15:00:00', '2026-04-20 16:00:00', 'Canceled', NULL, '', NULL, 3, 23, 19, 0, 1),
+(39, '2026-04-20 16:00:00', '2026-04-20 17:00:00', 'Canceled', NULL, '', NULL, 3, 23, 19, 0, 1),
+(40, '2026-04-20 15:00:00', '2026-04-20 16:00:00', 'Canceled', NULL, '', NULL, 3, 23, 19, 0, 1),
+(41, '2026-04-20 15:00:00', '2026-04-20 16:00:00', 'Accepted', NULL, '', NULL, 3, 23, 19, 1, 1),
+(42, '2026-04-27 15:00:00', '2026-04-27 16:00:00', 'Canceled', NULL, '', NULL, 3, 23, 19, 0, 0),
+(43, '2026-04-27 15:00:00', '2026-04-27 16:00:00', 'Pending', NULL, '', NULL, 5, 23, 19, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -239,6 +295,53 @@ CREATE TABLE IF NOT EXISTS `medical_appointment` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `message`
+--
+
+DROP TABLE IF EXISTS `message`;
+CREATE TABLE IF NOT EXISTS `message` (
+  `Id_MESSAGE` int NOT NULL AUTO_INCREMENT,
+  `Id_SENDER` int NOT NULL,
+  `Id_RECEIVER` int NOT NULL,
+  `Content` text NOT NULL,
+  `Is_Read` tinyint(1) NOT NULL DEFAULT '0',
+  `Created_At` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`Id_MESSAGE`),
+  KEY `Id_SENDER` (`Id_SENDER`),
+  KEY `Id_RECEIVER` (`Id_RECEIVER`)
+) ENGINE=MyISAM AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `message`
+--
+
+INSERT INTO `message` (`Id_MESSAGE`, `Id_SENDER`, `Id_RECEIVER`, `Content`, `Is_Read`, `Created_At`) VALUES
+(1, 19, 23, 'Nouvelle réservation de Un senior pour Coaching Sportif — testt le 20/04/2026 à 14h00.', 1, '2026-04-14 16:36:40'),
+(2, 23, 19, 'Votre réservation a été acceptée par le prestataire.', 1, '2026-04-14 16:38:01'),
+(3, 1, 19, 'Votre réservation a été confirmée par l\'administration.', 1, '2026-04-14 16:52:42'),
+(4, 19, 23, 'Nouvelle réservation de Un senior pour Coaching Sportif — testt le 20/04/2026 à 15h00.', 1, '2026-04-14 17:00:17'),
+(5, 23, 19, 'Votre réservation a été acceptée par le prestataire.', 1, '2026-04-14 17:00:39'),
+(6, 1, 19, 'Votre réservation a été confirmée par l\'administration.', 1, '2026-04-14 17:01:34'),
+(7, 19, 23, 'Nouvelle réservation de Un senior pour Coaching Sportif — testt le 20/04/2026 à 16h00.', 1, '2026-04-14 17:36:18'),
+(8, 23, 19, 'Votre réservation a été acceptée par le prestataire.', 1, '2026-04-14 17:36:52'),
+(9, 1, 19, 'Votre réservation a été confirmée par l\'administration.', 1, '2026-04-14 17:37:27'),
+(10, 1, 19, 'Votre réservation a été annulée par l\'administration.', 1, '2026-04-14 17:43:51'),
+(11, 1, 19, 'Votre réservation a été annulée par l\'administration.', 1, '2026-04-14 17:43:53'),
+(12, 19, 23, 'Nouvelle réservation de Un senior pour Coaching Sportif — testt le 20/04/2026 à 15h00.', 1, '2026-04-14 17:44:07'),
+(13, 23, 19, 'Votre réservation a été acceptée par le prestataire.', 1, '2026-04-14 17:44:20'),
+(14, 1, 19, 'Votre réservation a été confirmée par l\'administration.', 1, '2026-04-14 17:44:30'),
+(15, 1, 19, 'Votre réservation a été annulée par l\'administration.', 1, '2026-04-14 18:23:24'),
+(16, 19, 23, 'Nouvelle réservation de Un senior pour Coaching Sportif — testt le 20/04/2026 à 15h00.', 1, '2026-04-14 18:23:45'),
+(17, 23, 19, 'Votre réservation a été acceptée par le prestataire.', 1, '2026-04-14 19:49:18'),
+(18, 1, 19, 'Votre réservation a été confirmée par l\'administration.', 1, '2026-04-15 11:19:17'),
+(19, 23, 19, 'oui', 1, '2026-04-15 16:43:31'),
+(20, 19, 23, 'Nouvelle réservation de Un senior pour Coaching Sportif — testt le 27/04/2026 à 15h00.', 0, '2026-04-21 00:47:50'),
+(21, 19, 23, 'Nouvelle réservation de Un senior pour Yoga Seniors — testt le 27/04/2026 à 15h00.', 0, '2026-04-21 16:30:35'),
+(22, 23, 19, 'Votre réservation a été acceptée par le prestataire.', 0, '2026-04-21 16:43:35');
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `participate`
 --
 
@@ -251,6 +354,26 @@ CREATE TABLE IF NOT EXISTS `participate` (
   PRIMARY KEY (`Id_USER`,`Id_EVENT`),
   KEY `Id_EVENT` (`Id_EVENT`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `payment`
+--
+
+DROP TABLE IF EXISTS `payment`;
+CREATE TABLE IF NOT EXISTS `payment` (
+  `Id_PAYMENT` int NOT NULL AUTO_INCREMENT,
+  `Id_USER` int NOT NULL,
+  `Stripe_Payment_Intent_ID` varchar(100) DEFAULT NULL,
+  `Amount_Cents` int NOT NULL,
+  `Currency` varchar(10) DEFAULT 'eur',
+  `Type` enum('subscription','shop','event') NOT NULL,
+  `Ref_ID` int DEFAULT NULL,
+  `Status` enum('pending','paid','failed','refunded') DEFAULT 'pending',
+  `Created_At` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`Id_PAYMENT`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -288,7 +411,17 @@ CREATE TABLE IF NOT EXISTS `planning_item` (
   `Created_At` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`Id_ITEM`),
   UNIQUE KEY `uniq_user_item` (`Id_USER`,`Item_Type`,`Ref_ID`)
-) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=62 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `planning_item`
+--
+
+INSERT INTO `planning_item` (`Id_ITEM`, `Id_USER`, `Item_Type`, `Ref_ID`, `Title`, `Start_At`, `Location`, `Details`, `Created_At`) VALUES
+(61, 19, 'service', 43, 'Yoga Seniors — testt', '2026-04-27 15:00:00', 'À domicile', '', '2026-04-21 16:30:35'),
+(56, 19, 'event', 9, 'l', '2026-04-20 00:00:00', 'ih', '', '2026-04-14 18:47:58'),
+(57, 19, 'event', 11, 'Test payant', '2026-05-01 14:00:00', 'Paris', '', '2026-04-15 10:59:34'),
+(53, 19, 'service', 41, 'Coaching Sportif — testt', '2026-04-20 15:00:00', 'À domicile', '', '2026-04-14 18:23:45');
 
 -- --------------------------------------------------------
 
@@ -359,8 +492,9 @@ INSERT INTO `provider` (`Id_USER`, `Company_Name`, `SIRET_Number`, `IBAN`, `Prov
 (5, 'Emma Esprit Clair', '55555555555555', NULL, NULL, 1, '1.00'),
 (6, 'Cabinet Dentaire Paris', '44444444444444', NULL, NULL, 1, '1.00'),
 (7, 'Cabinet Dr Smith', '33333333333333', NULL, NULL, 1, '1.00'),
-(10, 'Mat la classe', '12345678901234', NULL, NULL, 0, '1.00'),
-(11, 'JCPAS', '12345678901234', NULL, NULL, 0, '1.00');
+(10, 'Mat la classe', '12345678901234', NULL, NULL, 1, '1.00'),
+(11, 'JCPAS', '12345678901234', NULL, NULL, 1, '1.00'),
+(23, 'testt', 'IUHIUEZOIVZEOI', NULL, NULL, 1, '1.00');
 
 -- --------------------------------------------------------
 
@@ -376,7 +510,7 @@ CREATE TABLE IF NOT EXISTS `provider_absence` (
   `Id_USER` int NOT NULL,
   PRIMARY KEY (`Id_PROVIDER_ABSENCE`),
   KEY `Id_USER` (`Id_USER`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -392,8 +526,43 @@ CREATE TABLE IF NOT EXISTS `provider_schedule` (
   `End_Time` time NOT NULL,
   `Id_USER` int NOT NULL,
   PRIMARY KEY (`Id_SCHEDULE`),
-  KEY `Id_USER` (`Id_USER`)
+  UNIQUE KEY `uq_provider_schedule` (`Id_USER`,`Day_Of_Week`,`Start_Time`,`End_Time`),
+  KEY `idx_provider_schedule_user_dow` (`Id_USER`,`Day_Of_Week`)
 ) ;
+
+--
+-- Déchargement des données de la table `provider_schedule`
+--
+
+INSERT INTO `provider_schedule` (`Id_SCHEDULE`, `Day_Of_Week`, `Start_Time`, `End_Time`, `Id_USER`) VALUES
+(5, '1', '12:00:00', '20:00:00', 23),
+(6, '1', '14:00:00', '18:00:00', 23);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `provider_service_schedule`
+--
+
+DROP TABLE IF EXISTS `provider_service_schedule`;
+CREATE TABLE IF NOT EXISTS `provider_service_schedule` (
+  `Id_USER` int NOT NULL,
+  `Id_SERVICE_TYPE` int NOT NULL,
+  `Id_SCHEDULE` int NOT NULL,
+  PRIMARY KEY (`Id_USER`,`Id_SERVICE_TYPE`,`Id_SCHEDULE`),
+  UNIQUE KEY `uq_provider_service_schedule` (`Id_USER`,`Id_SERVICE_TYPE`,`Id_SCHEDULE`),
+  KEY `Id_SERVICE_TYPE` (`Id_SERVICE_TYPE`),
+  KEY `Id_SCHEDULE` (`Id_SCHEDULE`),
+  KEY `idx_pss_user_service` (`Id_USER`,`Id_SERVICE_TYPE`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `provider_service_schedule`
+--
+
+INSERT INTO `provider_service_schedule` (`Id_USER`, `Id_SERVICE_TYPE`, `Id_SCHEDULE`) VALUES
+(23, 3, 5),
+(23, 5, 6);
 
 -- --------------------------------------------------------
 
@@ -409,6 +578,8 @@ CREATE TABLE IF NOT EXISTS `qualify` (
   `Negotiated_Price` decimal(10,2) DEFAULT NULL,
   `Experience_Years` int DEFAULT NULL,
   `Is_Active` tinyint(1) DEFAULT '1',
+  `Validation_Status` tinyint(1) NOT NULL DEFAULT '0',
+  `Slot_Duration_Min` int NOT NULL DEFAULT '60',
   PRIMARY KEY (`Id_USER`,`Id_SERVICE_TYPE`),
   KEY `Id_SERVICE_TYPE` (`Id_SERVICE_TYPE`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
@@ -417,17 +588,19 @@ CREATE TABLE IF NOT EXISTS `qualify` (
 -- Déchargement des données de la table `qualify`
 --
 
-INSERT INTO `qualify` (`Id_USER`, `Id_SERVICE_TYPE`, `Custom_Title`, `Negotiated_Price`, `Experience_Years`, `Is_Active`) VALUES
-(1, 1, NULL, '18.00', NULL, 1),
-(2, 3, NULL, '35.00', NULL, 1),
-(3, 4, NULL, '45.00', NULL, 1),
-(4, 5, NULL, '25.00', NULL, 1),
-(5, 6, NULL, '20.00', NULL, 1),
-(6, 7, NULL, '70.00', NULL, 1),
-(7, 8, NULL, '25.00', NULL, 1),
-(10, 1, 'M├®nager vos vous ! ha ha haha', '99.99', 0, 1),
-(10, 3, 'Boxe anglaise', '20.00', 3, 1),
-(11, 4, 'Un massage bien malaxant ( pas cher )', '9797.00', 1, 1);
+INSERT INTO `qualify` (`Id_USER`, `Id_SERVICE_TYPE`, `Custom_Title`, `Negotiated_Price`, `Experience_Years`, `Is_Active`, `Validation_Status`, `Slot_Duration_Min`) VALUES
+(1, 1, NULL, '18.00', NULL, 1, 0, 60),
+(2, 3, NULL, '35.00', NULL, 1, 0, 60),
+(3, 4, NULL, '45.00', NULL, 1, 0, 60),
+(4, 5, NULL, '25.00', NULL, 1, 0, 60),
+(5, 6, NULL, '20.00', NULL, 1, 0, 60),
+(6, 7, NULL, '70.00', NULL, 1, 1, 60),
+(7, 8, NULL, '25.00', NULL, 1, 0, 60),
+(10, 1, 'M├®nager vos vous ! ha ha haha', '99.99', 0, 1, 1, 60),
+(10, 3, 'Boxe anglaise', '20.00', 3, 1, 0, 60),
+(11, 4, 'Un massage bien malaxant ( pas cher )', '9797.00', 1, 1, 0, 60),
+(23, 3, 'zdevnzopùn', '100.00', 1, 1, 1, 60),
+(23, 5, 'Yoga Sananes', '9823.00', 2, 1, 1, 60);
 
 -- --------------------------------------------------------
 
@@ -451,7 +624,6 @@ CREATE TABLE IF NOT EXISTS `senior` (
 INSERT INTO `senior` (`Id_USER`, `Birth_Date`, `Sponsor_Code`, `Senior_Description`) VALUES
 (8, '1950-05-14', NULL, NULL),
 (12, '2026-03-11', NULL, NULL),
-(13, '2026-03-11', NULL, NULL),
 (14, '1950-01-01', NULL, NULL),
 (19, '2001-03-27', NULL, NULL);
 
@@ -468,6 +640,7 @@ CREATE TABLE IF NOT EXISTS `service_type` (
   `Id_CATEGORY` int DEFAULT NULL,
   `Default_Hourly_Price` decimal(5,2) DEFAULT NULL,
   `link_img` varchar(255) DEFAULT 'public/assets/img/provider/default.png',
+  `Duration_Min` int NOT NULL DEFAULT '60',
   PRIMARY KEY (`Id_SERVICE_TYPE`),
   KEY `fk_service_category` (`Id_CATEGORY`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3;
@@ -476,15 +649,67 @@ CREATE TABLE IF NOT EXISTS `service_type` (
 -- Déchargement des données de la table `service_type`
 --
 
-INSERT INTO `service_type` (`Id_SERVICE_TYPE`, `Name`, `Id_CATEGORY`, `Default_Hourly_Price`, `link_img`) VALUES
-(1, 'M├®nage complet', 3, '20.00', 'public/assets/img/provider/default.png'),
-(2, 'Jardinage', 4, '25.00', 'public/assets/img/provider/default.png'),
-(3, 'Coaching Sportif', 1, '40.00', 'public/assets/img/provider/default.png'),
-(4, 'Massage relaxant', 1, '50.00', 'public/assets/img/provider/default.png'),
-(5, 'Yoga Seniors', 1, '30.00', 'public/assets/img/provider/default.png'),
-(6, 'M├®ditation guid├®e', 1, '20.00', 'public/assets/img/provider/default.png'),
-(7, 'Orthodontiste', 2, '70.00', 'public/assets/img/provider/default.png'),
-(8, 'M├®decin G├®n├®raliste', 2, '25.00', 'public/assets/img/provider/default.png');
+INSERT INTO `service_type` (`Id_SERVICE_TYPE`, `Name`, `Id_CATEGORY`, `Default_Hourly_Price`, `link_img`, `Duration_Min`) VALUES
+(1, 'M├®nage complet', 3, '20.00', 'public/assets/img/provider/default.png', 60),
+(2, 'Jardinage', 4, '25.00', 'public/assets/img/provider/default.png', 60),
+(3, 'Coaching Sportif', 1, '40.00', 'public/assets/img/provider/default.png', 120),
+(4, 'Massage relaxant', 1, '50.00', 'public/assets/img/provider/default.png', 60),
+(5, 'Yoga Seniors', 1, '30.00', 'public/assets/img/provider/default.png', 60),
+(6, 'M├®ditation guid├®e', 1, '20.00', 'public/assets/img/provider/default.png', 60),
+(7, 'Orthodontiste', 2, '70.00', 'public/assets/img/provider/default.png', 60),
+(8, 'M├®decin G├®n├®raliste', 2, '25.00', 'public/assets/img/provider/default.png', 60);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `shop_order`
+--
+
+DROP TABLE IF EXISTS `shop_order`;
+CREATE TABLE IF NOT EXISTS `shop_order` (
+  `Id_ORDER` int NOT NULL AUTO_INCREMENT,
+  `Id_USER` int NOT NULL,
+  `Amount_Total` int NOT NULL,
+  `Status` varchar(50) DEFAULT 'pending',
+  `Stripe_Session_Id` varchar(255) DEFAULT NULL,
+  `Created_At` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`Id_ORDER`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `shop_order`
+--
+
+INSERT INTO `shop_order` (`Id_ORDER`, `Id_USER`, `Amount_Total`, `Status`, `Stripe_Session_Id`, `Created_At`) VALUES
+(1, 19, 7960, 'paid', 'cs_test_a1MMbiiQ41wUokUqYtNdm71FmR389SO0KPrpPlgrXEWVlZxN0MHKw6QGmL', '2026-04-14 23:10:43'),
+(2, 19, 8970, 'paid', 'cs_test_a1X19wqa5hoKt0d6nqZmv0U55kb7jx3j0TxTGJt1GImTAnFthB4H4PO5bd', '2026-04-15 18:16:26'),
+(3, 19, 8970, 'pending', 'cs_test_a1l1QgH0FwAPA105lD6NQNbgjpakR4OjWX75SUpDXkEuc7Y5rqD1BHiXGa', '2026-04-21 16:45:37');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `shop_order_item`
+--
+
+DROP TABLE IF EXISTS `shop_order_item`;
+CREATE TABLE IF NOT EXISTS `shop_order_item` (
+  `Id_ORDER_ITEM` int NOT NULL AUTO_INCREMENT,
+  `Id_ORDER` int NOT NULL,
+  `Id_PRODUCT` int NOT NULL,
+  `Name` varchar(255) DEFAULT NULL,
+  `Price_Cents` int DEFAULT NULL,
+  `Qty` int DEFAULT NULL,
+  PRIMARY KEY (`Id_ORDER_ITEM`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `shop_order_item`
+--
+
+INSERT INTO `shop_order_item` (`Id_ORDER_ITEM`, `Id_ORDER`, `Id_PRODUCT`, `Name`, `Price_Cents`, `Qty`) VALUES
+(1, 1, 3, 'Loupe LED', 1990, 4),
+(2, 2, 1, 'Coussin lombaire', 2990, 3),
+(3, 3, 1, 'Coussin lombaire', 2990, 3);
 
 -- --------------------------------------------------------
 
@@ -503,6 +728,33 @@ CREATE TABLE IF NOT EXISTS `subscribe` (
   KEY `Id_SUBSCRIPTION_PLAN` (`Id_SUBSCRIPTION_PLAN`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
+--
+-- Déchargement des données de la table `subscribe`
+--
+
+INSERT INTO `subscribe` (`Id_USER`, `Id_SUBSCRIPTION_PLAN`, `Start_Date`, `End_Date`, `Is_Active`) VALUES
+(19, 1, '2026-04-14', '2026-05-14', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `subscription`
+--
+
+DROP TABLE IF EXISTS `subscription`;
+CREATE TABLE IF NOT EXISTS `subscription` (
+  `Id_SUBSCRIPTION` int NOT NULL AUTO_INCREMENT,
+  `Id_USER` int NOT NULL,
+  `Stripe_Customer_ID` varchar(100) DEFAULT NULL,
+  `Stripe_Subscription_ID` varchar(100) DEFAULT NULL,
+  `Plan` enum('monthly','yearly') NOT NULL,
+  `Is_Renewal` tinyint(1) DEFAULT '0',
+  `Status` enum('active','canceled','past_due') DEFAULT 'active',
+  `Current_Period_End` datetime DEFAULT NULL,
+  `Created_At` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`Id_SUBSCRIPTION`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 -- --------------------------------------------------------
 
 --
@@ -516,7 +768,17 @@ CREATE TABLE IF NOT EXISTS `subscription_plan` (
   `Price` decimal(10,2) DEFAULT NULL,
   `Duration_Months` int DEFAULT NULL,
   PRIMARY KEY (`Id_SUBSCRIPTION_PLAN`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
+
+--
+-- Déchargement des données de la table `subscription_plan`
+--
+
+INSERT INTO `subscription_plan` (`Id_SUBSCRIPTION_PLAN`, `Name`, `Price`, `Duration_Months`) VALUES
+(1, 'monthly_normal', '4.00', 1),
+(2, 'yearly_normal', '40.00', 12),
+(3, 'monthly_renewal', '3.00', 1),
+(4, 'yearly_renewal', '35.00', 12);
 
 -- --------------------------------------------------------
 
@@ -538,30 +800,33 @@ CREATE TABLE IF NOT EXISTS `user` (
   `Phone_Number` varchar(20) DEFAULT NULL,
   `Sex` tinyint(1) DEFAULT NULL,
   `authentication_token` varchar(255) DEFAULT NULL,
+  `Is_Banned` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id_USER`),
   UNIQUE KEY `Email` (`Email`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb3;
 
 --
 -- Déchargement des données de la table `user`
 --
 
-INSERT INTO `user` (`Id_USER`, `Address_Street`, `Address_Zip`, `Address_City`, `Registration_Date`, `Email`, `Password`, `Nom`, `Prenom`, `Phone_Number`, `Sex`, `authentication_token`) VALUES
-(1, NULL, NULL, NULL, '2026-02-22 14:59:32', 'jean@nettoyage.com', 'fakehash123', NULL, NULL, '0601020304', NULL, NULL),
-(2, NULL, NULL, NULL, '2026-02-22 14:59:32', 'marc@fitness.com', 'fakehash456', NULL, NULL, '0611223344', NULL, NULL),
-(3, NULL, NULL, NULL, '2026-02-23 18:54:41', 'sophie@massage.com', 'hash', NULL, NULL, '0622334455', NULL, NULL),
-(4, NULL, NULL, NULL, '2026-02-23 18:54:41', 'lucas@yoga.com', 'hash', NULL, NULL, '0633445566', NULL, NULL),
-(5, NULL, NULL, NULL, '2026-02-23 18:54:41', 'emma@meditation.com', 'hash', NULL, NULL, '0666778899', NULL, NULL),
-(6, NULL, NULL, NULL, '2026-02-23 18:54:41', 'dr.dent@dental.com', 'hash', NULL, NULL, '0655667788', NULL, NULL),
-(7, NULL, NULL, NULL, '2026-02-23 18:54:41', 'dr.smith@medical.com', 'hash', NULL, NULL, '0644556677', NULL, NULL),
-(8, NULL, NULL, NULL, '2026-02-27 16:53:45', 'senior_test@mail.com', 'hash', NULL, NULL, '0699887766', NULL, NULL),
-(9, NULL, NULL, NULL, '2026-02-27 16:53:45', 'admin_boss@mail.com', 'hash', NULL, NULL, '0611111111', NULL, NULL),
-(10, '67', '75001', 'Paris', '2026-03-01 22:30:39', 'mat_prest@gmail.com', '$2y$10$fVB4XGVGbY4sA1gYHXTsSOzt1X14gk.n346PUi37kw5JJmlhYamFW', NULL, NULL, '0612345678', NULL, NULL),
-(11, '3', '3', 'oui', '2026-03-02 20:48:01', 'k@gmail.com', '$2y$10$DbZNkja/QnnwbST5dcX4BusQIFOTU5FVpaVoMFvAp4LRYEC.N9Fv6', NULL, NULL, '0909090909', NULL, NULL),
-(12, '3', '92110', 'clichy', '2026-03-11 14:25:52', 'dk@gmail.com', '$2y$10$/UeJAn5Cc3K7Q8ZMf1sqt.0OAFY6RZKI.MC0UgnBYpUP4TrkkSFOa', NULL, NULL, '0909090909', NULL, NULL),
-(13, '3', '92110', 'clichy', '2026-03-11 14:52:05', 'dkl@gmail.com', '$2y$10$W.ZAdUJcQS2ZGg3qj16xHupp0KyR.VTtqfQw2XAoVmFMdt0FN0xse', NULL, NULL, '0909090909', NULL, NULL),
-(14, NULL, NULL, NULL, '2026-03-16 16:39:44', 'test2@test.fr', '$2a$10$N3PzIBJyAziDi/JCG2868eI5fIuiY.3b5x5fqNsL5LpgV24joCA3G', 'Test', 'User', '0600000000', NULL, 'K31ik5UuOUA31fXYOg-cr5DzWjXewvhHFaUt-XxQOwM'),
-(19, '2', '92110', 'clichy', '2026-03-23 21:21:56', 'ze@gmail.com', '$2a$10$7CQX9DCBV1IPMOVB9nelz.lUKRI33RIiKgNm7iHromsxkjOk2B7dC', 'vieux', 'jerome', '0909090909', NULL, 'FxeuxFHwc8SJAe1wjMU_icxa-mxxyfxlSForKkayGkE');
+INSERT INTO `user` (`Id_USER`, `Address_Street`, `Address_Zip`, `Address_City`, `Registration_Date`, `Email`, `Password`, `Nom`, `Prenom`, `Phone_Number`, `Sex`, `authentication_token`, `Is_Banned`) VALUES
+(1, NULL, NULL, NULL, '2026-02-22 14:59:32', 'jean@nettoyage.com', 'fakehash123', NULL, NULL, '0601020304', NULL, NULL, 0),
+(2, NULL, NULL, NULL, '2026-02-22 14:59:32', 'marc@fitness.com', 'fakehash456', NULL, NULL, '0611223344', NULL, NULL, 0),
+(3, NULL, NULL, NULL, '2026-02-23 18:54:41', 'sophie@massage.com', 'hash', NULL, NULL, '0622334455', NULL, NULL, 0),
+(4, NULL, NULL, NULL, '2026-02-23 18:54:41', 'lucas@yoga.com', 'hash', NULL, NULL, '0633445566', NULL, NULL, 0),
+(5, NULL, NULL, NULL, '2026-02-23 18:54:41', 'emma@meditation.com', 'hash', NULL, NULL, '0666778899', NULL, NULL, 0),
+(6, NULL, NULL, NULL, '2026-02-23 18:54:41', 'dr.dent@dental.com', 'hash', NULL, NULL, '0655667788', NULL, NULL, 0),
+(7, NULL, NULL, NULL, '2026-02-23 18:54:41', 'dr.smith@medical.com', 'hash', NULL, NULL, '0644556677', NULL, NULL, 0),
+(8, NULL, NULL, NULL, '2026-02-27 16:53:45', 'senior_test@mail.com', 'hash', NULL, NULL, '0699887766', NULL, NULL, 0),
+(9, NULL, NULL, NULL, '2026-02-27 16:53:45', 'admin_boss@mail.com', 'hash', NULL, NULL, '0611111111', NULL, NULL, 0),
+(10, '67', '75001', 'Paris', '2026-03-01 22:30:39', 'mat_prest@gmail.com', '$2y$10$fVB4XGVGbY4sA1gYHXTsSOzt1X14gk.n346PUi37kw5JJmlhYamFW', NULL, NULL, '0612345678', NULL, NULL, 0),
+(11, '3', '3', 'oui', '2026-03-02 20:48:01', 'k@gmail.com', '$2y$10$DbZNkja/QnnwbST5dcX4BusQIFOTU5FVpaVoMFvAp4LRYEC.N9Fv6', NULL, NULL, '0909090909', NULL, NULL, 0),
+(12, '3', '92110', 'clichy', '2026-03-11 14:25:52', 'dk@gmail.com', '$2y$10$/UeJAn5Cc3K7Q8ZMf1sqt.0OAFY6RZKI.MC0UgnBYpUP4TrkkSFOa', NULL, NULL, '0909090909', NULL, NULL, 0),
+(14, NULL, NULL, NULL, '2026-03-16 16:39:44', 'test2@test.fr', '$2a$10$N3PzIBJyAziDi/JCG2868eI5fIuiY.3b5x5fqNsL5LpgV24joCA3G', 'Test', 'User', '0600000000', NULL, 'K31ik5UuOUA31fXYOg-cr5DzWjXewvhHFaUt-XxQOwM', 0),
+(19, '2', '92110', 'clichy', '2026-03-23 21:21:56', 'ze@gmail.com', '$2a$10$7CQX9DCBV1IPMOVB9nelz.lUKRI33RIiKgNm7iHromsxkjOk2B7dC', 'vieux', 'jerome', '0909090909', NULL, 'QF9bF0_F4Jo243TtjYUszu_HBG4_54ReTrJKezkXGkc', 0),
+(20, NULL, NULL, NULL, '2026-03-31 14:04:16', 'zeadmin@gmail.com', '$2a$10$FeNaCGALl0SeTQJg5MpMgeDUoGHgTCEB8z9ygGTicLDmVoAyD1aTW', 'rigoni', 'jerome', '', NULL, 'TNQQWGcdEbORhkK4jG9EabeXk0WXiVgsNSHgySkNXSs', 0),
+(21, NULL, NULL, 'Paris', '2026-04-03 12:30:57', 'zeadmin2@gmail.com', '$2a$10$duGAoMvd/UNOsRw4eOc7mu7u/etMq6NLuPQqRdbvBuiJfMJNxh3zq', 'ze', 'ze', '0909090902', NULL, 'Ju_SAR47cGIByzqIf_Wtvatx3I7yzaNm8hIZLoOeJAM', 0),
+(23, 'oui', 'oui', 'oui', '2026-04-05 17:19:17', 't@gmail.com', '$2a$10$c8vTe9eGs8gN9Vh.BDidyu2Pizc7dJcQyUJ5OgHGkzv80Zk1N6rxC', 'test', 'test', '0909090902', NULL, '8C-G8TGNbsVjR0x06gKwbPCjAGuAIs9QIsimIKldZJA', 0);
 
 --
 -- Contraintes pour les tables déchargées
@@ -632,10 +897,3 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
-
--- colonne Validation_Status pour la table event
-ALTER TABLE event ADD COLUMN Validation_Status TINYINT(1) DEFAULT 0;
-
--- update les events qui existe avec valider
-UPDATE event SET Validation_Status = 1 WHERE Validation_Status IS NULL;
