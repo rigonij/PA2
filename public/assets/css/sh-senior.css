@@ -1,0 +1,91 @@
+.senior-ui {
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.senior-ui h1 {
+    font-size: 2rem;
+}
+
+.senior-ui h2 {
+    font-size: 1.6rem;
+}
+
+.senior-ui h3 {
+    font-size: 1.35rem;
+}
+
+.senior-ui h4 {
+    font-size: 1.2rem;
+}
+
+.senior-ui .btn {
+    min-height: 48px;
+    padding: 0.6rem 1.2rem;
+    font-size: 1.05rem;
+    font-weight: 500;
+}
+
+.senior-ui .btn-sm {
+    min-height: 40px;
+    padding: 0.45rem 0.9rem;
+    font-size: 0.95rem;
+}
+
+.senior-ui .form-control,
+.senior-ui .form-select {
+    min-height: 48px;
+    font-size: 1.05rem;
+}
+
+.senior-ui label,
+.senior-ui .form-label {
+    font-size: 1.05rem;
+    font-weight: 500;
+}
+
+.senior-ui .text-muted {
+    color: #555 !important;
+}
+
+.senior-ui .small,
+.senior-ui small {
+    font-size: 0.95rem;
+}
+
+.senior-ui a {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.senior-ui .nav-link,
+.senior-ui .dropdown-item {
+    font-size: 1.05rem;
+    padding: 0.65rem 1rem;
+}
+
+.senior-ui .table {
+    font-size: 1rem;
+}
+
+.senior-ui .badge {
+    font-size: 0.9rem;
+    padding: 0.4em 0.65em;
+}
+
+.senior-ui .sh-card {
+    padding: 1.5rem !important;
+}
+
+.senior-ui .modal-title {
+    font-size: 1.4rem;
+}
+
+.senior-ui .modal-body {
+    font-size: 1.05rem;
+}
+
+.senior-ui :focus-visible {
+    outline: 3px solid #0d6efd;
+    outline-offset: 2px;
+}

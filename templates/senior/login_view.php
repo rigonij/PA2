@@ -1,11 +1,12 @@
 <?php
 $pageTitle = "SilverHappy • Connexion";
+$isSeniorUi = true;
+$error = $error ?? "";
 include __DIR__ . "/../common/head.php";
 ?>
 
 <div class="container py-5" style="max-width: 480px;">
     <div class="sh-card p-4">
-
         <div class="d-flex align-items-center gap-3 mb-4">
             <div class="sh-logo-dot"></div>
             <div>
@@ -22,7 +23,6 @@ include __DIR__ . "/../common/head.php";
         <?php endif; ?>
 
         <form method="POST" action="login.php" class="d-grid gap-3">
-
             <div>
                 <label class="form-label fw-semibold" for="email">Email <span class="text-danger">*</span></label>
                 <input
@@ -35,7 +35,6 @@ include __DIR__ . "/../common/head.php";
                     required
                     autocomplete="email">
             </div>
-
             <div>
                 <label class="form-label fw-semibold" for="password">Mot de passe <span class="text-danger">*</span></label>
                 <input
@@ -47,18 +46,16 @@ include __DIR__ . "/../common/head.php";
                     required
                     autocomplete="current-password">
             </div>
-
             <button class="btn btn-sh-primary w-100 py-2 mt-1" type="submit">
                 Se connecter
             </button>
-
         </form>
+
         <hr class="my-3">
         <p class="text-center text-secondary mb-0">
             Pas encore de compte ?
             <a href="../public/register.php" class="fw-bold text-decoration-none">Créer un compte</a>
         </p>
-
     </div>
 </div>
 

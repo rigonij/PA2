@@ -1,12 +1,21 @@
 <?php
-session_start();
+require __DIR__ . "/provider_guard.php";
 
-if (empty($_SESSION["token"])) {
-    header("Location: login.php");
+$action = $_POST["action"] ?? "";
+if ($action === "clear_history") {
+    $ch = curl_init($apiBase . "/api/provider/interventions/history/clear");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        "Content-Type: application/json",
+        "X-Token: " . $_SESSION["token"],
+    ]);
+    curl_exec($ch);
+    curl_close($ch);
+    header("Location: provider_planning.php");
     exit;
 }
 
-$apiBase = "http://127.0.0.1:8081";
 $error = "";
 $items = [];
 
@@ -20,7 +29,6 @@ $data = json_decode($response ?: "", true);
 
 if (empty($data["success"])) {
     $msg = $data["message"] ?? "";
-
     if (
         stripos($msg, "Non authentifié") !== false ||
         stripos($msg, "prestataire requis") !== false ||
@@ -31,7 +39,6 @@ if (empty($data["success"])) {
         header("Location: login.php");
         exit;
     }
-
     $error = $msg ?: "Erreur chargement planning.";
 } else {
     $items = $data["items"] ?? [];

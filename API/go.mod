@@ -8,3 +8,5 @@ require (
 )
 
 require github.com/stripe/stripe-go/v76 v76.25.0
+
+require github.com/go-pdf/fpdf v0.9.0 // indirect

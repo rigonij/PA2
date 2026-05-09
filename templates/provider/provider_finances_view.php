@@ -57,7 +57,7 @@ include __DIR__ . "/../common/header.php";
                             <tbody>
                                 <?php foreach ($invoices as $inv): ?>
                                     <?php
-                                    $dateLabel = date("d/m/Y H:i", strtotime($inv["date_start"] ?? ""));
+                                    $dateLabel = fmt_dt($inv["date_start"] ?? "");
                                     $seniorName = trim(($inv["senior_prenom"] ?? "") . " " . ($inv["senior_nom"] ?? ""));
                                     $price = (float)($inv["price"] ?? 0);
                                     $status = $inv["status"] ?? "";

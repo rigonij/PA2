@@ -42,15 +42,6 @@ function renderAdminDashboard(array $stats, string $error = ''): void
             </div>
             <div class="col-md-3">
                 <div class="sh-card p-3 text-center">
-                    <div class="text-muted small mb-1">Interventions en attente</div>
-                    <div class="fs-2 fw-bold <?= (int)($stats['pending_interventions'] ?? 0) > 0 ? 'text-warning' : 'text-success' ?>">
-                        <?= (int)($stats['pending_interventions'] ?? 0) ?>
-                    </div>
-                    <a href="admin_interventions.php" class="btn btn-sm btn-outline-secondary mt-2">Voir</a>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="sh-card p-3 text-center">
                     <div class="text-muted small mb-1">Abonnements actifs</div>
                     <div class="fs-2 fw-bold text-success">
                         <?= (int)($stats['active_subscriptions'] ?? 0) ?>
@@ -73,15 +64,6 @@ function renderAdminDashboard(array $stats, string $error = ''): void
             </div>
             <div class="col-md-4">
                 <div class="sh-card p-3 text-center">
-                    <div class="text-muted small mb-1">Services en attente</div>
-                    <div class="fs-2 fw-bold <?= (int)($stats['pending_services'] ?? 0) > 0 ? 'text-warning' : 'text-success' ?>">
-                        <?= (int)($stats['pending_services'] ?? 0) ?>
-                    </div>
-                    <a href="admin_provider_services.php" class="btn btn-sm btn-outline-warning mt-2">Valider</a>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="sh-card p-3 text-center">
                     <div class="text-muted small mb-1">Revenu boutique</div>
                     <div class="fs-2 fw-bold text-success">
                         <?= number_format((int)($stats['shop_revenue_cents'] ?? 0) / 100, 2, ',', ' ') ?> €
@@ -98,11 +80,14 @@ function renderAdminDashboard(array $stats, string $error = ''): void
             <div class="d-flex flex-wrap gap-2">
                 <a href="admin_users.php" class="btn btn-outline-secondary">Comptes</a>
                 <a href="admin_providers.php" class="btn btn-outline-secondary">Prestataires</a>
+                <a href="admin_validations.php" class="btn btn-outline-secondary">Validation</a>
                 <a href="admin_seniors.php" class="btn btn-outline-secondary">Seniors</a>
+                <a href="admin_review_reports.php" class="btn btn-outline-secondary">Signalements d'avis</a>
+                <a href="admin_user_reports.php" class="btn btn-outline-secondary">Signalements d'utilisateurs</a>
                 <a href="admin_provider_services.php" class="btn btn-outline-secondary">Services</a>
                 <a href="admin_event.php" class="btn btn-outline-secondary">Evenements</a>
-                <a href="admin_interventions.php" class="btn btn-outline-secondary">Interventions</a>
                 <a href="admin_paiement.php" class="btn btn-outline-secondary">Paiements</a>
+                <a href="admin_advice.php" class="btn btn-outline-secondary">Conseils</a>
                 <a href="admin_stats.php" class="btn btn-outline-primary">Statistiques detaillees</a>
                 <a href="admin_logout.php" class="btn btn-outline-danger ms-auto">Deconnexion</a>
             </div>
@@ -110,7 +95,6 @@ function renderAdminDashboard(array $stats, string $error = ''): void
 
     </div>
 
-    <?php include __DIR__ . "/../common/footer.php"; ?>
     <?php include __DIR__ . "/../common/footer-scripts.php"; ?>
 <?php
 }

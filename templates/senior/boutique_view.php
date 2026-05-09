@@ -1,7 +1,11 @@
 <?php
 $pageTitle = "SilverHappy • Boutique";
+$isSeniorUi = true;
 include __DIR__ . "/../common/head.php";
 include __DIR__ . "/../common/header.php";
+
+$products = $products ?? [];
+$status = $status ?? "";
 ?>
 
 <div class="container py-4">

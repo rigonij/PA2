@@ -1,107 +1,87 @@
-<!DOCTYPE html>
-<html lang="fr">
+<?php
+$pageTitle = "Admin • Modifier utilisateur";
+include __DIR__ . "/../common/head.php";
+include __DIR__ . "/../common/header.php";
 
-<head>
-    <meta charset="UTF-8">
-    <title>Back office Silver Happy - Modifier utilisateur</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/PA_2i2/public/assets/css/admin_style.css">
-</head>
-
-<body>
-    <div class="menu-toggle">
-        <div class="hamburger"><span></span><span></span><span></span></div>
+$user = $user ?? null;
+$error = $error ?? "";
+$success = $success ?? "";
+?>
+<div class="container py-4">
+    <div class="sh-card p-4 mb-3 d-flex justify-content-between align-items-start gap-3">
+        <div>
+            <h1 class="h4 mb-1">Modifier utilisateur <?= $user ? "#" . (int)$user['id'] : "" ?></h1>
+            <p class="text-secondary mb-0">Mettre à jour les informations du compte</p>
+        </div>
+        <a class="btn btn-outline-secondary" href="admin_users.php">← Retour</a>
     </div>
-    <div class="main">
-        <aside class="BarreLat">
-            <div class="container">
-                <h3>Menu Admin</h3>
-                <nav class="menu">
-                    <a href="admin_dashboard.php" class="item">Accueil</a>
-                    <a href="admin_users.php" class="item actif">Comptes</a>
-                    <a href="admin_providers.php" class="item">Prestataires</a>
-                    <a href="admin_seniors.php" class="item">Seniors</a>
-                    <a href="admin_event.php" class="item">Événements</a>
-                    <a href="admin_paiement.php" class="item">Paiements</a>
-                    <a href="admin_logout.php" class="item">Déconnexion</a>
-                </nav>
-            </div>
-        </aside>
-        <div class="container py-4">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h1>Modifier utilisateur #<?= (int)$user['id'] ?></h1>
-                <a href="admin_users.php" class="btn btn-secondary">← Retour</a>
-            </div>
 
-            <?php if (!empty($error)): ?>
-                <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
-            <?php endif; ?>
-            <?php if (!empty($success)): ?>
-                <div class="alert alert-success"><?= htmlspecialchars($success) ?></div>
-            <?php endif; ?>
+    <?php if (!empty($error)): ?>
+        <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
+    <?php endif; ?>
+    <?php if (!empty($success)): ?>
+        <div class="alert alert-success"><?= htmlspecialchars($success) ?></div>
+    <?php endif; ?>
 
-            <?php if ($user): ?>
-                <form method="POST" class="card p-4 shadow-sm" style="max-width:600px;">
-                    <div class="row mb-3">
-                        <div class="col">
-                            <label class="form-label">Prénom</label>
-                            <input type="text" name="prenom" class="form-control"
-                                value="<?= htmlspecialchars($user['prenom'] ?? '') ?>">
-                        </div>
-                        <div class="col">
-                            <label class="form-label">Nom</label>
-                            <input type="text" name="nom" class="form-control"
-                                value="<?= htmlspecialchars($user['nom'] ?? '') ?>">
-                        </div>
+    <?php if ($user): ?>
+        <div class="sh-card p-4" style="max-width: 720px;">
+            <form method="POST">
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Prénom</label>
+                        <input type="text" name="prenom" class="form-control"
+                            value="<?= htmlspecialchars($user['prenom'] ?? '') ?>">
                     </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Email</label>
-                        <input type="email" name="email" class="form-control"
-                            value="<?= htmlspecialchars($user['email'] ?? '') ?>" required>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Nom</label>
+                        <input type="text" name="nom" class="form-control"
+                            value="<?= htmlspecialchars($user['nom'] ?? '') ?>">
                     </div>
+                </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Téléphone</label>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Email <span class="text-danger">*</span></label>
+                    <input type="email" name="email" class="form-control"
+                        value="<?= htmlspecialchars($user['email'] ?? '') ?>" required>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Téléphone</label>
                         <input type="text" name="phone_number" class="form-control"
                             value="<?= htmlspecialchars($user['phone_number'] ?? '') ?>">
                     </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Ville</label>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Ville</label>
                         <input type="text" name="address_city" class="form-control"
                             value="<?= htmlspecialchars($user['address_city'] ?? '') ?>">
                     </div>
+                </div>
 
-                    <hr>
-                    <p class="text-muted">Laisser vide pour ne pas changer le mot de passe.</p>
+                <hr class="my-4">
 
-                    <div class="row mb-3">
-                        <div class="col">
-                            <label class="form-label">Nouveau mot de passe</label>
-                            <input type="password" name="password" class="form-control">
-                        </div>
-                        <div class="col">
-                            <label class="form-label">Confirmer</label>
-                            <input type="password" name="password_confirm" class="form-control">
-                        </div>
+                <p class="text-secondary small mb-3">Laisser vide pour ne pas changer le mot de passe.</p>
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Nouveau mot de passe</label>
+                        <input type="password" name="password" class="form-control" autocomplete="new-password">
                     </div>
-
-                    <div class="d-flex gap-2">
-                        <a href="admin_users.php" class="btn btn-outline-secondary">Annuler</a>
-                        <button type="submit" class="btn btn-primary">Enregistrer</button>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Confirmer</label>
+                        <input type="password" name="password_confirm" class="form-control" autocomplete="new-password">
                     </div>
-                </form>
-            <?php endif; ?>
+                </div>
+
+                <div class="d-flex gap-2 justify-content-end">
+                    <a href="admin_users.php" class="btn btn-outline-secondary">Annuler</a>
+                    <button type="submit" class="btn btn-sh-gold">Enregistrer</button>
+                </div>
+            </form>
         </div>
-    </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const toggle = document.querySelector('.menu-toggle');
-            const menu = document.querySelector('.BarreLat');
-            if (toggle && menu) toggle.addEventListener('click', () => menu.classList.toggle('open'));
-        });
-    </script>
-</body>
-
-</html>
+    <?php else: ?>
+        <div class="sh-card p-4">
+            <p class="text-secondary mb-0">Utilisateur introuvable.</p>
+        </div>
+    <?php endif; ?>
+</div>
+<?php include __DIR__ . "/../common/footer-scripts.php"; ?>

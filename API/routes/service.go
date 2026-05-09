@@ -46,11 +46,13 @@ func ReserveService(database *sql.DB) http.HandlerFunc {
 			return
 		}
 
+		loc, _ := time.LoadLocation("Europe/Paris")
 		start, err := time.Parse(time.RFC3339, req.StartAt)
 		if err != nil {
-			start, err = time.ParseInLocation("2006-01-02T15:04", req.StartAt, time.Local)
+			start, err = time.ParseInLocation("2006-01-02T15:04", req.StartAt, loc)
 			if err != nil {
-				jsonError(http.StatusBadRequest, "Date invalide")
+				w.WriteHeader(http.StatusBadRequest)
+				json.NewEncoder(w).Encode(map[string]any{"success": false, "message": "Date invalide"})
 				return
 			}
 		}

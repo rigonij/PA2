@@ -1,0 +1,208 @@
+package routes
+
+import (
+	"database/sql"
+	"encoding/json"
+	"io"
+	"net/http"
+	"strconv"
+	"strings"
+
+	"github.com/PA_2i2/api/lib"
+)
+
+const maxPDFSize = 5 * 1024 * 1024
+
+func UploadProviderDocument(database *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+
+		token := r.Header.Get("X-Token")
+		userID, err := lib.GetUserIDFromToken(database, token)
+		if err != nil {
+			w.WriteHeader(http.StatusUnauthorized)
+			json.NewEncoder(w).Encode(map[string]any{"success": false, "message": "Non authentifié"})
+			return
+		}
+
+		var isProvider int
+		database.QueryRow(`SELECT COUNT(*) FROM provider WHERE Id_USER = ?`, userID).Scan(&isProvider)
+		if isProvider == 0 {
+			w.WriteHeader(http.StatusForbidden)
+			json.NewEncoder(w).Encode(map[string]any{"success": false, "message": "Prestataire requis"})
+			return
+		}
+
+		r.Body = http.MaxBytesReader(w, r.Body, maxPDFSize+1024)
+		if err := r.ParseMultipartForm(maxPDFSize + 1024); err != nil {
+			w.WriteHeader(http.StatusRequestEntityTooLarge)
+			json.NewEncoder(w).Encode(map[string]any{"success": false, "message": "Fichier trop volumineux (max 5 Mo)"})
+			return
+		}
+
+		file, header, err := r.FormFile("document")
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(map[string]any{"success": false, "message": "Fichier manquant"})
+			return
+		}
+		defer file.Close()
+
+		if header.Size > maxPDFSize {
+			w.WriteHeader(http.StatusRequestEntityTooLarge)
+			json.NewEncoder(w).Encode(map[string]any{"success": false, "message": "Fichier > 5 Mo"})
+			return
+		}
+
+		data, err := io.ReadAll(file)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			json.NewEncoder(w).Encode(map[string]any{"success": false, "message": "Erreur lecture"})
+			return
+		}
+
+		if len(data) < 4 || string(data[:4]) != "%PDF" {
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(map[string]any{"success": false, "message": "Le fichier doit être un PDF"})
+			return
+		}
+
+		_, err = database.Exec(
+			`INSERT INTO provider_document (Id_USER, File_Data, Original_Filename, File_Size) VALUES (?, ?, ?, ?)`,
+			userID, data, header.Filename, header.Size,
+		)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			json.NewEncoder(w).Encode(map[string]any{"success": false, "message": err.Error()})
+			return
+		}
+
+		json.NewEncoder(w).Encode(map[string]any{"success": true, "message": "Document envoyé"})
+	}
+}
+
+func GetMyProviderDocument(database *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		token := r.Header.Get("X-Token")
+		userID, err := lib.GetUserIDFromToken(database, token)
+		if err != nil {
+			w.WriteHeader(http.StatusUnauthorized)
+			return
+		}
+
+		var filename, uploadedAt string
+		var size int
+		err = database.QueryRow(`
+			SELECT Original_Filename, File_Size, Uploaded_At
+			FROM provider_document WHERE Id_USER = ?
+			ORDER BY Uploaded_At DESC LIMIT 1
+		`, userID).Scan(&filename, &size, &uploadedAt)
+
+		if err == sql.ErrNoRows {
+			w.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(w).Encode(map[string]any{"success": true, "has_document": false})
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(map[string]any{
+			"success":      true,
+			"has_document": true,
+			"filename":     filename,
+			"size":         size,
+			"uploaded_at":  uploadedAt,
+		})
+	}
+}
+
+func AdminGetPendingProviders(database *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		if !requireAdmin(database, w, r) {
+			return
+		}
+
+		statusFilter := r.URL.Query().Get("status")
+
+		query := `
+			SELECT u.Id_USER, COALESCE(u.Nom,''), COALESCE(u.Prenom,''), u.Email,
+				COALESCE(p.Company_Name,''), p.Validation_Status,
+				CASE WHEN pd.Id_DOCUMENT IS NULL THEN 0 ELSE 1 END AS has_document
+			FROM provider p
+			JOIN user u ON u.Id_USER = p.Id_USER
+			LEFT JOIN (
+				SELECT Id_USER, MAX(Id_DOCUMENT) AS Id_DOCUMENT
+				FROM provider_document GROUP BY Id_USER
+			) pd ON pd.Id_USER = p.Id_USER
+		`
+		args := []any{}
+		if statusFilter != "" {
+			query += ` WHERE p.Validation_Status = ?`
+			s, _ := strconv.Atoi(statusFilter)
+			args = append(args, s)
+		}
+		query += ` ORDER BY p.Validation_Status ASC, u.Id_USER DESC`
+
+		rows, err := database.Query(query, args...)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			json.NewEncoder(w).Encode(map[string]any{"success": false, "message": err.Error()})
+			return
+		}
+		defer rows.Close()
+
+		items := []map[string]any{}
+		for rows.Next() {
+			var id, status, hasDoc int
+			var nom, prenom, email, company string
+			rows.Scan(&id, &nom, &prenom, &email, &company, &status, &hasDoc)
+			items = append(items, map[string]any{
+				"id":                id,
+				"nom":               nom,
+				"prenom":            prenom,
+				"email":             email,
+				"company_name":      company,
+				"validation_status": status,
+				"has_document":      hasDoc == 1,
+			})
+		}
+
+		json.NewEncoder(w).Encode(map[string]any{"success": true, "providers": items})
+	}
+}
+
+func AdminDownloadProviderDocument(database *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if !requireAdmin(database, w, r) {
+			return
+		}
+
+		parts := strings.Split(strings.Trim(r.URL.Path, "/"), "/")
+		userID, err := strconv.Atoi(parts[len(parts)-1])
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		var data []byte
+		var filename string
+		err = database.QueryRow(`
+			SELECT File_Data, Original_Filename FROM provider_document
+			WHERE Id_USER = ? ORDER BY Uploaded_At DESC LIMIT 1
+		`, userID).Scan(&data, &filename)
+
+		if err == sql.ErrNoRows {
+			w.WriteHeader(http.StatusNotFound)
+			return
+		}
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/pdf")
+		w.Header().Set("Content-Disposition", `attachment; filename="`+filename+`"`)
+		w.Header().Set("Content-Length", strconv.Itoa(len(data)))
+		w.Write(data)
+	}
+}

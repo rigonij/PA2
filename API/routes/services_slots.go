@@ -29,12 +29,10 @@ func parseClock(s string) (time.Time, error) {
 func GetAvailableServiceSlots(database *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-
 		if r.Method != http.MethodPost {
 			w.WriteHeader(http.StatusMethodNotAllowed)
 			return
 		}
-
 		token := r.Header.Get("X-Token")
 		_, err := lib.GetUserIDFromToken(database, token)
 		if err != nil {
@@ -42,27 +40,23 @@ func GetAvailableServiceSlots(database *sql.DB) http.HandlerFunc {
 			_ = json.NewEncoder(w).Encode(map[string]any{"success": false, "message": "Non authentifié"})
 			return
 		}
-
 		var req AvailableSlotsReq
 		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			_ = json.NewEncoder(w).Encode(map[string]any{"success": false, "message": "Corps invalide"})
 			return
 		}
-
 		if req.ServiceTypeID <= 0 || req.ProviderID <= 0 || req.Date == "" {
 			w.WriteHeader(http.StatusBadRequest)
 			_ = json.NewEncoder(w).Encode(map[string]any{"success": false, "message": "Champs manquants"})
 			return
 		}
-
 		day, err := time.ParseInLocation("2006-01-02", req.Date, time.Local)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			_ = json.NewEncoder(w).Encode(map[string]any{"success": false, "message": "Date invalide (YYYY-MM-DD)"})
 			return
 		}
-
 		now := time.Now().In(time.Local)
 		todayDate := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.Local)
 		dayDate := time.Date(day.Year(), day.Month(), day.Day(), 0, 0, 0, 0, time.Local)
@@ -84,7 +78,6 @@ func GetAvailableServiceSlots(database *sql.DB) http.HandlerFunc {
 			  AND COALESCE(p.Validation_Status,0) = 1
 			LIMIT 1
 		`, req.ProviderID, req.ServiceTypeID).Scan(&isPublished)
-
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			_ = json.NewEncoder(w).Encode(map[string]any{"success": false, "message": "Erreur serveur"})
@@ -95,23 +88,6 @@ func GetAvailableServiceSlots(database *sql.DB) http.HandlerFunc {
 			_ = json.NewEncoder(w).Encode(map[string]any{"success": false, "message": "Service non disponible"})
 			return
 		}
-
-		var durationMin int
-		err = database.QueryRow(`
-			SELECT COALESCE(Slot_Duration_Min, 0)
-			FROM qualify
-			WHERE Id_USER = ?
-			  AND Id_SERVICE_TYPE = ?
-			LIMIT 1
-		`, req.ProviderID, req.ServiceTypeID).Scan(&durationMin)
-
-		if err != nil || durationMin <= 0 {
-			w.WriteHeader(http.StatusBadRequest)
-			_ = json.NewEncoder(w).Encode(map[string]any{"success": false, "message": "Durée service introuvable"})
-			return
-		}
-
-		dur := time.Duration(durationMin) * time.Minute
 
 		dow := int(day.Weekday())
 		if dow == 0 {
@@ -175,10 +151,10 @@ func GetAvailableServiceSlots(database *sql.DB) http.HandlerFunc {
 			SELECT Date_Start, Date_End
 			FROM intervention
 			WHERE Id_PROVIDER = ?
-				AND Id_SERVICE_TYPE = ?
-				AND Status <> 'Canceled'
-				AND Date_Start < DATE_ADD(?, INTERVAL 1 DAY)
-				AND Date_End > ?
+			  AND Id_SERVICE_TYPE = ?
+			  AND Status <> 'Canceled'
+			  AND Date_Start < DATE_ADD(?, INTERVAL 1 DAY)
+			  AND Date_End   > ?
 		`, req.ProviderID, req.ServiceTypeID, day.Format("2006-01-02"), day.Format("2006-01-02"))
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
@@ -195,55 +171,50 @@ func GetAvailableServiceSlots(database *sql.DB) http.HandlerFunc {
 			}
 		}
 
+		nowLocal := time.Now().In(time.Local)
 		slots := []map[string]any{}
-
 		for _, sc := range schedules {
 			stT, err1 := parseClock(sc.start)
 			enT, err2 := parseClock(sc.end)
 			if err1 != nil || err2 != nil {
 				continue
 			}
-
-			startAt := time.Date(day.Year(), day.Month(), day.Day(), stT.Hour(), stT.Minute(), 0, 0, time.Local)
-			endAt := time.Date(day.Year(), day.Month(), day.Day(), enT.Hour(), enT.Minute(), 0, 0, time.Local)
-
-			for cur := startAt; !cur.Add(dur).After(endAt); cur = cur.Add(dur) {
-				sStart := cur
-				sEnd := cur.Add(dur)
-
-				bad := false
-
-				for _, a := range absences {
-					if overlaps(sStart, sEnd, a[0], a[1]) {
-						bad = true
-						break
-					}
-				}
-				if bad {
-					continue
-				}
-
-				for _, b := range booked {
-					if overlaps(sStart, sEnd, b[0], b[1]) {
-						bad = true
-						break
-					}
-				}
-				if bad {
-					continue
-				}
-
-				slots = append(slots, map[string]any{
-					"start_at": sStart.Format("2006-01-02T15:04"),
-					"end_at":   sEnd.Format("2006-01-02T15:04"),
-				})
+			sStart := time.Date(day.Year(), day.Month(), day.Day(), stT.Hour(), stT.Minute(), 0, 0, time.Local)
+			sEnd := time.Date(day.Year(), day.Month(), day.Day(), enT.Hour(), enT.Minute(), 0, 0, time.Local)
+			if !sEnd.After(sStart) {
+				continue
 			}
+			if !sStart.After(nowLocal) {
+				continue
+			}
+			bad := false
+			for _, a := range absences {
+				if overlaps(sStart, sEnd, a[0], a[1]) {
+					bad = true
+					break
+				}
+			}
+			if bad {
+				continue
+			}
+			for _, b := range booked {
+				if overlaps(sStart, sEnd, b[0], b[1]) {
+					bad = true
+					break
+				}
+			}
+			if bad {
+				continue
+			}
+			slots = append(slots, map[string]any{
+				"start_at": sStart.Format("2006-01-02T15:04"),
+				"end_at":   sEnd.Format("2006-01-02T15:04"),
+			})
 		}
 
 		_ = json.NewEncoder(w).Encode(map[string]any{
-			"success":      true,
-			"duration_min": durationMin,
-			"slots":        slots,
+			"success": true,
+			"slots":   slots,
 		})
 	}
 }

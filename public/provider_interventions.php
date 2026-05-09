@@ -1,11 +1,5 @@
 <?php
-session_start();
-if (empty($_SESSION["token"])) {
-    header("Location: login.php");
-    exit;
-}
-
-$apiBase = "http://127.0.0.1:8081";
+require __DIR__ . "/provider_guard.php";
 
 $action = $_POST["action"] ?? "";
 $interventionId = (int)($_POST["intervention_id"] ?? 0);
@@ -24,7 +18,20 @@ if (in_array($action, ["approve", "refuse"]) && $interventionId > 0) {
     ]));
     curl_exec($ch);
     curl_close($ch);
+    header("Location: provider_interventions.php");
+    exit;
+}
 
+if ($action === "clear_history") {
+    $ch = curl_init($apiBase . "/api/provider/interventions/history/clear");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        "Content-Type: application/json",
+        "X-Token: " . $_SESSION["token"],
+    ]);
+    curl_exec($ch);
+    curl_close($ch);
     header("Location: provider_interventions.php");
     exit;
 }

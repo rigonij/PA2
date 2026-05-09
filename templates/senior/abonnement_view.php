@@ -1,4 +1,5 @@
 <?php $pageTitle = "SilverHappy • Abonnement";
+$isSeniorUi = true;
 include __DIR__ . "/../common/head.php";
 include __DIR__ . "/../common/header.php"; ?>
 

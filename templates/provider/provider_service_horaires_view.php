@@ -3,6 +3,11 @@ $pageTitle = "Prestataire • Horaires du service";
 include __DIR__ . "/../common/head.php";
 include __DIR__ . "/../common/header.php";
 
+$schedules = $schedules ?? [];
+$selectedIds = $selectedIds ?? [];
+$error = $error ?? "";
+$success = $success ?? "";
+
 $selectedMap = [];
 foreach (($selectedIds ?? []) as $sid) {
     $selectedMap[(int)$sid] = true;

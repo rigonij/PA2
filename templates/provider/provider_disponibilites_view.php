@@ -150,8 +150,8 @@ $days = [
                                     <?php if (!empty($absences)): ?>
                                         <?php foreach ($absences as $a): ?>
                                             <tr>
-                                                <td><?= !empty($a["start_datetime"]) ? date("d/m/Y H:i", strtotime($a["start_datetime"])) : "N/A" ?></td>
-                                                <td><?= !empty($a["end_datetime"]) ? date("d/m/Y H:i", strtotime($a["end_datetime"])) : "N/A" ?></td>
+                                                <td><?= !empty($a["start_datetime"]) ? fmt_dt($a["start_datetime"]) : "N/A" ?></td>
+                                                <td><?= !empty($a["end_datetime"]) ? fmt_dt($a["end_datetime"]) : "N/A" ?></td>
                                                 <td>
                                                     <form method="POST" onsubmit="return confirm('Supprimer cette absence ?');">
                                                         <input type="hidden" name="action" value="delete_absence">

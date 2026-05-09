@@ -1,7 +1,12 @@
 <?php
 $pageTitle = "SilverHappy • Mon Profil";
+$isSeniorUi = true;
 include __DIR__ . "/../common/head.php";
 include __DIR__ . "/../common/header.php";
+
+$userData = $userData ?? [];
+$successMsg = $successMsg ?? "";
+$errorMsg = $errorMsg ?? "";
 ?>
 <div class="container py-4">
     <?php include __DIR__ . "/../common/topbar.php"; ?>

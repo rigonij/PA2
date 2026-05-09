@@ -1,12 +1,6 @@
 <?php
-session_start();
+require __DIR__ . "/provider_guard.php";
 
-if (empty($_SESSION["token"])) {
-    header("Location: login.php");
-    exit;
-}
-
-$apiBase = "http://127.0.0.1:8081";
 $error = "";
 $success = "";
 $items = [];

@@ -1,144 +1,178 @@
 <?php
-$pageTitle = "SilverHappy • Planning";
+$pageTitle = "SilverHappy • Mes RDV médicaux";
+$isSeniorUi = true;
 include __DIR__ . "/../common/head.php";
 include __DIR__ . "/../common/header.php";
+
+$events = $events ?? [];
+$services = $services ?? [];
+$medicals = $medicals ?? [];
+
+function fmt_dt_fr($iso)
+{
+    if (empty($iso)) return "";
+    try {
+        $tz = new DateTimeZone("Europe/Paris");
+        $d = new DateTime($iso, $tz);
+        $d->setTimezone($tz);
+        return $d->format("d/m/Y H:i");
+    } catch (Exception $e) {
+        return htmlspecialchars($iso);
+    }
+}
+
+function service_status_label($status, $adminApproved, $providerApproved)
+{
+    if ($status === "Canceled") return ["Annulé", "text-bg-danger"];
+    if ($status === "Refused") return ["Refusé", "text-bg-danger"];
+    if ($status === "Accepted" || $providerApproved == 1) return ["Confirmé", "text-bg-success"];
+    return ["En attente du prestataire", "text-bg-warning"];
+}
+
+$isHistory = ($scope ?? "upcoming") === "history";
 ?>
 <div class="container py-4">
     <?php include __DIR__ . "/../common/topbar.php"; ?>
+
     <div class="row g-3">
         <div class="col-lg-3">
             <?php include __DIR__ . "/../common/sidebar.php"; ?>
         </div>
         <div class="col-lg-9">
             <div class="sh-card p-4 mb-3">
-                <h1 class="h4 mb-1">Mon planning</h1>
-                <p class="text-secondary mb-0">Événements et réservations à venir.</p>
-            </div>
-            <div class="sh-card p-4">
-                <?php if (empty($items)): ?>
-                    <div class="text-secondary">
-                        Aucun élément dans votre planning pour le moment.
+                <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                    <div>
+                        <h1 class="h4 mb-1">Mon planning</h1>
+                        <p class="text-secondary mb-0">
+                            <?= $isHistory ? "Historique de vos événements, services et RDV passés." : "Événements, services et RDV à venir." ?>
+                        </p>
                     </div>
+                    <div class="btn-group" role="group">
+                        <a href="planning.php?scope=upcoming" class="btn <?= !$isHistory ? "btn-sh-primary" : "btn-outline-secondary" ?>">À venir</a>
+                        <a href="planning.php?scope=history" class="btn <?= $isHistory ? "btn-sh-primary" : "btn-outline-secondary" ?>">Historique</a>
+                    </div>
+                </div>
+                <?php if ($isHistory && (count($events) + count($services) + count($medicals)) > 0): ?>
+                    <div class="mt-3">
+                        <a href="planning.php?action=clear_history"
+                            class="btn btn-outline-danger btn-sm"
+                            onclick="return confirm('Vider tout l\'historique du planning ?');">
+                            Vider l'historique
+                        </a>
+                    </div>
+                <?php endif; ?>
+            </div>
+
+            <div class="sh-card p-4 mb-3">
+                <h2 class="h5 mb-3">Événements</h2>
+                <?php if (empty($events)): ?>
+                    <div class="text-secondary">Aucun événement <?= $isHistory ? "passé" : "à venir" ?>.</div>
                 <?php else: ?>
                     <div class="table-responsive">
                         <table class="table align-middle mb-0">
                             <thead>
                                 <tr>
                                     <th>Date</th>
-                                    <th>Type</th>
                                     <th>Titre</th>
                                     <th>Lieu</th>
-                                    <th>Statut</th>
-                                    <th></th>
+                                    <?php if (!$isHistory): ?><th></th><?php endif; ?>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($items as $it): ?>
-                                    <?php
-                                    $type    = $it["item_type"] ?? "";
-                                    $refId   = (int)($it["ref_id"] ?? 0);
-                                    $startAt = $it["start_at"] ?? "";
-                                    $title   = $it["title"] ?? "";
-                                    $location = $it["location"] ?? "";
-
-                                    $dateLabel = "";
-                                    $startAt = $it["start_at"] ?? "";
-
-                                    if (strlen($startAt) >= 16) {
-                                        $y = substr($startAt, 0, 4);
-                                        $m = substr($startAt, 5, 2);
-                                        $d = substr($startAt, 8, 2);
-                                        $h = substr($startAt, 11, 2);
-                                        $i = substr($startAt, 14, 2);
-                                        $dateLabel = "$d/$m/$y $h:$i";
-                                    }
-
-                                    $typeLabel = "Autre";
-                                    $badge = "text-bg-secondary";
-                                    if ($type === "event") {
-                                        $typeLabel = "Événement";
-                                        $badge = "text-bg-primary";
-                                    } elseif ($type === "service") {
-                                        $typeLabel = "Service";
-                                        $badge = "text-bg-success";
-                                    } elseif ($type === "medical") {
-                                        $typeLabel = "RDV médical";
-                                        $badge = "text-bg-warning";
-                                    }
-
-                                    $statusLabel = "";
-                                    $statusBadge = "";
-
-                                    if ($type === "event") {
-                                        $statusLabel = "Inscrit";
-                                        $statusBadge = "text-bg-primary";
-                                    } elseif ($type === "medical") {
-                                        $statusLabel = "Confirmé";
-                                        $statusBadge = "text-bg-success";
-                                    } elseif ($type === "service") {
-                                        $status           = $it["status"] ?? "";
-                                        $adminApproved    = (int)($it["admin_approved"] ?? 0);
-                                        $providerApproved = (int)($it["provider_approved"] ?? 0);
-
-                                        if ($status === "Canceled") {
-                                            $statusLabel = "Annulé";
-                                            $statusBadge = "text-bg-danger";
-                                        } elseif ($adminApproved === 1 && $providerApproved === 1) {
-                                            $statusLabel = "Confirmé";
-                                            $statusBadge = "text-bg-success";
-                                        } elseif ($adminApproved === 1) {
-                                            $statusLabel = "En attente prestataire";
-                                            $statusBadge = "text-bg-warning";
-                                        } elseif ($providerApproved === 1) {
-                                            $statusLabel = "En attente admin";
-                                            $statusBadge = "text-bg-warning";
-                                        } else {
-                                            $statusLabel = "En attente";
-                                            $statusBadge = "text-bg-secondary";
-                                        }
-                                    }
-
-                                    $cancelUrl = "";
-                                    if ($type === "event") {
-                                        $cancelUrl = "planning.php?action=unsubscribe_event&id=" . $refId;
-                                    } elseif ($type === "medical") {
-                                        $cancelUrl = "planning.php?action=delete_medical&id=" . $refId;
-                                    } elseif ($type === "service") {
-                                        $status = $it["status"] ?? "";
-                                        if ($status !== "Canceled") {
-                                            $cancelUrl = "planning.php?action=unreserve_service&id=" . $refId;
-                                        }
-                                    }
-                                    ?>
+                                <?php foreach ($events as $e): ?>
                                     <tr>
-                                        <td><?= htmlspecialchars($dateLabel) ?></td>
-                                        <td>
-                                            <span class="badge <?= $badge ?>">
-                                                <?= htmlspecialchars($typeLabel) ?>
-                                            </span>
-                                        </td>
-                                        <td><?= htmlspecialchars($title) ?></td>
-                                        <td><?= htmlspecialchars($location) ?></td>
-                                        <td>
-                                            <?php if ($statusLabel): ?>
-                                                <span class="badge <?= $statusBadge ?>">
-                                                    <?= htmlspecialchars($statusLabel) ?>
-                                                </span>
-                                            <?php else: ?>
-                                                <span class="text-secondary small">—</span>
-                                            <?php endif; ?>
-                                        </td>
-                                        <td class="text-end">
-                                            <?php if ($cancelUrl): ?>
+                                        <td><?= htmlspecialchars(fmt_dt_fr($e["start_at"] ?? "")) ?></td>
+                                        <td><?= htmlspecialchars($e["title"] ?? "") ?></td>
+                                        <td><?= htmlspecialchars($e["location"] ?? "") ?: "—" ?></td>
+                                        <?php if (!$isHistory): ?>
+                                            <td class="text-end">
                                                 <a class="btn btn-outline-danger btn-sm"
-                                                    href="<?= htmlspecialchars($cancelUrl) ?>"
-                                                    onclick="return confirm('Annuler cette réservation ?');">
-                                                    Annuler
-                                                </a>
-                                            <?php else: ?>
-                                                <span class="text-secondary small">—</span>
-                                            <?php endif; ?>
-                                        </td>
+                                                    href="planning.php?action=unsubscribe_event&id=<?= (int)($e["ref_id"] ?? 0) ?>"
+                                                    onclick="return confirm('Se désinscrire de cet événement ?');">Annuler</a>
+                                            </td>
+                                        <?php endif; ?>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php endif; ?>
+            </div>
+
+            <div class="sh-card p-4 mb-3">
+                <h2 class="h5 mb-3">Services</h2>
+                <?php if (empty($services)): ?>
+                    <div class="text-secondary">Aucun service <?= $isHistory ? "passé" : "à venir" ?>.</div>
+                <?php else: ?>
+                    <div class="table-responsive">
+                        <table class="table align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Service</th>
+                                    <th>Lieu</th>
+                                    <th>Statut</th>
+                                    <?php if (!$isHistory): ?><th></th><?php endif; ?>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($services as $s):
+                                    [$lbl, $cls] = service_status_label(
+                                        $s["status"] ?? "",
+                                        (int)($s["admin_approved"] ?? 0),
+                                        (int)($s["provider_approved"] ?? 0)
+                                    );
+                                ?>
+                                    <tr>
+                                        <td><?= htmlspecialchars(fmt_dt_fr($s["start_at"] ?? "")) ?></td>
+                                        <td><?= htmlspecialchars($s["title"] ?? "") ?></td>
+                                        <td><?= htmlspecialchars($s["location"] ?? "") ?: "—" ?></td>
+                                        <td><span class="badge <?= $cls ?>"><?= htmlspecialchars($lbl) ?></span></td>
+                                        <?php if (!$isHistory): ?>
+                                            <td class="text-end">
+                                                <a class="btn btn-outline-danger btn-sm"
+                                                    href="planning.php?action=unreserve_service&id=<?= (int)($s["ref_id"] ?? 0) ?>"
+                                                    onclick="return confirm('Annuler cette réservation ?');">Annuler</a>
+                                            </td>
+                                        <?php endif; ?>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php endif; ?>
+            </div>
+
+            <div class="sh-card p-4 mb-3">
+                <h2 class="h5 mb-3">RDV médicaux</h2>
+                <?php if (empty($medicals)): ?>
+                    <div class="text-secondary">Aucun RDV médical <?= $isHistory ? "passé" : "à venir" ?>.</div>
+                <?php else: ?>
+                    <div class="table-responsive">
+                        <table class="table align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Titre</th>
+                                    <th>Lieu</th>
+                                    <th>Détails</th>
+                                    <?php if (!$isHistory): ?><th></th><?php endif; ?>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($medicals as $m): ?>
+                                    <tr>
+                                        <td><?= htmlspecialchars(fmt_dt_fr($m["start_at"] ?? "")) ?></td>
+                                        <td><?= htmlspecialchars($m["title"] ?? "") ?></td>
+                                        <td><?= htmlspecialchars($m["location"] ?? "") ?: "—" ?></td>
+                                        <td class="text-secondary small"><?= htmlspecialchars($m["details"] ?? "") ?: "—" ?></td>
+                                        <?php if (!$isHistory): ?>
+                                            <td class="text-end">
+                                                <a class="btn btn-outline-danger btn-sm"
+                                                    href="planning.php?action=delete_medical&id=<?= (int)($m["ref_id"] ?? 0) ?>"
+                                                    onclick="return confirm('Supprimer ce RDV ?');">Supprimer</a>
+                                            </td>
+                                        <?php endif; ?>
                                     </tr>
                                 <?php endforeach; ?>
                             </tbody>
@@ -149,5 +183,7 @@ include __DIR__ . "/../common/header.php";
         </div>
     </div>
 </div>
-<?php include __DIR__ . "/../common/footer.php"; ?>
-<?php include __DIR__ . "/../common/footer-scripts.php"; ?>
+<?php
+include __DIR__ . "/../common/footer.php";
+include __DIR__ . "/../common/footer-scripts.php";
+?>

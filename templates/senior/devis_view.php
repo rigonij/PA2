@@ -1,5 +1,6 @@
 <?php
 $pageTitle = "SilverHappy • Devis";
+$isSeniorUi = true;
 include __DIR__ . "/../common/head.php";
 include __DIR__ . "/../common/header.php";
 ?>

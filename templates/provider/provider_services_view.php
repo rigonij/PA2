@@ -2,16 +2,18 @@
 $pageTitle = "SilverHappy • Prestataire • Mes services";
 include __DIR__ . "/../common/head.php";
 include __DIR__ . "/../common/header.php";
-?>
 
+$items = $items ?? [];
+$categories = $categories ?? [];
+$error = $error ?? "";
+$success = $success ?? "";
+?>
 <div class="container py-4">
     <?php include __DIR__ . "/partials/topbar.php"; ?>
-
     <div class="row g-3">
         <div class="col-lg-3">
             <?php include __DIR__ . "/partials/sidebar.php"; ?>
         </div>
-
         <div class="col-lg-9">
             <div class="sh-card p-4 mb-3 d-flex justify-content-between align-items-start gap-3">
                 <div>
@@ -26,7 +28,6 @@ include __DIR__ . "/../common/header.php";
             <?php if (!empty($error)): ?>
                 <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
             <?php endif; ?>
-
             <?php if (!empty($success)): ?>
                 <div class="alert alert-success"><?= htmlspecialchars($success) ?></div>
             <?php endif; ?>
@@ -41,7 +42,6 @@ include __DIR__ . "/../common/header.php";
                                 <th>Prix</th>
                                 <th>Exp (ans)</th>
                                 <th>Actif</th>
-                                <th>Statut</th>
                                 <th style="width: 1%;">Actions</th>
                             </tr>
                         </thead>
@@ -55,14 +55,12 @@ include __DIR__ . "/../common/header.php";
                                     $price = (float)($it["negotiated_price"] ?? 0);
                                     $exp = (int)($it["experience_years"] ?? 0);
                                     $active = !empty($it["is_active"]);
-                                    $vstatus = (int)($it["validation_status"] ?? 0);
                                     ?>
                                     <tr>
                                         <td class="fw-bold"><?= htmlspecialchars($name) ?></td>
                                         <td><?= htmlspecialchars($custom !== "" ? $custom : "—") ?></td>
                                         <td><?= number_format($price, 2, ",", " ") ?> €</td>
                                         <td><?= (int)$exp ?></td>
-
                                         <td>
                                             <?php if ($active): ?>
                                                 <span class="badge text-bg-success">Actif</span>
@@ -70,25 +68,6 @@ include __DIR__ . "/../common/header.php";
                                                 <span class="badge text-bg-secondary">Inactif</span>
                                             <?php endif; ?>
                                         </td>
-
-                                        <td style="white-space:nowrap;">
-                                            <?php if ($vstatus === 0): ?>
-                                                <span class="badge text-bg-warning">En attente</span>
-                                            <?php elseif ($vstatus === 1): ?>
-                                                <span class="badge text-bg-success">Validé</span>
-                                            <?php else: ?>
-                                                <span class="badge text-bg-danger">Refusé</span>
-
-                                                <form method="POST" class="d-inline" style="margin-left:6px;">
-                                                    <input type="hidden" name="action" value="submit_service">
-                                                    <input type="hidden" name="service_type_id" value="<?= $id ?>">
-                                                    <button class="btn btn-outline-warning btn-sm" type="submit">
-                                                        Soumettre
-                                                    </button>
-                                                </form>
-                                            <?php endif; ?>
-                                        </td>
-
                                         <td style="white-space:nowrap;">
                                             <button
                                                 type="button"
@@ -103,12 +82,10 @@ include __DIR__ . "/../common/header.php";
                                                 data-active="<?= $active ? "1" : "0" ?>">
                                                 Modifier
                                             </button>
-
                                             <a class="btn btn-outline-primary btn-sm"
                                                 href="provider_service_horaires.php?service_type_id=<?= $id ?>&name=<?= urlencode($name) ?>">
                                                 Horaires
                                             </a>
-
                                             <form method="POST" class="d-inline" onsubmit="return confirm('Supprimer ce service ?');">
                                                 <input type="hidden" name="action" value="delete_service">
                                                 <input type="hidden" name="service_type_id" value="<?= $id ?>">
@@ -119,14 +96,13 @@ include __DIR__ . "/../common/header.php";
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <tr>
-                                    <td colspan="7" class="text-secondary">Aucun service dans votre catalogue.</td>
+                                    <td colspan="6" class="text-secondary">Aucun service dans votre catalogue.</td>
                                 </tr>
                             <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
@@ -142,10 +118,8 @@ include __DIR__ . "/../common/header.php";
                     </div>
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fermer</button>
                 </div>
-
                 <form method="POST">
                     <input type="hidden" name="action" value="add_service">
-
                     <div class="mb-3">
                         <label class="form-label">Type de service</label>
                         <select name="service_type_id" class="form-select" required>
@@ -164,7 +138,6 @@ include __DIR__ . "/../common/header.php";
                             <?php endforeach; ?>
                         </select>
                     </div>
-
                     <div class="row g-2">
                         <div class="col-md-6">
                             <label class="form-label">Titre affiché</label>
@@ -179,18 +152,15 @@ include __DIR__ . "/../common/header.php";
                             <input class="form-control" type="number" min="0" name="experience_years" value="0">
                         </div>
                     </div>
-
                     <div class="form-check mt-3">
                         <input class="form-check-input" type="checkbox" name="is_active" value="1" checked>
                         <label class="form-check-label">Actif</label>
                     </div>
-
                     <div class="d-flex justify-content-end gap-2 mt-4">
                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
                         <button type="submit" class="btn btn-sh-gold">Ajouter</button>
                     </div>
                 </form>
-
             </div>
         </div>
     </div>
@@ -207,11 +177,9 @@ include __DIR__ . "/../common/header.php";
                     </div>
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fermer</button>
                 </div>
-
                 <form method="POST">
                     <input type="hidden" name="action" value="update_service">
                     <input type="hidden" name="service_type_id" id="editServiceId">
-
                     <div class="row g-2">
                         <div class="col-md-6">
                             <label class="form-label">Titre affiché</label>
@@ -226,18 +194,15 @@ include __DIR__ . "/../common/header.php";
                             <input class="form-control" type="number" min="0" name="experience_years" id="editExp">
                         </div>
                     </div>
-
                     <div class="form-check mt-3">
                         <input class="form-check-input" type="checkbox" name="is_active" value="1" id="editActive">
                         <label class="form-check-label">Actif</label>
                     </div>
-
                     <div class="d-flex justify-content-end gap-2 mt-4">
                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
                         <button type="submit" class="btn btn-sh-gold">Enregistrer</button>
                     </div>
                 </form>
-
             </div>
         </div>
     </div>
@@ -247,18 +212,15 @@ include __DIR__ . "/../common/header.php";
     document.addEventListener("DOMContentLoaded", function() {
         const editModal = document.getElementById("editServiceModal");
         if (!editModal) return;
-
         editModal.addEventListener("show.bs.modal", function(event) {
             const btn = event.relatedTarget;
             if (!btn) return;
-
             const id = btn.getAttribute("data-id") || "";
             const name = btn.getAttribute("data-name") || "";
             const custom = btn.getAttribute("data-custom") || "";
             const price = btn.getAttribute("data-price") || "0";
             const exp = btn.getAttribute("data-exp") || "0";
             const active = btn.getAttribute("data-active") || "0";
-
             document.getElementById("editServiceId").value = id;
             document.getElementById("editServiceName").textContent = name;
             document.getElementById("editCustomTitle").value = custom;

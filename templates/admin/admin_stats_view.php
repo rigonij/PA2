@@ -3,6 +3,8 @@ $pageTitle = "Admin • Statistiques";
 include __DIR__ . "/../common/head.php";
 include __DIR__ . "/../common/header.php";
 
+$stats = $stats ?? [];
+
 function renderStatCard($label, $value)
 {
 ?>
@@ -98,5 +100,4 @@ function renderStatCard($label, $value)
 
 </div>
 
-<?php include __DIR__ . "/../common/footer.php"; ?>
 <?php include __DIR__ . "/../common/footer-scripts.php"; ?>

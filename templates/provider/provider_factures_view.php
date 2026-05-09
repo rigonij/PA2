@@ -40,7 +40,7 @@ function renderProviderFactures(array $invoices, string $error = ''): void
                             <tbody>
                                 <?php foreach ($invoices as $inv): ?>
                                     <tr>
-                                        <td><?= htmlspecialchars($inv['date'] ?? '') ?></td>
+                                        <td><?= htmlspecialchars(fmt_dt($inv['date'] ?? '')) ?></td>
                                         <td class="fw-bold"><?= htmlspecialchars($inv['service'] ?? '') ?></td>
                                         <td>
                                             <?= htmlspecialchars($inv['senior_nom'] ?? '') ?><br>
@@ -62,11 +62,7 @@ function renderProviderFactures(array $invoices, string $error = ''): void
                                             <?= number_format((float)($inv['montant'] ?? 0), 2, ',', ' ') ?> €
                                         </td>
                                         <td>
-                                            <a href="provider_facture_pdf.php?id=<?= (int)($inv['id'] ?? 0) ?>"
-                                                target="_blank"
-                                                class="btn btn-outline-secondary btn-sm">
-                                                PDF
-                                            </a>
+                                            <a href="provider_facture_pdf.php?id=<?= (int)($inv['id'] ?? 0) ?>" download class="btn btn-primary">Télécharger</a>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>

@@ -1,7 +1,10 @@
 <?php
 $pageTitle = "SilverHappy • Accueil";
+$isSeniorUi = true;
 include __DIR__ . "/../common/head.php";
 include __DIR__ . "/../common/header.php";
+
+$userName = $userName ?? "";
 ?>
 
 <div class="container py-4">

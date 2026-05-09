@@ -1,7 +1,6 @@
 <div class="sh-card p-3 sh-nav">
     <div class="d-flex align-items-center justify-content-between mb-1">
         <div class="fw-bold">Menu</div>
-        <span class="badge badge-sh">Mock</span>
     </div>
 
     <a data-nav href="index.php">Accueil</a>

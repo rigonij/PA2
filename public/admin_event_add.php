@@ -14,6 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !empty($_POST["title"])) {
     $location = $_POST["location"];
     $eventDate = $_POST["event_date"];
     $maxParticipants = (int)$_POST["max_participants"];
+    $price = (float)($_POST["price"] ?? 0);
 
     $ch = curl_init($apiBase . "/api/admin/events");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -26,9 +27,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !empty($_POST["title"])) {
         "title" => $title,
         "location" => $location,
         "event_date" => $eventDate,
-        "max_participants" => $maxParticipants
+        "description" => trim($_POST["description"] ?? ""),
+        "max_participants" => $maxParticipants,
+        "price" => $price
     ]));
-    
+
     $response = curl_exec($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
@@ -39,10 +42,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !empty($_POST["title"])) {
         header("Location: admin_event.php");
         exit;
     } else {
-        $error = $data["message"] ?? "Erreur lors de la création de l'événement.";
+        $_SESSION["admin_event_error"] = $data["message"] ?? "Erreur lors de la création de l'événement.";
+        header("Location: admin_event.php");
+        exit;
     }
 }
 
 header("Location: admin_event.php");
 exit;
-?>

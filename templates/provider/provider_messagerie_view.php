@@ -2,6 +2,11 @@
 $pageTitle = "Prestataire • Messagerie";
 include __DIR__ . "/../common/head.php";
 include __DIR__ . "/../common/header.php";
+
+$conversations = $conversations ?? [];
+$messages = $messages ?? [];
+$withID = $withID ?? 0;
+$withName = $withName ?? "";
 ?>
 
 <div class="container py-4">
@@ -57,9 +62,7 @@ include __DIR__ . "/../common/header.php";
                                             <div class="bg-white p-2 rounded mt-1 border">
                                                 <?= htmlspecialchars($msg["content"]) ?>
                                             </div>
-                                            <div class="text-muted" style="font-size:0.7em"><?php $dt = new DateTime($msg["created_at"] ?? "now");
-                                                                                            echo $dt->format("d/m H:i"); ?>
-                                            </div>
+                                            <div class="text-muted" style="font-size:0.7em"><?= $msg["created_at"] ?></div>
                                         </div>
                                     <?php endif; ?>
                                 <?php endforeach; ?>

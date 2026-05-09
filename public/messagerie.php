@@ -63,6 +63,7 @@ if ($withID > 0) {
 }
 
 $pageTitle = "SilverHappy • Messagerie";
+$isSeniorUi = true;
 include __DIR__ . "/../templates/common/head.php";
 include __DIR__ . "/../templates/common/header.php";
 include __DIR__ . "/../templates/senior/messagerie_view.php";

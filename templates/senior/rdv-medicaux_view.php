@@ -1,10 +1,18 @@
 <?php
-$pageTitle = "SilverHappy • RDV médicaux";
+$pageTitle = "SilverHappy • Mes RDV médicaux";
+$isSeniorUi = true;
 include __DIR__ . "/../common/head.php";
 include __DIR__ . "/../common/header.php";
+
+$flashSuccess = $flashSuccess ?? "";
+$flashError = $flashError ?? "";
+$medicals = $medicals ?? [];
+$accountAddress = $accountAddress ?? "";
 ?>
+
 <div class="container py-4">
     <?php include __DIR__ . "/../common/topbar.php"; ?>
+
     <div class="row g-3">
         <div class="col-lg-3">
             <?php include __DIR__ . "/../common/sidebar.php"; ?>
@@ -12,99 +20,152 @@ include __DIR__ . "/../common/header.php";
 
         <div class="col-lg-9">
             <div class="sh-card p-4 mb-3">
-                <h1 class="h4 mb-1">Rendez-vous médicaux</h1>
+                <h1 class="h4 mb-1">Mes RDV médicaux</h1>
+                <p class="text-secondary mb-0">Planifie tes rendez-vous avec un prestataire Santé.</p>
             </div>
 
-            <div class="row g-3">
-                <div class="col-md-6">
-                    <div class="sh-card p-4">
-                        <div class="fw-bold mb-2">Prendre un RDV</div>
+            <?php if (!empty($flashSuccess)): ?>
+                <div class="alert alert-success"><?= htmlspecialchars($flashSuccess) ?></div>
+            <?php endif; ?>
 
-                        <form method="POST" action="rdv-medicaux.php" class="d-grid gap-3">
-                            <input type="hidden" name="action" value="create_medical">
+            <?php if (!empty($flashError)): ?>
+                <div class="alert alert-danger"><?= htmlspecialchars($flashError) ?></div>
+            <?php endif; ?>
 
-                            <div>
-                                <label class="form-label">Date & heure</label>
-                                <input type="datetime-local" class="form-control" name="start_at" required>
-                            </div>
+            <div class="sh-card p-4 mb-3">
+                <h2 class="h5 mb-3">Nouveau RDV</h2>
 
-                            <div>
-                                <label class="form-label">Nom du docteur</label>
-                                <input class="form-control" name="doctor_name" placeholder="Ex: Dr Martin" required>
-                            </div>
+                <form method="POST" action="rdv-medicaux.php">
+                    <input type="hidden" name="action" value="create">
 
-                            <div>
-                                <label class="form-label">Lieu</label>
-                                <input class="form-control" name="location" placeholder="Ex: Paris 11" required>
-                            </div>
-
-                            <div>
-                                <label class="form-label">Détails (confidentiel)</label>
-                                <textarea class="form-control" name="details" rows="3" placeholder="Motif, notes..."></textarea>
-                                <div class="form-text">Dans la vraie version, ce champ serait chiffré côté back.</div>
-                            </div>
-
-                            <button class="btn btn-sh-primary" type="submit">Créer</button>
-                        </form>
+                    <div class="mb-3">
+                        <label class="form-label">Date et heure</label>
+                        <input type="datetime-local" class="form-control" name="start_at" required>
                     </div>
-                </div>
 
-                <div class="col-md-6">
-                    <div class="sh-card p-4">
-                        <div class="fw-bold mb-2">Mes RDV</div>
+                    <div class="mb-3">
+                        <label class="form-label">Prestataire Santé</label>
+                        <select class="form-select" name="provider_id" id="medicalProviderSelect" required>
+                            <option value="">Chargement...</option>
+                        </select>
+                    </div>
 
-                        <?php if (empty($medicalItems)): ?>
-                            <div class="text-secondary">Aucun rendez-vous pour le moment.</div>
+                    <div class="mb-3">
+                        <label class="form-label">Lieu</label>
+                        <?php if (!empty($accountAddress)): ?>
+                            <input type="text" class="form-control" value="<?= htmlspecialchars($accountAddress) ?>" disabled>
+                            <input type="hidden" name="use_account_address" value="1">
+                            <input type="hidden" name="location" value="">
+                            <div class="form-text">Adresse de ton compte. Pour la modifier, va dans Profil.</div>
                         <?php else: ?>
-                            <div class="d-grid gap-2">
-                                <?php foreach ($medicalItems as $m): ?>
+                            <input type="text" class="form-control" name="location" required>
+                            <div class="form-text">Aucune adresse enregistrée sur ton compte. Saisis le lieu du RDV.</div>
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Détails (optionnel)</label>
+                        <textarea class="form-control" name="details" rows="3"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-sh-gold">Créer le RDV</button>
+                </form>
+            </div>
+
+            <div class="sh-card p-4 mb-3">
+                <h2 class="h5 mb-3">Mes RDV</h2>
+
+                <?php if (empty($medicals)): ?>
+                    <div class="text-secondary">Aucun RDV pour le moment.</div>
+                <?php else: ?>
+                    <div class="table-responsive">
+                        <table class="table align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Docteur</th>
+                                    <th>Lieu</th>
+                                    <th>Détails</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($medicals as $m): ?>
                                     <?php
-                                    $id = (int)($m["id"] ?? 0);
+                                    $mid = (int)($m["id"] ?? 0);
                                     $startAt = $m["start_at"] ?? "";
-                                    $dateLabel = $startAt ? date("d/m/Y H:i", strtotime($startAt)) : "";
-                                    $doctor = $m["doctor_name"] ?? "";
+                                    $dateFr = $startAt ? fmt_dt($startAt) : "";
+                                    $doctorName = $m["doctor_name"] ?? "";
                                     $location = $m["location"] ?? "";
                                     $details = $m["details"] ?? "";
                                     ?>
-                                    <div class="p-3 border rounded-3 bg-white">
-                                        <div class="d-flex justify-content-between gap-2">
-                                            <div>
-                                                <div class="fw-bold"><?= htmlspecialchars($dateLabel) ?></div>
-                                                <div class="text-secondary"><?= htmlspecialchars($doctor) ?> • <?= htmlspecialchars($location) ?></div>
-                                            </div>
-                                            <div class="text-end">
-                                                <a class="btn btn-outline-danger btn-sm"
-                                                    href="rdv-medicaux.php?action=delete&id=<?= $id ?>"
-                                                    onclick="return confirm('Supprimer ce RDV ?');">
-                                                    Supprimer
-                                                </a>
-                                            </div>
-                                        </div>
-
-                                        <?php if (!empty($details)): ?>
-                                            <div class="mt-2">
-                                                <button class="btn btn-outline-secondary btn-sm" type="button"
-                                                    onclick="alert(<?= json_encode($details) ?>)">
-                                                    Voir détails
-                                                </button>
-                                            </div>
-                                        <?php endif; ?>
-                                    </div>
+                                    <tr>
+                                        <td><?= htmlspecialchars($dateFr) ?></td>
+                                        <td><?= htmlspecialchars($doctorName) ?></td>
+                                        <td><?= htmlspecialchars($location) ?: "—" ?></td>
+                                        <td class="text-secondary small"><?= htmlspecialchars($details) ?: "—" ?></td>
+                                        <td class="text-end">
+                                            <form method="POST" action="rdv-medicaux.php" class="d-inline" onsubmit="return confirm('Supprimer ce RDV ?');">
+                                                <input type="hidden" name="action" value="delete">
+                                                <input type="hidden" name="medical_id" value="<?= $mid ?>">
+                                                <button type="submit" class="btn btn-outline-danger btn-sm">Supprimer</button>
+                                            </form>
+                                        </td>
+                                    </tr>
                                 <?php endforeach; ?>
-                            </div>
-
-                            <div class="text-secondary small mt-2">
-                                Les RDV apparaissent aussi dans votre planning.
-                            </div>
-                        <?php endif; ?>
+                            </tbody>
+                        </table>
                     </div>
-                </div>
-
+                <?php endif; ?>
             </div>
-
         </div>
     </div>
 </div>
 
-<?php include __DIR__ . "/../common/footer.php"; ?>
-<?php include __DIR__ . "/../common/footer-scripts.php"; ?>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const select = document.getElementById("medicalProviderSelect");
+        if (!select) return;
+
+        fetch("api_medical_doctors.php")
+            .then(function(r) {
+                return r.json();
+            })
+            .then(function(data) {
+                select.innerHTML = "";
+
+                if (!data || !data.success || !Array.isArray(data.doctors) || data.doctors.length === 0) {
+                    const opt = document.createElement("option");
+                    opt.value = "";
+                    opt.textContent = "Aucun prestataire disponible";
+                    select.appendChild(opt);
+                    return;
+                }
+
+                const placeholder = document.createElement("option");
+                placeholder.value = "";
+                placeholder.textContent = "Choisir un prestataire";
+                select.appendChild(placeholder);
+
+                data.doctors.forEach(function(d) {
+                    const opt = document.createElement("option");
+                    opt.value = d.provider_id;
+                    const label = d.label || d.company_name || ("Prestataire " + d.provider_id);
+                    opt.textContent = label;
+                    select.appendChild(opt);
+                });
+            })
+            .catch(function() {
+                select.innerHTML = "";
+                const opt = document.createElement("option");
+                opt.value = "";
+                opt.textContent = "Erreur de chargement";
+                select.appendChild(opt);
+            });
+    });
+</script>
+
+<?php
+include __DIR__ . "/../common/footer.php";
+include __DIR__ . "/../common/footer-scripts.php";
+?>

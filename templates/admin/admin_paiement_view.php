@@ -39,7 +39,7 @@ function renderAdminPaiement(array $payments, string $error = ''): void
                         <?php foreach ($payments as $p): ?>
                             <tr>
                                 <td><?= (int)$p['id'] ?></td>
-                                <td><?= htmlspecialchars($p['date']) ?></td>
+                                <td><?= htmlspecialchars(fmt_dt($p['date'])) ?></td>
                                 <td><?= htmlspecialchars($p['nom']) ?></td>
                                 <td><?= htmlspecialchars($p['email']) ?></td>
                                 <td class="fw-bold">
@@ -68,7 +68,6 @@ function renderAdminPaiement(array $payments, string $error = ''): void
 
     </div>
 
-    <?php include __DIR__ . "/../common/footer.php"; ?>
     <?php include __DIR__ . "/../common/footer-scripts.php"; ?>
 <?php
 }

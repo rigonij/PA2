@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/PA_2i2/api/lib"
 	"golang.org/x/crypto/bcrypt"
@@ -417,8 +418,17 @@ func AdminGetProviders(database *sql.DB) http.HandlerFunc {
 			return
 		}
 		rows, err := database.Query(`
-			SELECT u.Id_USER, COALESCE(u.Email,''), COALESCE(u.Address_City,''),
-			       COALESCE(p.Company_Name,''), p.Validation_Status
+			SELECT u.Id_USER,
+			       COALESCE(u.Prenom,''),
+			       COALESCE(u.Nom,''),
+			       COALESCE(u.Email,''),
+			       COALESCE(u.Phone_Number,''),
+			       COALESCE(u.Address_Street,''),
+			       COALESCE(u.Address_City,''),
+			       COALESCE(u.Address_Zip,''),
+			       COALESCE(p.Company_Name,''),
+			       COALESCE(p.SIRET_Number,''),
+			       p.Validation_Status
 			FROM user u JOIN provider p ON u.Id_USER = p.Id_USER
 			ORDER BY p.Validation_Status ASC, u.Id_USER DESC`)
 		if err != nil {
@@ -429,15 +439,21 @@ func AdminGetProviders(database *sql.DB) http.HandlerFunc {
 		defer rows.Close()
 		type ProviderRow struct {
 			ID               int    `json:"id"`
+			Prenom           string `json:"prenom"`
+			Nom              string `json:"nom"`
 			Email            string `json:"email"`
+			PhoneNumber      string `json:"phone_number"`
+			AddressStreet    string `json:"address_street"`
 			AddressCity      string `json:"address_city"`
+			AddressZip       string `json:"address_zip"`
 			CompanyName      string `json:"company_name"`
+			SIRET            string `json:"siret"`
 			ValidationStatus int    `json:"validation_status"`
 		}
 		var providers []ProviderRow
 		for rows.Next() {
 			var p ProviderRow
-			if err := rows.Scan(&p.ID, &p.Email, &p.AddressCity, &p.CompanyName, &p.ValidationStatus); err == nil {
+			if err := rows.Scan(&p.ID, &p.Prenom, &p.Nom, &p.Email, &p.PhoneNumber, &p.AddressStreet, &p.AddressCity, &p.AddressZip, &p.CompanyName, &p.SIRET, &p.ValidationStatus); err == nil {
 				providers = append(providers, p)
 			}
 		}
@@ -547,10 +563,12 @@ func AdminGetEvents(database *sql.DB) http.HandlerFunc {
 		if !requireAdmin(database, w, r) {
 			return
 		}
+
 		rows, err := database.Query(`
 			SELECT e.Id_EVENT, COALESCE(e.Title,''), COALESCE(e.Location,''),
-			       COALESCE(CAST(e.Event_Date AS CHAR),''), COALESCE(e.Max_Participants, 0),
-			       COALESCE(e.Validation_Status, 0)
+				COALESCE(CAST(e.Event_Date AS CHAR),''), COALESCE(e.Max_Participants, 0),
+				COALESCE(e.Price, 0),
+				(SELECT COUNT(*) FROM event_registration er WHERE er.Id_EVENT = e.Id_EVENT) AS registered_count
 			FROM event e ORDER BY e.Event_Date DESC`)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
@@ -559,17 +577,18 @@ func AdminGetEvents(database *sql.DB) http.HandlerFunc {
 		}
 		defer rows.Close()
 		type EventRow struct {
-			ID               int    `json:"id"`
-			Title            string `json:"title"`
-			Location         string `json:"location"`
-			EventDate        string `json:"event_date"`
-			MaxParticipants  int    `json:"max_participants"`
-			ValidationStatus int    `json:"validation_status"`
+			ID              int     `json:"id"`
+			Title           string  `json:"title"`
+			Location        string  `json:"location"`
+			EventDate       string  `json:"event_date"`
+			MaxParticipants int     `json:"max_participants"`
+			Price           float64 `json:"price"`
+			RegisteredCount int     `json:"registered_count"`
 		}
 		var events []EventRow
 		for rows.Next() {
 			var e EventRow
-			if err := rows.Scan(&e.ID, &e.Title, &e.Location, &e.EventDate, &e.MaxParticipants, &e.ValidationStatus); err == nil {
+			if err := rows.Scan(&e.ID, &e.Title, &e.Location, &e.EventDate, &e.MaxParticipants, &e.Price, &e.RegisteredCount); err == nil {
 				events = append(events, e)
 			}
 		}
@@ -588,10 +607,12 @@ func AdminCreateEvent(database *sql.DB) http.HandlerFunc {
 		}
 
 		var req struct {
-			Title           string `json:"title"`
-			Location        string `json:"location"`
-			EventDate       string `json:"event_date"`
-			MaxParticipants int    `json:"max_participants"`
+			Title           string  `json:"title"`
+			Location        string  `json:"location"`
+			Description     string  `json:"description"`
+			EventDate       string  `json:"event_date"`
+			MaxParticipants int     `json:"max_participants"`
+			Price           float64 `json:"price"`
 		}
 		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 			w.WriteHeader(http.StatusBadRequest)
@@ -599,28 +620,135 @@ func AdminCreateEvent(database *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		if req.Title == "" || req.Location == "" || req.EventDate == "" || req.MaxParticipants <= 0 {
+		req.Title = strings.TrimSpace(req.Title)
+		req.Location = strings.TrimSpace(req.Location)
+		req.Description = strings.TrimSpace(req.Description)
+		req.EventDate = strings.TrimSpace(req.EventDate)
+
+		if req.Title == "" || req.Location == "" || req.Description == "" || req.EventDate == "" || req.MaxParticipants <= 0 {
 			w.WriteHeader(http.StatusBadRequest)
 			json.NewEncoder(w).Encode(map[string]interface{}{"success": false, "message": "Champs obligatoires manquants"})
 			return
 		}
+		if req.Price < 0 {
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(map[string]interface{}{"success": false, "message": "Prix invalide"})
+			return
+		}
+
+		locParis, _ := time.LoadLocation("Europe/Paris")
+		start, err := time.ParseInLocation("2006-01-02T15:04", req.EventDate, locParis)
+		if err != nil {
+			start, err = time.Parse(time.RFC3339, req.EventDate)
+			if err != nil {
+				w.WriteHeader(http.StatusBadRequest)
+				json.NewEncoder(w).Encode(map[string]interface{}{"success": false, "message": "Date invalide"})
+				return
+			}
+		}
+		if start.Before(time.Now().In(locParis)) {
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(map[string]interface{}{"success": false, "message": "La date doit etre future"})
+			return
+		}
 
 		result, err := database.Exec(`
-			INSERT INTO event (Title, Location, Event_Date, Max_Participants) 
-			VALUES (?, ?, ?, ?)
-		`, req.Title, req.Location, req.EventDate, req.MaxParticipants)
+			INSERT INTO event (Title, Location, Description, Event_Date, Max_Participants, Price)
+			VALUES (?, ?, ?, ?, ?, ?)
+		`, req.Title, req.Location, req.Description, start, req.MaxParticipants, req.Price)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			json.NewEncoder(w).Encode(map[string]interface{}{"success": false, "message": err.Error()})
 			return
 		}
-
 		eventID, _ := result.LastInsertId()
 		json.NewEncoder(w).Encode(map[string]interface{}{
 			"success":  true,
-			"message":  "Événement créé",
+			"message":  "Evenement cree",
 			"event_id": eventID,
 		})
+	}
+}
+
+func AdminUpdateEvent(database *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		if !requireAdmin(database, w, r) {
+			return
+		}
+
+		parts := strings.Split(strings.Trim(r.URL.Path, "/"), "/")
+		if len(parts) < 4 {
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(map[string]interface{}{"success": false, "message": "ID invalide"})
+			return
+		}
+		id, err := strconv.Atoi(parts[3])
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(map[string]interface{}{"success": false, "message": "ID invalide"})
+			return
+		}
+
+		var req struct {
+			Title           string  `json:"title"`
+			Location        string  `json:"location"`
+			Description     string  `json:"description"`
+			EventDate       string  `json:"event_date"`
+			MaxParticipants int     `json:"max_participants"`
+			Price           float64 `json:"price"`
+		}
+		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(map[string]interface{}{"success": false, "message": "Corps invalide"})
+			return
+		}
+
+		req.Title = strings.TrimSpace(req.Title)
+		req.Location = strings.TrimSpace(req.Location)
+		req.Description = strings.TrimSpace(req.Description)
+		req.EventDate = strings.TrimSpace(req.EventDate)
+
+		if req.Title == "" || req.Location == "" || req.Description == "" || req.EventDate == "" || req.MaxParticipants <= 0 {
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(map[string]interface{}{"success": false, "message": "Champs obligatoires manquants"})
+			return
+		}
+		if req.Price < 0 {
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(map[string]interface{}{"success": false, "message": "Prix invalide"})
+			return
+		}
+
+		locParis, _ := time.LoadLocation("Europe/Paris")
+		start, err := time.ParseInLocation("2006-01-02T15:04", req.EventDate, locParis)
+		if err != nil {
+			start, err = time.Parse(time.RFC3339, req.EventDate)
+			if err != nil {
+				w.WriteHeader(http.StatusBadRequest)
+				json.NewEncoder(w).Encode(map[string]interface{}{"success": false, "message": "Date invalide"})
+				return
+			}
+		}
+
+		res, err := database.Exec(`
+			UPDATE event
+			SET Title = ?, Location = ?, Description = ?, Event_Date = ?, Max_Participants = ?, Price = ?
+			WHERE Id_EVENT = ?
+		`, req.Title, req.Location, req.Description, start, req.MaxParticipants, req.Price, id)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			json.NewEncoder(w).Encode(map[string]interface{}{"success": false, "message": err.Error()})
+			return
+		}
+		affected, _ := res.RowsAffected()
+		if affected == 0 {
+			w.WriteHeader(http.StatusNotFound)
+			json.NewEncoder(w).Encode(map[string]interface{}{"success": false, "message": "Evenement introuvable"})
+			return
+		}
+
+		json.NewEncoder(w).Encode(map[string]interface{}{"success": true, "message": "Evenement modifie"})
 	}
 }
 
@@ -649,7 +777,8 @@ func AdminDeleteEvent(database *sql.DB) http.HandlerFunc {
 			json.NewEncoder(w).Encode(map[string]interface{}{"success": false, "message": err.Error()})
 			return
 		}
-		json.NewEncoder(w).Encode(map[string]interface{}{"success": true, "message": "Événement supprimé"})
+
+		json.NewEncoder(w).Encode(map[string]interface{}{"success": true, "message": "Evenement supprime"})
 	}
 }
 
@@ -739,5 +868,88 @@ func AdminGetPayments(database *sql.DB) http.HandlerFunc {
 			payments = []PaymentRow{}
 		}
 		json.NewEncoder(w).Encode(map[string]interface{}{"success": true, "payments": payments})
+	}
+}
+
+func AdminClearEventHistory(database *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		if !requireAdmin(database, w, r) {
+			return
+		}
+		res, err := database.Exec("DELETE FROM event WHERE Event_Date < NOW()")
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			json.NewEncoder(w).Encode(map[string]interface{}{"success": false, "message": err.Error()})
+			return
+		}
+		n, _ := res.RowsAffected()
+		json.NewEncoder(w).Encode(map[string]interface{}{"success": true, "message": "Historique vidé", "deleted": n})
+	}
+}
+
+func AdminGetEventRegistrations(database *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		if !requireAdmin(database, w, r) {
+			return
+		}
+		parts := strings.Split(strings.Trim(r.URL.Path, "/"), "/")
+		if len(parts) == 0 {
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(map[string]interface{}{"success": false, "message": "ID invalide"})
+			return
+		}
+		idStr := parts[len(parts)-1]
+		id, err := strconv.Atoi(idStr)
+		if err != nil || id <= 0 {
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(map[string]interface{}{"success": false, "message": "ID invalide"})
+			return
+		}
+		var title string
+		var maxP, regCount int
+		_ = database.QueryRow(`
+            SELECT COALESCE(Title,''), COALESCE(Max_Participants,0),
+                   (SELECT COUNT(*) FROM event_registration er WHERE er.Id_EVENT = ?)
+            FROM event WHERE Id_EVENT = ? LIMIT 1
+        `, id, id).Scan(&title, &maxP, &regCount)
+
+		rows, err := database.Query(`
+            SELECT u.Id_USER, COALESCE(u.Prenom,''), COALESCE(u.Nom,''), COALESCE(u.Email,''), COALESCE(u.Phone_Number,'')
+            FROM event_registration er
+            JOIN user u ON u.Id_USER = er.Id_USER
+            WHERE er.Id_EVENT = ?
+            ORDER BY u.Nom, u.Prenom
+        `, id)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			json.NewEncoder(w).Encode(map[string]interface{}{"success": false, "message": err.Error()})
+			return
+		}
+		defer rows.Close()
+		registrations := []map[string]any{}
+		for rows.Next() {
+			var uid int
+			var prenom, nom, email, phone string
+			if err := rows.Scan(&uid, &prenom, &nom, &email, &phone); err != nil {
+				continue
+			}
+			registrations = append(registrations, map[string]any{
+				"id_user": uid,
+				"prenom":  prenom,
+				"nom":     nom,
+				"email":   email,
+				"phone":   phone,
+			})
+		}
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"success":          true,
+			"event_id":         id,
+			"title":            title,
+			"max_participants": maxP,
+			"registered_count": regCount,
+			"registrations":    registrations,
+		})
 	}
 }

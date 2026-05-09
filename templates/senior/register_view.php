@@ -1,6 +1,10 @@
 <?php
 $pageTitle = "SilverHappy • Créer un compte";
+$isSeniorUi = true;
 include __DIR__ . "/../common/head.php";
+
+$error = $error ?? "";
+$success = $success ?? "";
 ?>
 
 <div class="container py-5" style="max-width: 580px;">

@@ -38,9 +38,8 @@ if ($id > 0 && ($action === "subscribe" || $action === "unsubscribe")) {
     exit;
 }
 
-if ($action === "pay_event" && (int)($_GET["id"] ?? 0) > 0) {
-    $id = (int)$_GET["id"];
-    $ch = curl_init($apiBase . "/api/stripe/checkout/event");
+if ($action === "pay_event" && $id > 0) {
+    $ch = curl_init("http://127.0.0.1:8081/api/events/checkout");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
@@ -48,10 +47,10 @@ if ($action === "pay_event" && (int)($_GET["id"] ?? 0) > 0) {
         "X-Token: " . $_SESSION["token"],
     ]);
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(["event_id" => $id]));
-    $response = curl_exec($ch);
+    $resp = curl_exec($ch);
     curl_close($ch);
-    $data = json_decode($response, true);
-    if (!empty($data["checkout_url"])) {
+    $data = json_decode($resp, true);
+    if (!empty($data["success"]) && !empty($data["checkout_url"])) {
         header("Location: " . $data["checkout_url"]);
         exit;
     }

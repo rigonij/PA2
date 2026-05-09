@@ -2,6 +2,7 @@
 function renderFacturation(array $invoices): void
 {
     $pageTitle = "SilverHappy • Mes factures";
+    $isSeniorUi = true;
     include __DIR__ . "/../common/head.php";
     include __DIR__ . "/../common/header.php";
 ?>
@@ -36,7 +37,7 @@ function renderFacturation(array $invoices): void
                                 <?php foreach ($invoices as $inv): ?>
                                     <?php
                                     $ref    = htmlspecialchars($inv["ref"]    ?? "");
-                                    $date   = htmlspecialchars($inv["date"]   ?? "");
+                                    $date = htmlspecialchars(fmt_dt($inv["date"] ?? "", false));
                                     $label  = htmlspecialchars($inv["label"]  ?? "");
                                     $amount = number_format((float)($inv["amount"] ?? 0), 2, ",", " ");
                                     $type   = urlencode($inv["type"] ?? "");
@@ -48,11 +49,7 @@ function renderFacturation(array $invoices): void
                                         <td><?= $label ?></td>
                                         <td><?= $amount ?> €</td>
                                         <td>
-                                            <a class="btn btn-sh-gold btn-sm fw-bold"
-                                                href="senior_facture_pdf.php?type=<?= $type ?>&id=<?= $id ?>"
-                                                target="_blank">
-                                                Télécharger
-                                            </a>
+                                            <a href="senior_facture_pdf.php?type=<?= $type ?>&id=<?= $id ?>" download class="btn btn-primary">Télécharger</a>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>

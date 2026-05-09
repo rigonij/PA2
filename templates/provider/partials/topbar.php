@@ -9,3 +9,12 @@
         <a class="btn btn-outline-danger btn-sm" href="logout.php">Déconnexion</a>
     </div>
 </div>
+
+<?php if (($_SESSION["provider_validation_status"] ?? -1) === 0): ?>
+    <div class="alert alert-warning rounded-0 mb-0 text-center" role="alert">
+        <strong>Compte en attente de validation.</strong>
+        Téléverse ton/tes diplôme(s) et le ou les poste souhaités sur la page
+        <a href="provider_document.php" class="alert-link">Document de validation</a>
+        pour qu'un admin puisse valider ton compte. Tu ne pourras pas créer de services tant que ce n'est pas fait.
+    </div>
+<?php endif; ?>

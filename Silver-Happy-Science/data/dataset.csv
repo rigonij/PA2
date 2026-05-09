@@ -1,0 +1,501 @@
+client_id,tranche_age,region,abonnement_type,anciennete_mois,mobilite,interets,categorie,prestation,prix,duree_min,niveau,mois,inscription,reinscription,statut
+C001,70-79,Bretagne,Basique,7,Moyenne,"accompagnement,santé,administratif",Santé,Suivi médical,56.07,90,Facile,2025-02,1,0,Terminé
+C002,60-69,Occitanie,Basique,11,Moyenne,loisirs,Loisirs,Atelier créatif,28.37,90,Facile,2025-03,1,1,Terminé
+C003,70-79,Bretagne,Basique,20,Moyenne,"administratif,loisirs",Accompagnement,Visite à domicile,38.28,30,Facile,2025-12,1,1,Confirmé
+C004,70-79,Auvergne-Rhône-Alpes,Premium,35,Faible,"santé,administratif",Accompagnement,Visite à domicile,21.88,60,Moyen,2025-02,1,1,Terminé
+C005,70-79,Occitanie,Basique,39,Élevée,accompagnement,Accompagnement,Aide courses,36.86,30,Facile,2025-01,1,1,Terminé
+C006,70-79,Auvergne-Rhône-Alpes,Basique,7,Moyenne,accompagnement,Loisirs,Atelier mémoire,74.9,30,Moyen,2025-02,1,1,Terminé
+C007,70-79,Bretagne,Premium,39,Faible,"loisirs,accompagnement,administratif",Administratif,Accès numérique,65.65,60,Facile,2025-07,1,1,Terminé
+C008,60-69,Occitanie,Basique,31,Moyenne,administratif,Santé,Suivi médical,52.39,30,Facile,2025-07,1,1,Confirmé
+C009,80+,Bretagne,Basique,52,Moyenne,"santé,accompagnement",Accompagnement,Aide courses,39.08,30,Facile,2025-11,1,1,Terminé
+C010,80+,Auvergne-Rhône-Alpes,Basique,36,Moyenne,"loisirs,santé",Santé,Suivi médical,44.23,60,Avancé,2025-04,1,1,Terminé
+C011,70-79,Bretagne,Basique,16,Faible,"administratif,santé",Santé,Suivi médical,58.06,60,Facile,2025-12,1,1,Terminé
+C012,70-79,Auvergne-Rhône-Alpes,Basique,16,Moyenne,santé,Loisirs,Atelier créatif,25.42,30,Facile,2025-11,1,1,Confirmé
+C013,70-79,Auvergne-Rhône-Alpes,Basique,25,Moyenne,"santé,loisirs,administratif",Administratif,Accès numérique,76.2,30,Moyen,2025-09,1,1,Terminé
+C014,80+,Auvergne-Rhône-Alpes,Basique,15,Moyenne,administratif,Administratif,Gestion courrier,73.83,30,Avancé,2025-07,1,1,Terminé
+C015,70-79,Auvergne-Rhône-Alpes,Premium,53,Moyenne,"accompagnement,administratif,loisirs",Accompagnement,Transport,42.34,30,Moyen,2025-02,1,1,Terminé
+C016,70-79,Bretagne,Basique,32,Faible,"loisirs,accompagnement",Accompagnement,Aide courses,52.55,90,Facile,2025-07,1,1,Terminé
+C017,80+,Auvergne-Rhône-Alpes,Premium,26,Faible,administratif,Accompagnement,Aide courses,31.71,30,Facile,2025-04,1,1,Terminé
+C018,60-69,Occitanie,Basique,45,Élevée,"loisirs,administratif,santé",Administratif,Aide démarches,53.17,90,Avancé,2025-01,1,1,Terminé
+C019,60-69,Île-de-France,Basique,17,Moyenne,"administratif,santé,accompagnement",Accompagnement,Visite à domicile,56.9,60,Facile,2025-11,1,1,Terminé
+C020,80+,Île-de-France,Premium,47,Moyenne,"accompagnement,santé",Santé,Suivi médical,24.9,90,Moyen,2025-04,1,1,Terminé
+C021,80+,Occitanie,Premium,14,Faible,"loisirs,santé",Santé,Suivi médical,29.3,60,Facile,2025-10,1,0,Annulé
+C022,60-69,Auvergne-Rhône-Alpes,Basique,32,Élevée,accompagnement,Loisirs,Sortie culturelle,52.44,90,Facile,2025-02,1,1,Terminé
+C023,80+,Auvergne-Rhône-Alpes,Basique,54,Faible,"administratif,accompagnement",Loisirs,Atelier mémoire,23.49,60,Facile,2025-02,1,1,Confirmé
+C024,60-69,Bretagne,Basique,15,Moyenne,"administratif,accompagnement,loisirs",Loisirs,Sortie culturelle,41.36,30,Facile,2025-12,1,1,Confirmé
+C025,80+,Occitanie,Basique,15,Faible,accompagnement,Loisirs,Atelier créatif,22.88,60,Moyen,2025-02,1,1,Confirmé
+C026,80+,Île-de-France,Basique,44,Faible,"administratif,accompagnement,santé",Accompagnement,Transport,68.06,60,Moyen,2025-01,1,1,Terminé
+C027,80+,Auvergne-Rhône-Alpes,Premium,39,Élevée,accompagnement,Santé,Séance kiné,57.1,90,Facile,2025-08,1,1,Terminé
+C028,70-79,Auvergne-Rhône-Alpes,Basique,3,Moyenne,"loisirs,accompagnement",Santé,Suivi médical,68.21,30,Moyen,2025-05,1,0,Terminé
+C029,80+,Occitanie,Basique,38,Moyenne,"administratif,accompagnement,santé",Loisirs,Atelier mémoire,64.39,90,Facile,2025-01,1,1,Terminé
+C030,70-79,Bretagne,Premium,48,Faible,accompagnement,Loisirs,Sortie culturelle,60.61,90,Facile,2025-05,1,1,Terminé
+C031,70-79,Bretagne,Premium,22,Moyenne,"administratif,loisirs,accompagnement",Administratif,Gestion courrier,52.97,30,Moyen,2025-11,1,0,Terminé
+C032,70-79,PACA,Basique,60,Élevée,"administratif,accompagnement",Administratif,Gestion courrier,28.8,30,Facile,2025-03,1,1,Terminé
+C033,80+,Île-de-France,Premium,24,Moyenne,"loisirs,santé",Accompagnement,Visite à domicile,62.31,60,Avancé,2025-07,1,1,Annulé
+C034,70-79,PACA,Premium,7,Faible,loisirs,Accompagnement,Visite à domicile,44.01,30,Facile,2025-01,1,1,Terminé
+C035,60-69,Bretagne,Basique,20,Faible,accompagnement,Accompagnement,Aide courses,51.39,30,Facile,2025-01,1,0,Terminé
+C036,80+,Île-de-France,Premium,9,Élevée,"administratif,loisirs",Santé,Atelier bien-être,43.3,60,Facile,2025-05,1,0,Terminé
+C037,70-79,Île-de-France,Basique,52,Élevée,administratif,Administratif,Gestion courrier,45.0,30,Moyen,2025-02,1,1,Terminé
+C038,70-79,Bretagne,Basique,32,Moyenne,"loisirs,santé",Loisirs,Sortie culturelle,42.85,60,Moyen,2025-01,1,0,Terminé
+C039,70-79,Île-de-France,Basique,54,Élevée,loisirs,Administratif,Aide démarches,55.11,30,Avancé,2025-10,1,1,Annulé
+C040,60-69,Île-de-France,Premium,12,Moyenne,accompagnement,Loisirs,Atelier créatif,60.29,60,Facile,2025-03,1,0,Terminé
+C041,70-79,Bretagne,Basique,58,Moyenne,"loisirs,santé,accompagnement",Accompagnement,Visite à domicile,62.24,90,Avancé,2025-12,1,0,Terminé
+C042,70-79,Auvergne-Rhône-Alpes,Basique,33,Faible,"accompagnement,loisirs",Santé,Atelier bien-être,71.74,30,Moyen,2025-10,1,0,Terminé
+C043,60-69,Bretagne,Premium,52,Moyenne,"santé,loisirs",Loisirs,Atelier créatif,27.73,90,Moyen,2025-11,1,1,Terminé
+C044,60-69,Île-de-France,Premium,2,Moyenne,"administratif,accompagnement",Santé,Suivi médical,40.7,60,Facile,2025-05,1,0,Terminé
+C045,70-79,PACA,Basique,25,Moyenne,accompagnement,Accompagnement,Transport,50.7,90,Avancé,2025-01,1,1,Terminé
+C046,70-79,Bretagne,Premium,46,Moyenne,"santé,administratif",Loisirs,Sortie culturelle,64.85,60,Facile,2025-03,1,1,Terminé
+C047,70-79,Occitanie,Basique,57,Moyenne,"loisirs,accompagnement,santé",Loisirs,Sortie culturelle,53.84,30,Facile,2025-10,1,1,Annulé
+C048,70-79,Île-de-France,Basique,2,Moyenne,"santé,loisirs",Accompagnement,Aide courses,53.87,60,Facile,2025-06,1,0,Terminé
+C049,60-69,Auvergne-Rhône-Alpes,Premium,36,Élevée,administratif,Loisirs,Sortie culturelle,31.19,60,Moyen,2025-08,1,0,Confirmé
+C050,70-79,Bretagne,Premium,30,Élevée,"santé,loisirs,administratif",Administratif,Gestion courrier,30.25,90,Moyen,2025-02,1,1,Terminé
+C051,60-69,Occitanie,Basique,25,Moyenne,"administratif,loisirs,santé",Santé,Séance kiné,62.43,60,Facile,2025-05,1,1,Terminé
+C052,70-79,Auvergne-Rhône-Alpes,Basique,49,Moyenne,santé,Santé,Atelier bien-être,25.27,90,Moyen,2025-01,1,1,Terminé
+C053,70-79,Auvergne-Rhône-Alpes,Basique,48,Élevée,"administratif,accompagnement",Administratif,Gestion courrier,30.87,90,Avancé,2025-06,1,1,Terminé
+C054,80+,Bretagne,Basique,29,Moyenne,loisirs,Accompagnement,Visite à domicile,41.53,30,Moyen,2025-02,1,0,Terminé
+C055,70-79,Auvergne-Rhône-Alpes,Basique,32,Moyenne,"loisirs,administratif,accompagnement",Administratif,Accès numérique,51.91,30,Avancé,2025-03,1,1,Terminé
+C056,70-79,Auvergne-Rhône-Alpes,Basique,51,Moyenne,administratif,Accompagnement,Aide courses,29.1,30,Moyen,2025-11,1,1,Confirmé
+C057,70-79,PACA,Basique,9,Faible,"loisirs,accompagnement",Accompagnement,Transport,67.84,30,Facile,2025-04,1,0,Terminé
+C058,70-79,Auvergne-Rhône-Alpes,Basique,25,Faible,santé,Administratif,Gestion courrier,33.64,90,Facile,2025-11,1,1,Terminé
+C059,70-79,Île-de-France,Basique,39,Élevée,administratif,Accompagnement,Aide courses,54.58,60,Facile,2025-03,1,0,Terminé
+C060,80+,Île-de-France,Basique,20,Faible,"loisirs,accompagnement",Accompagnement,Transport,33.64,90,Facile,2025-09,1,0,Annulé
+C061,80+,PACA,Basique,51,Faible,"administratif,santé,accompagnement",Santé,Atelier bien-être,75.11,90,Facile,2025-11,1,1,Confirmé
+C062,70-79,Bretagne,Premium,48,Moyenne,"santé,administratif,accompagnement",Santé,Suivi médical,30.68,30,Facile,2025-06,1,0,Terminé
+C063,60-69,Île-de-France,Basique,29,Élevée,"santé,loisirs,administratif",Loisirs,Atelier mémoire,57.5,30,Facile,2025-08,1,1,Terminé
+C064,70-79,PACA,Basique,27,Moyenne,"accompagnement,santé",Santé,Suivi médical,24.53,90,Facile,2025-10,1,0,Terminé
+C065,80+,Occitanie,Premium,6,Moyenne,loisirs,Santé,Séance kiné,50.33,60,Facile,2025-05,1,1,Terminé
+C066,60-69,PACA,Premium,23,Élevée,"accompagnement,loisirs",Loisirs,Atelier créatif,39.44,60,Facile,2025-07,1,0,Terminé
+C067,60-69,Auvergne-Rhône-Alpes,Basique,59,Élevée,accompagnement,Loisirs,Atelier créatif,42.78,90,Facile,2025-04,1,1,Terminé
+C068,70-79,PACA,Premium,34,Élevée,"administratif,loisirs",Accompagnement,Transport,73.67,30,Facile,2025-01,1,1,Terminé
+C069,70-79,Île-de-France,Basique,42,Moyenne,"accompagnement,administratif",Accompagnement,Aide courses,21.1,60,Moyen,2025-10,1,1,Annulé
+C070,70-79,Île-de-France,Basique,11,Faible,"accompagnement,administratif",Administratif,Gestion courrier,63.93,60,Moyen,2025-09,1,0,Terminé
+C071,80+,Bretagne,Basique,57,Faible,"administratif,santé",Santé,Suivi médical,56.19,60,Facile,2025-11,1,1,Terminé
+C072,70-79,Auvergne-Rhône-Alpes,Premium,54,Moyenne,"administratif,accompagnement",Santé,Séance kiné,35.74,90,Moyen,2025-01,1,1,Terminé
+C073,70-79,PACA,Basique,8,Faible,loisirs,Accompagnement,Visite à domicile,47.58,90,Moyen,2025-05,1,1,Terminé
+C074,60-69,Occitanie,Basique,43,Élevée,administratif,Accompagnement,Aide courses,31.11,60,Avancé,2025-03,1,0,Terminé
+C075,70-79,Île-de-France,Premium,11,Faible,"administratif,loisirs",Santé,Atelier bien-être,55.3,30,Facile,2025-05,1,0,Terminé
+C076,60-69,Île-de-France,Basique,7,Élevée,"administratif,accompagnement,loisirs",Administratif,Accès numérique,47.31,90,Moyen,2025-01,1,0,Terminé
+C077,70-79,Bretagne,Basique,36,Moyenne,"santé,loisirs",Accompagnement,Aide courses,52.3,60,Facile,2025-02,1,1,Terminé
+C078,80+,PACA,Basique,41,Élevée,"loisirs,accompagnement,santé",Loisirs,Atelier créatif,24.2,60,Facile,2025-01,1,1,Terminé
+C079,70-79,Occitanie,Premium,9,Faible,"loisirs,accompagnement,santé",Santé,Séance kiné,48.04,60,Avancé,2025-02,1,1,Confirmé
+C080,60-69,Île-de-France,Basique,56,Élevée,"accompagnement,administratif,santé",Loisirs,Sortie culturelle,78.94,90,Avancé,2025-11,1,0,Terminé
+C081,70-79,Occitanie,Basique,19,Élevée,"loisirs,accompagnement",Santé,Séance kiné,30.59,60,Facile,2025-10,1,0,Terminé
+C082,60-69,Île-de-France,Basique,19,Élevée,accompagnement,Administratif,Gestion courrier,79.78,90,Moyen,2025-06,1,0,Terminé
+C083,60-69,Occitanie,Basique,33,Moyenne,"loisirs,accompagnement,santé",Santé,Atelier bien-être,71.73,30,Facile,2025-09,1,1,Confirmé
+C084,70-79,Auvergne-Rhône-Alpes,Premium,25,Moyenne,administratif,Santé,Suivi médical,23.69,30,Facile,2025-03,1,0,Terminé
+C085,70-79,Auvergne-Rhône-Alpes,Premium,32,Élevée,"loisirs,administratif,santé",Administratif,Aide démarches,40.04,30,Moyen,2025-10,1,1,Terminé
+C086,60-69,Bretagne,Premium,57,Moyenne,"santé,accompagnement,loisirs",Administratif,Aide démarches,64.61,90,Facile,2025-02,1,1,Terminé
+C087,60-69,Bretagne,Basique,48,Moyenne,"accompagnement,administratif,santé",Santé,Séance kiné,65.66,60,Facile,2025-02,1,1,Terminé
+C088,80+,Bretagne,Premium,19,Moyenne,"santé,loisirs",Accompagnement,Visite à domicile,62.51,60,Facile,2025-10,1,1,Terminé
+C089,80+,Bretagne,Basique,58,Faible,loisirs,Santé,Atelier bien-être,42.31,90,Facile,2025-07,1,1,Annulé
+C090,80+,Île-de-France,Basique,40,Faible,"loisirs,administratif,accompagnement",Santé,Atelier bien-être,66.37,60,Facile,2025-03,1,0,Confirmé
+C091,70-79,Bretagne,Premium,36,Moyenne,"loisirs,accompagnement",Administratif,Aide démarches,39.24,60,Facile,2025-03,1,1,Terminé
+C092,70-79,Occitanie,Basique,7,Faible,loisirs,Santé,Séance kiné,70.69,90,Moyen,2025-12,1,1,Terminé
+C093,70-79,Île-de-France,Basique,6,Faible,administratif,Santé,Atelier bien-être,39.56,60,Moyen,2025-11,1,0,Confirmé
+C094,70-79,PACA,Basique,30,Moyenne,"loisirs,administratif,accompagnement",Administratif,Aide démarches,22.38,60,Moyen,2025-09,1,1,Terminé
+C095,60-69,Occitanie,Premium,9,Élevée,"administratif,loisirs",Loisirs,Atelier mémoire,41.04,30,Moyen,2025-10,1,0,Confirmé
+C096,70-79,PACA,Premium,33,Faible,loisirs,Accompagnement,Visite à domicile,55.69,30,Facile,2025-09,1,0,Terminé
+C097,70-79,Occitanie,Basique,58,Moyenne,"santé,administratif,loisirs",Accompagnement,Transport,58.61,30,Facile,2025-11,1,1,Terminé
+C098,70-79,Île-de-France,Premium,57,Faible,"administratif,loisirs",Accompagnement,Aide courses,59.52,90,Facile,2025-06,1,1,Annulé
+C099,80+,Île-de-France,Basique,27,Faible,"administratif,loisirs,accompagnement",Santé,Suivi médical,70.43,30,Avancé,2025-10,1,0,Terminé
+C100,70-79,Occitanie,Premium,59,Faible,accompagnement,Santé,Atelier bien-être,49.2,60,Moyen,2025-04,1,1,Annulé
+C101,70-79,Bretagne,Basique,44,Moyenne,loisirs,Accompagnement,Visite à domicile,30.78,60,Avancé,2025-07,1,1,Confirmé
+C102,70-79,Occitanie,Basique,13,Moyenne,administratif,Santé,Séance kiné,38.73,60,Avancé,2025-05,1,1,Terminé
+C103,60-69,Bretagne,Basique,30,Moyenne,"santé,administratif,accompagnement",Loisirs,Sortie culturelle,60.16,30,Facile,2025-04,1,1,Terminé
+C104,60-69,Occitanie,Basique,42,Élevée,loisirs,Administratif,Accès numérique,72.1,90,Facile,2025-02,1,0,Confirmé
+C105,60-69,PACA,Basique,54,Moyenne,loisirs,Santé,Séance kiné,22.49,60,Facile,2025-02,1,0,Confirmé
+C106,80+,PACA,Premium,38,Faible,"accompagnement,santé,loisirs",Accompagnement,Transport,21.8,30,Facile,2025-02,1,1,Terminé
+C107,80+,Île-de-France,Premium,28,Faible,accompagnement,Accompagnement,Transport,78.72,90,Moyen,2025-02,1,1,Terminé
+C108,80+,Île-de-France,Basique,7,Moyenne,loisirs,Accompagnement,Aide courses,60.02,30,Facile,2025-12,1,1,Terminé
+C109,70-79,Île-de-France,Basique,47,Moyenne,loisirs,Santé,Atelier bien-être,44.25,60,Avancé,2025-03,1,0,Terminé
+C110,80+,Auvergne-Rhône-Alpes,Premium,0,Faible,"loisirs,accompagnement",Santé,Atelier bien-être,43.77,30,Facile,2025-09,1,0,Terminé
+C111,70-79,PACA,Basique,7,Moyenne,"administratif,santé",Loisirs,Sortie culturelle,77.09,60,Facile,2025-05,1,0,Confirmé
+C112,60-69,Bretagne,Basique,35,Moyenne,"santé,administratif,accompagnement",Accompagnement,Transport,21.09,90,Facile,2025-05,1,0,Annulé
+C113,80+,Occitanie,Premium,21,Faible,"administratif,loisirs",Accompagnement,Aide courses,68.18,90,Moyen,2025-10,1,0,Terminé
+C114,60-69,Occitanie,Premium,29,Faible,"administratif,santé,loisirs",Accompagnement,Transport,37.72,30,Moyen,2025-10,1,0,Terminé
+C115,60-69,Île-de-France,Basique,44,Moyenne,"accompagnement,loisirs,administratif",Administratif,Gestion courrier,55.61,60,Facile,2025-10,1,1,Terminé
+C116,80+,Île-de-France,Basique,36,Faible,"santé,loisirs,administratif",Accompagnement,Transport,57.43,30,Facile,2025-05,1,1,Terminé
+C117,80+,Bretagne,Basique,47,Faible,"santé,loisirs,administratif",Accompagnement,Aide courses,43.45,30,Facile,2025-09,1,0,Confirmé
+C118,70-79,Auvergne-Rhône-Alpes,Basique,60,Moyenne,santé,Santé,Séance kiné,56.19,60,Moyen,2025-07,1,1,Annulé
+C119,70-79,Occitanie,Basique,7,Moyenne,"accompagnement,loisirs",Loisirs,Sortie culturelle,60.18,90,Moyen,2025-08,1,0,Terminé
+C120,70-79,Bretagne,Basique,21,Moyenne,"santé,administratif,loisirs",Accompagnement,Visite à domicile,46.78,60,Moyen,2025-04,1,0,Terminé
+C121,80+,PACA,Basique,56,Moyenne,santé,Loisirs,Atelier créatif,43.96,60,Avancé,2025-08,1,1,Annulé
+C122,70-79,Occitanie,Basique,17,Moyenne,accompagnement,Accompagnement,Visite à domicile,27.06,90,Facile,2025-02,1,1,Terminé
+C123,60-69,Île-de-France,Basique,51,Moyenne,"administratif,santé",Santé,Atelier bien-être,49.82,60,Moyen,2025-04,1,1,Terminé
+C124,60-69,PACA,Basique,29,Élevée,"administratif,santé",Administratif,Gestion courrier,24.86,30,Facile,2025-11,1,0,Terminé
+C125,80+,PACA,Premium,24,Faible,santé,Santé,Atelier bien-être,69.76,90,Avancé,2025-06,1,1,Terminé
+C126,60-69,PACA,Basique,14,Élevée,santé,Loisirs,Atelier créatif,58.45,30,Facile,2025-02,1,0,Confirmé
+C127,60-69,Auvergne-Rhône-Alpes,Basique,24,Faible,"accompagnement,administratif,santé",Accompagnement,Aide courses,45.82,30,Facile,2025-09,1,0,Annulé
+C128,60-69,Occitanie,Basique,3,Élevée,accompagnement,Loisirs,Sortie culturelle,45.57,90,Moyen,2025-03,1,0,Terminé
+C129,80+,Bretagne,Basique,4,Faible,"accompagnement,santé",Santé,Séance kiné,54.93,90,Facile,2025-07,1,0,Terminé
+C130,80+,Bretagne,Premium,17,Faible,accompagnement,Accompagnement,Aide courses,70.66,90,Facile,2025-04,1,0,Annulé
+C131,70-79,Auvergne-Rhône-Alpes,Basique,51,Élevée,"administratif,accompagnement",Santé,Suivi médical,59.52,30,Moyen,2025-12,1,1,Annulé
+C132,80+,Occitanie,Premium,27,Moyenne,"santé,loisirs",Accompagnement,Transport,73.36,90,Moyen,2025-03,1,1,Terminé
+C133,70-79,Bretagne,Basique,22,Moyenne,santé,Santé,Suivi médical,43.26,90,Facile,2025-11,1,0,Terminé
+C134,80+,Auvergne-Rhône-Alpes,Basique,4,Faible,"santé,administratif",Santé,Suivi médical,37.73,30,Avancé,2025-02,1,1,Annulé
+C135,60-69,Île-de-France,Basique,57,Moyenne,"administratif,santé,accompagnement",Santé,Séance kiné,78.8,60,Facile,2025-12,1,1,Confirmé
+C136,60-69,PACA,Basique,24,Moyenne,"administratif,santé",Santé,Atelier bien-être,75.7,90,Avancé,2025-08,1,0,Terminé
+C137,70-79,Île-de-France,Basique,46,Faible,administratif,Accompagnement,Visite à domicile,66.59,90,Facile,2025-06,1,0,Terminé
+C138,60-69,PACA,Basique,20,Élevée,"accompagnement,santé,administratif",Loisirs,Atelier mémoire,44.8,30,Moyen,2025-08,1,0,Confirmé
+C139,60-69,Occitanie,Basique,36,Faible,"administratif,accompagnement",Accompagnement,Aide courses,36.67,90,Facile,2025-10,1,1,Terminé
+C140,70-79,Auvergne-Rhône-Alpes,Basique,40,Moyenne,santé,Accompagnement,Visite à domicile,69.96,60,Facile,2025-02,1,0,Terminé
+C141,80+,Auvergne-Rhône-Alpes,Premium,3,Faible,"administratif,santé",Santé,Atelier bien-être,44.76,90,Facile,2025-06,1,1,Confirmé
+C142,70-79,Île-de-France,Basique,3,Moyenne,"administratif,loisirs,santé",Santé,Atelier bien-être,49.2,60,Moyen,2025-12,1,0,Terminé
+C143,60-69,Bretagne,Premium,57,Élevée,"santé,loisirs,administratif",Loisirs,Sortie culturelle,39.69,90,Facile,2025-04,1,1,Terminé
+C144,80+,Île-de-France,Premium,44,Faible,"loisirs,santé",Accompagnement,Transport,70.39,90,Moyen,2025-10,1,1,Confirmé
+C145,70-79,PACA,Basique,42,Faible,"administratif,accompagnement",Accompagnement,Aide courses,66.95,90,Facile,2025-10,1,0,Terminé
+C146,60-69,Île-de-France,Basique,4,Élevée,"administratif,santé",Administratif,Accès numérique,46.21,30,Facile,2025-09,1,1,Terminé
+C147,60-69,Occitanie,Basique,35,Faible,"santé,administratif",Santé,Séance kiné,74.38,60,Facile,2025-06,1,1,Terminé
+C148,60-69,Île-de-France,Basique,55,Faible,"accompagnement,santé",Santé,Atelier bien-être,44.67,90,Facile,2025-02,1,1,Terminé
+C149,60-69,Bretagne,Basique,43,Élevée,"administratif,loisirs",Administratif,Aide démarches,59.25,60,Facile,2025-01,1,1,Terminé
+C150,70-79,Île-de-France,Basique,32,Faible,"accompagnement,administratif,santé",Accompagnement,Aide courses,51.4,30,Facile,2025-12,1,0,Confirmé
+C151,70-79,Île-de-France,Basique,45,Moyenne,accompagnement,Administratif,Aide démarches,60.14,60,Avancé,2025-03,1,1,Terminé
+C152,60-69,Occitanie,Basique,34,Faible,"loisirs,accompagnement,administratif",Santé,Séance kiné,65.51,60,Facile,2025-08,1,0,Terminé
+C153,80+,Auvergne-Rhône-Alpes,Premium,39,Élevée,"accompagnement,loisirs",Santé,Atelier bien-être,40.62,30,Facile,2025-03,1,1,Terminé
+C154,80+,PACA,Basique,4,Élevée,"administratif,loisirs",Santé,Séance kiné,58.56,90,Avancé,2025-08,1,0,Terminé
+C155,70-79,PACA,Basique,2,Moyenne,"santé,accompagnement,administratif",Loisirs,Atelier mémoire,22.0,30,Moyen,2025-11,1,1,Terminé
+C156,80+,Auvergne-Rhône-Alpes,Premium,11,Moyenne,"loisirs,administratif,santé",Loisirs,Atelier mémoire,60.08,30,Facile,2025-12,1,0,Terminé
+C157,60-69,Auvergne-Rhône-Alpes,Basique,2,Moyenne,santé,Santé,Suivi médical,78.41,30,Facile,2025-06,1,0,Terminé
+C158,70-79,Auvergne-Rhône-Alpes,Premium,43,Moyenne,santé,Administratif,Gestion courrier,30.43,30,Facile,2025-10,1,1,Annulé
+C159,60-69,Île-de-France,Premium,17,Élevée,accompagnement,Administratif,Accès numérique,70.62,90,Moyen,2025-04,1,0,Confirmé
+C160,70-79,Occitanie,Basique,5,Élevée,loisirs,Santé,Séance kiné,61.65,30,Facile,2025-05,1,1,Terminé
+C161,70-79,Occitanie,Premium,38,Élevée,accompagnement,Administratif,Accès numérique,20.01,90,Facile,2025-08,1,1,Annulé
+C162,70-79,Auvergne-Rhône-Alpes,Basique,13,Moyenne,accompagnement,Administratif,Gestion courrier,71.5,90,Avancé,2025-03,1,0,Terminé
+C163,60-69,Île-de-France,Basique,54,Moyenne,"santé,accompagnement,loisirs",Accompagnement,Aide courses,24.1,30,Facile,2025-01,1,1,Terminé
+C164,70-79,Auvergne-Rhône-Alpes,Basique,13,Moyenne,"administratif,santé,loisirs",Loisirs,Sortie culturelle,73.54,90,Moyen,2025-01,1,1,Terminé
+C165,60-69,PACA,Basique,20,Faible,loisirs,Santé,Suivi médical,21.96,90,Moyen,2025-08,1,0,Confirmé
+C166,70-79,Occitanie,Premium,45,Moyenne,santé,Loisirs,Atelier mémoire,57.88,30,Moyen,2025-04,1,1,Confirmé
+C167,60-69,Occitanie,Basique,21,Moyenne,"loisirs,santé",Loisirs,Atelier créatif,44.42,60,Facile,2025-01,1,1,Terminé
+C168,80+,Auvergne-Rhône-Alpes,Basique,0,Faible,accompagnement,Loisirs,Atelier mémoire,48.46,30,Moyen,2025-06,1,0,Confirmé
+C169,80+,Occitanie,Basique,25,Faible,accompagnement,Santé,Atelier bien-être,36.67,30,Facile,2025-01,1,1,Terminé
+C170,70-79,Île-de-France,Basique,10,Faible,"accompagnement,loisirs,administratif",Santé,Séance kiné,44.66,30,Moyen,2025-12,1,0,Terminé
+C171,70-79,Occitanie,Premium,7,Élevée,"accompagnement,santé",Administratif,Aide démarches,56.23,60,Facile,2025-04,1,0,Terminé
+C172,70-79,Auvergne-Rhône-Alpes,Basique,39,Moyenne,administratif,Loisirs,Atelier créatif,44.76,30,Moyen,2025-02,1,0,Terminé
+C173,70-79,Auvergne-Rhône-Alpes,Premium,56,Faible,"administratif,santé,loisirs",Accompagnement,Aide courses,23.99,60,Facile,2025-01,1,1,Terminé
+C174,70-79,Bretagne,Basique,36,Faible,loisirs,Accompagnement,Aide courses,24.04,30,Moyen,2025-02,1,1,Confirmé
+C175,70-79,PACA,Basique,43,Moyenne,"loisirs,santé,accompagnement",Loisirs,Atelier créatif,54.93,60,Facile,2025-06,1,1,Terminé
+C176,70-79,Occitanie,Basique,3,Faible,accompagnement,Santé,Atelier bien-être,58.75,90,Facile,2025-11,1,0,Terminé
+C177,70-79,Bretagne,Basique,47,Faible,"accompagnement,loisirs",Santé,Atelier bien-être,49.14,90,Moyen,2025-04,1,1,Annulé
+C178,80+,Auvergne-Rhône-Alpes,Basique,49,Faible,accompagnement,Santé,Atelier bien-être,26.97,60,Facile,2025-03,1,0,Terminé
+C179,80+,Île-de-France,Basique,58,Élevée,accompagnement,Administratif,Aide démarches,53.22,60,Facile,2025-05,1,1,Terminé
+C180,70-79,Bretagne,Basique,48,Moyenne,"administratif,loisirs,santé",Administratif,Accès numérique,29.91,90,Facile,2025-03,1,1,Terminé
+C181,60-69,Bretagne,Premium,59,Moyenne,"administratif,accompagnement",Santé,Suivi médical,28.88,30,Facile,2025-04,1,0,Confirmé
+C182,70-79,PACA,Premium,44,Moyenne,"administratif,accompagnement",Loisirs,Atelier mémoire,67.65,30,Avancé,2025-12,1,0,Terminé
+C183,70-79,Occitanie,Basique,31,Moyenne,"administratif,santé,accompagnement",Santé,Séance kiné,43.19,90,Avancé,2025-03,1,1,Terminé
+C184,80+,PACA,Basique,46,Moyenne,"accompagnement,loisirs,administratif",Administratif,Aide démarches,46.35,30,Facile,2025-08,1,1,Terminé
+C185,70-79,Bretagne,Premium,60,Élevée,"administratif,santé",Santé,Séance kiné,61.55,60,Moyen,2025-05,1,1,Terminé
+C186,60-69,Île-de-France,Premium,34,Élevée,"accompagnement,loisirs",Santé,Suivi médical,40.51,30,Moyen,2025-05,1,1,Terminé
+C187,80+,Île-de-France,Premium,35,Moyenne,"loisirs,santé,administratif",Accompagnement,Visite à domicile,44.45,60,Facile,2025-11,1,1,Confirmé
+C188,80+,Bretagne,Basique,44,Élevée,"santé,administratif,accompagnement",Santé,Atelier bien-être,67.67,60,Facile,2025-02,1,1,Terminé
+C189,60-69,PACA,Basique,7,Moyenne,"santé,loisirs",Loisirs,Atelier mémoire,70.53,30,Moyen,2025-05,1,1,Annulé
+C190,70-79,Île-de-France,Basique,16,Moyenne,"santé,administratif",Accompagnement,Visite à domicile,34.52,60,Moyen,2025-08,1,1,Terminé
+C191,60-69,Auvergne-Rhône-Alpes,Premium,17,Moyenne,"santé,administratif,accompagnement",Administratif,Accès numérique,23.26,30,Facile,2025-01,1,0,Confirmé
+C192,60-69,Île-de-France,Basique,49,Moyenne,"administratif,loisirs",Loisirs,Atelier créatif,69.6,90,Facile,2025-11,1,0,Terminé
+C193,80+,Auvergne-Rhône-Alpes,Basique,48,Faible,"administratif,loisirs,accompagnement",Santé,Suivi médical,43.26,90,Moyen,2025-07,1,1,Confirmé
+C194,70-79,Bretagne,Basique,23,Moyenne,loisirs,Loisirs,Atelier mémoire,48.52,90,Moyen,2025-10,1,1,Terminé
+C195,70-79,Île-de-France,Basique,47,Faible,"accompagnement,loisirs",Accompagnement,Aide courses,44.99,30,Facile,2025-02,1,1,Terminé
+C196,70-79,Île-de-France,Premium,22,Moyenne,"accompagnement,loisirs",Accompagnement,Visite à domicile,58.69,30,Moyen,2025-06,1,1,Terminé
+C197,60-69,Auvergne-Rhône-Alpes,Basique,48,Faible,"loisirs,accompagnement",Accompagnement,Aide courses,42.75,60,Facile,2025-04,1,0,Confirmé
+C198,70-79,Île-de-France,Premium,51,Faible,"accompagnement,administratif,loisirs",Loisirs,Atelier mémoire,38.71,90,Facile,2025-12,1,0,Confirmé
+C199,60-69,Auvergne-Rhône-Alpes,Basique,40,Faible,"loisirs,accompagnement",Accompagnement,Visite à domicile,33.4,30,Facile,2025-11,1,1,Terminé
+C200,80+,Auvergne-Rhône-Alpes,Basique,10,Moyenne,"administratif,loisirs,accompagnement",Santé,Séance kiné,62.61,30,Facile,2025-12,1,0,Confirmé
+C201,70-79,Occitanie,Premium,8,Faible,"santé,loisirs",Santé,Suivi médical,32.3,60,Facile,2025-10,1,0,Terminé
+C202,70-79,Auvergne-Rhône-Alpes,Basique,52,Moyenne,"loisirs,santé,accompagnement",Administratif,Accès numérique,75.05,60,Facile,2025-09,1,1,Terminé
+C203,80+,Occitanie,Basique,10,Faible,administratif,Accompagnement,Aide courses,76.94,60,Facile,2025-06,1,0,Terminé
+C204,70-79,Bretagne,Basique,2,Faible,loisirs,Accompagnement,Aide courses,78.87,30,Moyen,2025-12,1,0,Confirmé
+C205,70-79,Occitanie,Premium,58,Élevée,loisirs,Loisirs,Atelier créatif,30.57,60,Moyen,2025-10,1,1,Terminé
+C206,70-79,Bretagne,Premium,42,Moyenne,"santé,accompagnement",Santé,Atelier bien-être,63.1,90,Facile,2025-11,1,1,Confirmé
+C207,70-79,Bretagne,Basique,8,Élevée,administratif,Accompagnement,Visite à domicile,39.3,60,Moyen,2025-11,1,1,Annulé
+C208,70-79,Occitanie,Basique,9,Élevée,"loisirs,santé",Administratif,Aide démarches,22.69,30,Facile,2025-03,1,0,Terminé
+C209,80+,Île-de-France,Basique,25,Faible,"administratif,loisirs",Accompagnement,Visite à domicile,59.4,60,Avancé,2025-10,1,0,Confirmé
+C210,70-79,Auvergne-Rhône-Alpes,Premium,4,Faible,santé,Santé,Suivi médical,45.88,90,Moyen,2025-05,1,0,Terminé
+C211,60-69,Occitanie,Basique,54,Élevée,accompagnement,Administratif,Accès numérique,52.67,30,Moyen,2025-09,1,1,Terminé
+C212,60-69,Île-de-France,Basique,57,Élevée,loisirs,Administratif,Accès numérique,39.93,60,Moyen,2025-08,1,1,Confirmé
+C213,80+,Bretagne,Basique,22,Élevée,"administratif,accompagnement,santé",Accompagnement,Aide courses,44.99,60,Facile,2025-09,1,0,Annulé
+C214,70-79,Bretagne,Basique,50,Faible,"santé,loisirs",Accompagnement,Aide courses,65.54,60,Facile,2025-05,1,1,Terminé
+C215,60-69,Auvergne-Rhône-Alpes,Premium,35,Élevée,"administratif,accompagnement",Santé,Séance kiné,44.87,60,Moyen,2025-11,1,1,Terminé
+C216,60-69,PACA,Basique,16,Moyenne,"loisirs,accompagnement,administratif",Accompagnement,Aide courses,50.83,30,Facile,2025-01,1,0,Terminé
+C217,70-79,Auvergne-Rhône-Alpes,Premium,46,Moyenne,"administratif,accompagnement,loisirs",Loisirs,Atelier créatif,23.11,30,Facile,2025-06,1,1,Confirmé
+C218,60-69,Île-de-France,Premium,46,Moyenne,accompagnement,Santé,Atelier bien-être,20.96,90,Moyen,2025-08,1,0,Terminé
+C219,80+,Occitanie,Basique,28,Moyenne,administratif,Santé,Suivi médical,38.53,60,Facile,2025-03,1,0,Annulé
+C220,80+,Île-de-France,Basique,3,Moyenne,"administratif,santé",Accompagnement,Transport,38.77,90,Moyen,2025-07,1,0,Confirmé
+C221,70-79,Occitanie,Basique,11,Faible,"accompagnement,loisirs,administratif",Accompagnement,Aide courses,45.83,60,Moyen,2025-08,1,0,Terminé
+C222,70-79,Auvergne-Rhône-Alpes,Basique,58,Faible,"loisirs,accompagnement,santé",Accompagnement,Transport,57.94,60,Moyen,2025-06,1,1,Terminé
+C223,70-79,PACA,Premium,7,Faible,administratif,Administratif,Aide démarches,78.74,30,Moyen,2025-10,1,0,Annulé
+C224,70-79,Auvergne-Rhône-Alpes,Basique,33,Moyenne,"santé,administratif",Administratif,Accès numérique,55.72,90,Facile,2025-06,1,1,Terminé
+C225,70-79,Auvergne-Rhône-Alpes,Basique,46,Moyenne,administratif,Loisirs,Atelier créatif,60.56,30,Moyen,2025-06,1,1,Annulé
+C226,70-79,Bretagne,Basique,18,Faible,"loisirs,accompagnement",Accompagnement,Aide courses,32.16,60,Moyen,2025-09,1,1,Terminé
+C227,70-79,Île-de-France,Basique,18,Élevée,accompagnement,Accompagnement,Visite à domicile,78.62,30,Facile,2025-11,1,1,Confirmé
+C228,70-79,Île-de-France,Basique,14,Élevée,"accompagnement,loisirs,administratif",Administratif,Aide démarches,52.81,30,Facile,2025-04,1,1,Terminé
+C229,80+,Occitanie,Basique,32,Faible,santé,Loisirs,Sortie culturelle,63.96,60,Moyen,2025-02,1,1,Terminé
+C230,80+,Auvergne-Rhône-Alpes,Basique,12,Moyenne,"administratif,santé,accompagnement",Santé,Séance kiné,51.29,90,Moyen,2025-01,1,0,Terminé
+C231,70-79,Île-de-France,Premium,32,Élevée,accompagnement,Loisirs,Sortie culturelle,34.9,60,Facile,2025-04,1,1,Confirmé
+C232,80+,PACA,Premium,21,Moyenne,"administratif,loisirs",Accompagnement,Transport,23.37,60,Facile,2025-12,1,1,Terminé
+C233,70-79,PACA,Basique,37,Faible,administratif,Administratif,Gestion courrier,72.9,30,Moyen,2025-03,1,1,Terminé
+C234,70-79,Occitanie,Basique,41,Moyenne,accompagnement,Administratif,Aide démarches,69.69,60,Avancé,2025-05,1,1,Terminé
+C235,70-79,Île-de-France,Basique,60,Moyenne,"loisirs,accompagnement,administratif",Santé,Atelier bien-être,67.67,90,Moyen,2025-07,1,1,Terminé
+C236,60-69,Île-de-France,Basique,36,Moyenne,"santé,loisirs",Santé,Suivi médical,64.44,30,Moyen,2025-06,1,0,Terminé
+C237,70-79,Île-de-France,Basique,31,Élevée,"administratif,santé",Santé,Atelier bien-être,51.15,90,Facile,2025-07,1,1,Annulé
+C238,70-79,Occitanie,Basique,42,Moyenne,"administratif,accompagnement,loisirs",Loisirs,Sortie culturelle,44.71,60,Facile,2025-02,1,1,Terminé
+C239,70-79,Bretagne,Basique,12,Moyenne,loisirs,Loisirs,Sortie culturelle,50.74,30,Facile,2025-01,1,0,Terminé
+C240,80+,Île-de-France,Basique,16,Moyenne,"loisirs,accompagnement,administratif",Accompagnement,Transport,61.32,30,Moyen,2025-09,1,0,Terminé
+C241,80+,Île-de-France,Basique,50,Faible,"accompagnement,administratif,santé",Accompagnement,Aide courses,72.95,90,Facile,2025-09,1,0,Terminé
+C242,60-69,Occitanie,Basique,39,Élevée,administratif,Loisirs,Atelier mémoire,79.35,30,Moyen,2025-03,1,1,Terminé
+C243,70-79,Auvergne-Rhône-Alpes,Premium,3,Moyenne,"accompagnement,santé,administratif",Administratif,Gestion courrier,33.06,60,Moyen,2025-09,1,1,Terminé
+C244,80+,Île-de-France,Basique,8,Moyenne,administratif,Accompagnement,Visite à domicile,65.51,90,Moyen,2025-12,1,0,Confirmé
+C245,60-69,Occitanie,Basique,57,Élevée,"loisirs,santé,accompagnement",Accompagnement,Visite à domicile,54.73,60,Moyen,2025-12,1,1,Terminé
+C246,60-69,Auvergne-Rhône-Alpes,Basique,44,Moyenne,"santé,administratif",Accompagnement,Aide courses,55.08,60,Facile,2025-10,1,1,Terminé
+C247,70-79,Île-de-France,Basique,37,Moyenne,administratif,Administratif,Aide démarches,61.68,30,Moyen,2025-07,1,1,Terminé
+C248,80+,Occitanie,Basique,54,Faible,"administratif,loisirs",Santé,Suivi médical,35.57,60,Facile,2025-03,1,1,Terminé
+C249,80+,Île-de-France,Premium,58,Faible,"accompagnement,loisirs,administratif",Accompagnement,Visite à domicile,70.69,90,Moyen,2025-06,1,1,Terminé
+C250,70-79,Auvergne-Rhône-Alpes,Premium,9,Faible,"loisirs,santé,accompagnement",Santé,Suivi médical,27.8,90,Facile,2025-03,1,0,Confirmé
+C251,60-69,Bretagne,Basique,37,Faible,"loisirs,accompagnement",Accompagnement,Visite à domicile,53.8,30,Avancé,2025-10,1,1,Confirmé
+C252,70-79,Auvergne-Rhône-Alpes,Basique,9,Faible,loisirs,Administratif,Gestion courrier,42.29,30,Moyen,2025-05,1,0,Terminé
+C253,70-79,Île-de-France,Basique,37,Moyenne,"loisirs,santé,administratif",Accompagnement,Transport,71.82,90,Avancé,2025-12,1,1,Terminé
+C254,70-79,Île-de-France,Basique,21,Faible,"loisirs,administratif,santé",Santé,Atelier bien-être,47.31,90,Facile,2025-02,1,1,Terminé
+C255,70-79,Auvergne-Rhône-Alpes,Basique,39,Élevée,"santé,accompagnement",Loisirs,Sortie culturelle,72.9,60,Moyen,2025-06,1,1,Confirmé
+C256,70-79,Occitanie,Basique,21,Moyenne,santé,Administratif,Accès numérique,72.97,60,Moyen,2025-11,1,0,Confirmé
+C257,70-79,Île-de-France,Premium,19,Faible,loisirs,Accompagnement,Transport,70.84,60,Facile,2025-12,1,1,Terminé
+C258,80+,PACA,Premium,18,Moyenne,"santé,accompagnement",Santé,Séance kiné,48.15,60,Avancé,2025-04,1,1,Terminé
+C259,80+,Île-de-France,Premium,39,Faible,"santé,loisirs,administratif",Accompagnement,Aide courses,33.95,60,Facile,2025-01,1,1,Terminé
+C260,80+,PACA,Premium,30,Moyenne,"santé,loisirs",Santé,Atelier bien-être,69.76,90,Moyen,2025-05,1,1,Terminé
+C261,70-79,Auvergne-Rhône-Alpes,Basique,59,Moyenne,loisirs,Loisirs,Atelier mémoire,62.91,30,Facile,2025-09,1,1,Terminé
+C262,70-79,Occitanie,Premium,14,Faible,"loisirs,santé,accompagnement",Accompagnement,Aide courses,76.43,60,Facile,2025-02,1,0,Terminé
+C263,70-79,Auvergne-Rhône-Alpes,Basique,56,Élevée,"loisirs,santé",Loisirs,Atelier mémoire,50.83,30,Avancé,2025-01,1,1,Terminé
+C264,70-79,PACA,Premium,53,Faible,"loisirs,administratif,santé",Accompagnement,Visite à domicile,27.9,30,Facile,2025-12,1,1,Terminé
+C265,80+,Bretagne,Basique,54,Moyenne,santé,Accompagnement,Transport,73.64,30,Moyen,2025-05,1,1,Terminé
+C266,60-69,Bretagne,Premium,38,Moyenne,accompagnement,Accompagnement,Aide courses,33.92,30,Moyen,2025-01,1,1,Annulé
+C267,80+,Auvergne-Rhône-Alpes,Basique,58,Moyenne,loisirs,Santé,Atelier bien-être,65.63,90,Moyen,2025-07,1,0,Terminé
+C268,70-79,PACA,Basique,20,Moyenne,"accompagnement,loisirs,administratif",Accompagnement,Visite à domicile,66.41,30,Facile,2025-04,1,1,Terminé
+C269,80+,Île-de-France,Premium,10,Faible,santé,Accompagnement,Visite à domicile,74.9,90,Facile,2025-01,1,0,Confirmé
+C270,60-69,Auvergne-Rhône-Alpes,Basique,32,Moyenne,administratif,Administratif,Gestion courrier,41.95,60,Facile,2025-03,1,1,Terminé
+C271,60-69,Auvergne-Rhône-Alpes,Basique,20,Élevée,"loisirs,santé,administratif",Loisirs,Atelier mémoire,59.2,60,Facile,2025-06,1,0,Terminé
+C272,70-79,PACA,Premium,35,Élevée,"loisirs,administratif",Loisirs,Sortie culturelle,67.67,90,Facile,2025-08,1,1,Annulé
+C273,70-79,Île-de-France,Premium,7,Élevée,"santé,administratif",Santé,Séance kiné,29.77,90,Facile,2025-09,1,0,Confirmé
+C274,60-69,PACA,Premium,19,Élevée,"santé,loisirs",Administratif,Gestion courrier,76.49,30,Facile,2025-12,1,0,Annulé
+C275,70-79,PACA,Premium,22,Faible,"administratif,loisirs,santé",Santé,Atelier bien-être,76.41,30,Facile,2025-01,1,0,Confirmé
+C276,70-79,Occitanie,Basique,14,Élevée,"santé,loisirs",Accompagnement,Aide courses,43.41,60,Avancé,2025-12,1,0,Terminé
+C277,80+,Occitanie,Premium,39,Moyenne,"santé,administratif,loisirs",Santé,Suivi médical,24.96,90,Moyen,2025-05,1,1,Confirmé
+C278,70-79,Auvergne-Rhône-Alpes,Premium,28,Faible,"administratif,santé,loisirs",Accompagnement,Transport,59.52,90,Facile,2025-11,1,0,Terminé
+C279,60-69,Occitanie,Premium,8,Faible,"accompagnement,loisirs",Santé,Suivi médical,61.52,90,Facile,2025-05,1,0,Annulé
+C280,70-79,PACA,Premium,16,Faible,"administratif,accompagnement,loisirs",Santé,Atelier bien-être,32.54,30,Moyen,2025-06,1,0,Confirmé
+C281,60-69,Bretagne,Basique,48,Moyenne,"administratif,santé,loisirs",Administratif,Aide démarches,45.25,60,Facile,2025-05,1,1,Annulé
+C282,70-79,PACA,Premium,16,Élevée,"accompagnement,loisirs",Santé,Séance kiné,56.77,90,Facile,2025-03,1,1,Terminé
+C283,70-79,PACA,Premium,39,Faible,loisirs,Administratif,Accès numérique,41.29,30,Moyen,2025-05,1,1,Terminé
+C284,60-69,Auvergne-Rhône-Alpes,Basique,15,Faible,administratif,Accompagnement,Visite à domicile,39.06,90,Moyen,2025-09,1,1,Terminé
+C285,60-69,Occitanie,Premium,41,Moyenne,"santé,administratif,accompagnement",Loisirs,Atelier mémoire,66.86,90,Moyen,2025-11,1,0,Terminé
+C286,60-69,PACA,Basique,43,Moyenne,"santé,administratif,accompagnement",Santé,Atelier bien-être,50.85,30,Avancé,2025-06,1,1,Confirmé
+C287,60-69,Auvergne-Rhône-Alpes,Premium,31,Élevée,loisirs,Administratif,Gestion courrier,46.43,30,Facile,2025-07,1,1,Terminé
+C288,60-69,Occitanie,Basique,13,Élevée,loisirs,Loisirs,Atelier créatif,73.23,30,Facile,2025-07,1,1,Confirmé
+C289,60-69,Île-de-France,Premium,41,Faible,"accompagnement,santé",Santé,Atelier bien-être,29.58,60,Facile,2025-11,1,1,Terminé
+C290,80+,Île-de-France,Basique,1,Élevée,"administratif,santé",Santé,Suivi médical,20.58,90,Facile,2025-10,1,0,Terminé
+C291,70-79,PACA,Basique,12,Moyenne,"administratif,santé",Loisirs,Atelier créatif,36.29,90,Facile,2025-07,1,0,Confirmé
+C292,70-79,Auvergne-Rhône-Alpes,Premium,60,Faible,administratif,Santé,Atelier bien-être,40.25,30,Facile,2025-10,1,1,Terminé
+C293,80+,Bretagne,Basique,35,Moyenne,"administratif,accompagnement,loisirs",Accompagnement,Transport,74.65,30,Facile,2025-06,1,1,Terminé
+C294,60-69,PACA,Basique,35,Moyenne,"accompagnement,santé,loisirs",Santé,Atelier bien-être,35.59,60,Facile,2025-04,1,1,Confirmé
+C295,70-79,Occitanie,Basique,56,Faible,"administratif,accompagnement",Accompagnement,Transport,41.63,60,Facile,2025-12,1,1,Terminé
+C296,60-69,Occitanie,Premium,29,Moyenne,"loisirs,administratif,accompagnement",Accompagnement,Transport,48.06,60,Facile,2025-10,1,1,Terminé
+C297,70-79,Bretagne,Basique,23,Élevée,"accompagnement,loisirs,administratif",Loisirs,Atelier créatif,48.26,90,Avancé,2025-01,1,0,Terminé
+C298,80+,PACA,Premium,43,Faible,"administratif,santé,loisirs",Administratif,Accès numérique,39.46,60,Avancé,2025-06,1,1,Terminé
+C299,70-79,Occitanie,Basique,24,Faible,"santé,administratif",Santé,Suivi médical,59.13,90,Facile,2025-06,1,1,Terminé
+C300,60-69,PACA,Basique,24,Élevée,administratif,Accompagnement,Aide courses,35.52,90,Moyen,2025-01,1,0,Terminé
+C301,70-79,PACA,Basique,13,Moyenne,"administratif,loisirs,santé",Santé,Séance kiné,50.02,60,Moyen,2025-05,1,0,Terminé
+C302,80+,Occitanie,Basique,5,Moyenne,"santé,accompagnement",Administratif,Aide démarches,38.47,30,Moyen,2025-02,1,0,Annulé
+C303,80+,Auvergne-Rhône-Alpes,Premium,20,Moyenne,"santé,loisirs",Accompagnement,Aide courses,59.9,60,Facile,2025-12,1,0,Terminé
+C304,70-79,Bretagne,Basique,51,Moyenne,"accompagnement,santé,administratif",Santé,Séance kiné,39.36,90,Facile,2025-07,1,0,Terminé
+C305,80+,Bretagne,Basique,5,Moyenne,"administratif,santé,accompagnement",Administratif,Accès numérique,34.42,90,Facile,2025-12,1,1,Confirmé
+C306,80+,Auvergne-Rhône-Alpes,Basique,25,Faible,"loisirs,accompagnement",Santé,Séance kiné,39.1,60,Moyen,2025-06,1,0,Terminé
+C307,70-79,Occitanie,Basique,26,Faible,loisirs,Accompagnement,Visite à domicile,79.68,90,Moyen,2025-12,1,0,Terminé
+C308,70-79,Bretagne,Premium,18,Faible,"santé,accompagnement",Santé,Suivi médical,52.48,90,Moyen,2025-03,1,0,Terminé
+C309,60-69,PACA,Basique,10,Faible,"santé,accompagnement,loisirs",Accompagnement,Aide courses,56.82,30,Avancé,2025-08,1,0,Terminé
+C310,70-79,Auvergne-Rhône-Alpes,Premium,3,Faible,"santé,administratif",Loisirs,Atelier mémoire,51.78,30,Facile,2025-09,1,0,Terminé
+C311,70-79,Occitanie,Basique,10,Élevée,"administratif,santé,accompagnement",Loisirs,Atelier mémoire,35.05,90,Facile,2025-11,1,0,Terminé
+C312,60-69,Auvergne-Rhône-Alpes,Basique,13,Faible,"loisirs,administratif",Loisirs,Sortie culturelle,76.46,30,Facile,2025-08,1,0,Confirmé
+C313,70-79,Bretagne,Basique,51,Moyenne,"administratif,accompagnement,loisirs",Accompagnement,Visite à domicile,31.86,60,Facile,2025-07,1,1,Confirmé
+C314,80+,Île-de-France,Basique,52,Moyenne,santé,Santé,Suivi médical,22.52,60,Avancé,2025-03,1,1,Annulé
+C315,60-69,Occitanie,Basique,26,Moyenne,administratif,Accompagnement,Transport,45.97,30,Facile,2025-10,1,1,Terminé
+C316,60-69,Auvergne-Rhône-Alpes,Premium,11,Élevée,"accompagnement,administratif",Administratif,Aide démarches,39.39,60,Avancé,2025-06,1,0,Confirmé
+C317,70-79,Bretagne,Basique,36,Faible,"administratif,accompagnement",Accompagnement,Visite à domicile,21.32,30,Avancé,2025-12,1,0,Terminé
+C318,60-69,PACA,Basique,52,Faible,"loisirs,santé",Loisirs,Sortie culturelle,32.98,30,Moyen,2025-10,1,1,Confirmé
+C319,60-69,PACA,Premium,21,Moyenne,"administratif,santé,accompagnement",Loisirs,Atelier mémoire,44.85,90,Moyen,2025-12,1,1,Confirmé
+C320,70-79,PACA,Basique,31,Élevée,administratif,Administratif,Accès numérique,59.99,90,Moyen,2025-11,1,1,Confirmé
+C321,60-69,Auvergne-Rhône-Alpes,Basique,46,Élevée,santé,Loisirs,Sortie culturelle,28.72,90,Facile,2025-08,1,1,Terminé
+C322,80+,Occitanie,Basique,52,Faible,"santé,accompagnement,loisirs",Santé,Suivi médical,58.73,30,Facile,2025-08,1,1,Confirmé
+C323,60-69,Île-de-France,Premium,45,Moyenne,loisirs,Administratif,Accès numérique,63.73,30,Facile,2025-11,1,1,Confirmé
+C324,60-69,Île-de-France,Basique,55,Moyenne,"administratif,loisirs,accompagnement",Santé,Atelier bien-être,22.49,60,Moyen,2025-08,1,1,Terminé
+C325,60-69,Île-de-France,Basique,17,Élevée,"accompagnement,santé",Loisirs,Atelier créatif,66.9,30,Facile,2025-09,1,0,Terminé
+C326,70-79,PACA,Premium,53,Moyenne,loisirs,Administratif,Accès numérique,21.0,90,Facile,2025-07,1,1,Terminé
+C327,70-79,Occitanie,Premium,60,Faible,santé,Accompagnement,Visite à domicile,44.16,90,Moyen,2025-06,1,1,Terminé
+C328,70-79,Occitanie,Premium,21,Élevée,loisirs,Loisirs,Atelier créatif,60.15,90,Moyen,2025-11,1,1,Annulé
+C329,70-79,Auvergne-Rhône-Alpes,Basique,17,Faible,"santé,loisirs,administratif",Loisirs,Atelier créatif,35.67,30,Moyen,2025-09,1,0,Terminé
+C330,70-79,Bretagne,Basique,19,Faible,administratif,Accompagnement,Aide courses,39.14,30,Facile,2025-09,1,1,Confirmé
+C331,70-79,PACA,Premium,54,Moyenne,santé,Accompagnement,Aide courses,27.52,90,Avancé,2025-04,1,1,Terminé
+C332,60-69,PACA,Premium,33,Moyenne,"accompagnement,loisirs,santé",Loisirs,Atelier mémoire,54.33,90,Facile,2025-12,1,0,Terminé
+C333,70-79,Bretagne,Basique,57,Faible,loisirs,Accompagnement,Visite à domicile,51.08,60,Facile,2025-04,1,1,Terminé
+C334,70-79,Île-de-France,Basique,25,Élevée,"accompagnement,loisirs,santé",Accompagnement,Aide courses,53.88,60,Avancé,2025-04,1,0,Terminé
+C335,60-69,Auvergne-Rhône-Alpes,Basique,45,Faible,"loisirs,accompagnement",Administratif,Gestion courrier,71.55,30,Moyen,2025-10,1,0,Confirmé
+C336,70-79,Occitanie,Basique,39,Élevée,accompagnement,Loisirs,Atelier mémoire,65.95,30,Facile,2025-04,1,1,Confirmé
+C337,70-79,Bretagne,Basique,27,Faible,"accompagnement,santé",Loisirs,Sortie culturelle,38.8,30,Facile,2025-11,1,1,Terminé
+C338,80+,Île-de-France,Basique,24,Faible,"accompagnement,santé,loisirs",Accompagnement,Transport,21.53,30,Facile,2025-06,1,1,Annulé
+C339,70-79,Occitanie,Basique,16,Faible,santé,Accompagnement,Aide courses,74.71,60,Avancé,2025-09,1,1,Terminé
+C340,60-69,Auvergne-Rhône-Alpes,Basique,27,Élevée,"administratif,accompagnement",Administratif,Aide démarches,60.96,90,Moyen,2025-08,1,0,Terminé
+C341,80+,Île-de-France,Premium,28,Moyenne,"loisirs,santé",Accompagnement,Aide courses,23.22,90,Avancé,2025-06,1,1,Confirmé
+C342,80+,PACA,Basique,49,Faible,loisirs,Loisirs,Atelier mémoire,78.87,90,Moyen,2025-03,1,0,Terminé
+C343,70-79,Île-de-France,Basique,51,Faible,"santé,administratif",Santé,Atelier bien-être,40.99,60,Moyen,2025-08,1,1,Terminé
+C344,80+,PACA,Premium,31,Moyenne,"loisirs,administratif",Administratif,Gestion courrier,35.34,60,Facile,2025-02,1,1,Terminé
+C345,60-69,Bretagne,Basique,13,Élevée,"accompagnement,administratif",Accompagnement,Visite à domicile,44.91,30,Facile,2025-06,1,1,Terminé
+C346,70-79,Île-de-France,Basique,15,Faible,"loisirs,administratif",Santé,Atelier bien-être,38.69,30,Facile,2025-04,1,1,Terminé
+C347,70-79,Île-de-France,Basique,56,Faible,"santé,administratif,loisirs",Santé,Atelier bien-être,30.07,60,Moyen,2025-01,1,1,Terminé
+C348,70-79,Occitanie,Basique,17,Faible,"administratif,loisirs,santé",Santé,Séance kiné,22.14,60,Facile,2025-02,1,1,Confirmé
+C349,60-69,Bretagne,Basique,53,Moyenne,loisirs,Loisirs,Atelier créatif,66.39,60,Facile,2025-10,1,1,Confirmé
+C350,80+,PACA,Premium,39,Faible,"administratif,accompagnement",Accompagnement,Transport,36.02,60,Facile,2025-11,1,1,Terminé
+C351,60-69,Occitanie,Premium,37,Élevée,"administratif,loisirs",Loisirs,Atelier créatif,31.23,90,Facile,2025-12,1,1,Terminé
+C352,80+,Occitanie,Premium,50,Faible,"accompagnement,loisirs",Santé,Séance kiné,79.63,60,Facile,2025-09,1,0,Terminé
+C353,70-79,Auvergne-Rhône-Alpes,Basique,33,Élevée,loisirs,Santé,Suivi médical,77.33,90,Moyen,2025-12,1,1,Terminé
+C354,60-69,Occitanie,Premium,9,Moyenne,loisirs,Administratif,Aide démarches,37.05,90,Avancé,2025-04,1,0,Terminé
+C355,70-79,PACA,Basique,60,Moyenne,"administratif,accompagnement",Accompagnement,Transport,52.82,60,Moyen,2025-06,1,1,Confirmé
+C356,60-69,Occitanie,Premium,32,Faible,loisirs,Accompagnement,Visite à domicile,65.81,30,Moyen,2025-06,1,1,Terminé
+C357,70-79,Auvergne-Rhône-Alpes,Basique,33,Moyenne,loisirs,Administratif,Accès numérique,68.5,90,Moyen,2025-04,1,0,Terminé
+C358,60-69,PACA,Basique,20,Moyenne,administratif,Santé,Atelier bien-être,53.86,30,Moyen,2025-11,1,0,Confirmé
+C359,70-79,PACA,Basique,35,Moyenne,loisirs,Loisirs,Atelier créatif,54.55,90,Facile,2025-05,1,1,Confirmé
+C360,60-69,Île-de-France,Basique,36,Élevée,santé,Loisirs,Atelier mémoire,26.69,60,Avancé,2025-08,1,0,Annulé
+C361,70-79,Bretagne,Basique,44,Élevée,"loisirs,administratif",Loisirs,Atelier mémoire,73.41,30,Facile,2025-02,1,1,Terminé
+C362,70-79,Occitanie,Basique,14,Moyenne,santé,Administratif,Aide démarches,61.48,60,Avancé,2025-02,1,0,Confirmé
+C363,80+,Auvergne-Rhône-Alpes,Basique,32,Faible,"loisirs,santé,accompagnement",Accompagnement,Transport,79.15,30,Moyen,2025-04,1,0,Terminé
+C364,70-79,Île-de-France,Basique,53,Moyenne,"loisirs,administratif",Loisirs,Atelier créatif,64.96,90,Facile,2025-07,1,1,Confirmé
+C365,70-79,Auvergne-Rhône-Alpes,Premium,60,Moyenne,"administratif,santé",Administratif,Aide démarches,62.44,60,Facile,2025-10,1,1,Terminé
+C366,60-69,PACA,Premium,14,Moyenne,santé,Administratif,Gestion courrier,56.02,60,Avancé,2025-03,1,1,Terminé
+C367,60-69,Occitanie,Basique,11,Élevée,"accompagnement,administratif",Loisirs,Atelier créatif,40.4,90,Avancé,2025-05,1,0,Terminé
+C368,60-69,Auvergne-Rhône-Alpes,Basique,22,Élevée,loisirs,Loisirs,Sortie culturelle,22.49,30,Moyen,2025-06,1,0,Terminé
+C369,70-79,PACA,Premium,43,Faible,"accompagnement,administratif",Santé,Séance kiné,38.17,90,Facile,2025-07,1,1,Confirmé
+C370,70-79,Île-de-France,Premium,4,Faible,santé,Santé,Séance kiné,49.23,30,Moyen,2025-09,1,0,Annulé
+C371,60-69,Occitanie,Basique,19,Moyenne,administratif,Administratif,Gestion courrier,36.61,30,Facile,2025-07,1,0,Terminé
+C372,60-69,PACA,Premium,53,Élevée,"administratif,santé",Santé,Atelier bien-être,53.17,60,Facile,2025-03,1,1,Terminé
+C373,70-79,Bretagne,Basique,38,Moyenne,"administratif,accompagnement,santé",Administratif,Gestion courrier,31.7,60,Moyen,2025-10,1,1,Terminé
+C374,60-69,PACA,Basique,39,Élevée,santé,Administratif,Gestion courrier,35.74,30,Facile,2025-04,1,1,Terminé
+C375,70-79,Bretagne,Premium,52,Faible,santé,Accompagnement,Aide courses,56.05,30,Facile,2025-03,1,1,Terminé
+C376,60-69,Auvergne-Rhône-Alpes,Basique,0,Faible,"administratif,loisirs",Santé,Suivi médical,29.88,60,Facile,2025-03,1,0,Terminé
+C377,70-79,Occitanie,Premium,43,Élevée,accompagnement,Santé,Suivi médical,43.65,60,Moyen,2025-07,1,1,Terminé
+C378,70-79,Bretagne,Basique,10,Élevée,administratif,Loisirs,Sortie culturelle,48.58,90,Moyen,2025-03,1,1,Confirmé
+C379,80+,Île-de-France,Basique,43,Moyenne,loisirs,Loisirs,Atelier mémoire,46.57,90,Facile,2025-07,1,0,Terminé
+C380,80+,Bretagne,Basique,43,Faible,administratif,Accompagnement,Aide courses,74.79,60,Moyen,2025-03,1,1,Terminé
+C381,80+,PACA,Basique,57,Faible,"accompagnement,administratif",Santé,Suivi médical,65.92,90,Facile,2025-09,1,1,Terminé
+C382,70-79,Auvergne-Rhône-Alpes,Basique,53,Élevée,"loisirs,administratif",Loisirs,Atelier mémoire,46.07,30,Avancé,2025-11,1,0,Annulé
+C383,70-79,Île-de-France,Basique,28,Moyenne,santé,Santé,Suivi médical,37.35,30,Facile,2025-10,1,1,Terminé
+C384,80+,PACA,Basique,25,Moyenne,"santé,accompagnement",Accompagnement,Aide courses,55.12,90,Facile,2025-08,1,1,Terminé
+C385,70-79,Auvergne-Rhône-Alpes,Basique,54,Élevée,"loisirs,administratif",Accompagnement,Transport,47.41,60,Facile,2025-04,1,1,Terminé
+C386,80+,PACA,Basique,48,Faible,santé,Santé,Séance kiné,29.51,90,Moyen,2025-05,1,1,Terminé
+C387,80+,Auvergne-Rhône-Alpes,Basique,17,Faible,"loisirs,accompagnement,administratif",Santé,Séance kiné,76.4,30,Facile,2025-10,1,1,Confirmé
+C388,70-79,PACA,Premium,59,Moyenne,administratif,Administratif,Gestion courrier,31.06,30,Facile,2025-01,1,1,Confirmé
+C389,70-79,Bretagne,Premium,42,Faible,"administratif,loisirs",Accompagnement,Visite à domicile,45.97,30,Avancé,2025-12,1,1,Terminé
+C390,80+,PACA,Basique,27,Élevée,"santé,accompagnement",Accompagnement,Aide courses,28.57,60,Facile,2025-09,1,1,Terminé
+C391,80+,Auvergne-Rhône-Alpes,Premium,34,Faible,"loisirs,accompagnement,administratif",Accompagnement,Transport,24.46,30,Avancé,2025-08,1,0,Terminé
+C392,70-79,Bretagne,Basique,8,Faible,"santé,loisirs",Santé,Séance kiné,56.61,90,Moyen,2025-01,1,1,Terminé
+C393,70-79,Auvergne-Rhône-Alpes,Premium,38,Élevée,"loisirs,santé",Administratif,Aide démarches,23.34,30,Avancé,2025-12,1,0,Confirmé
+C394,60-69,Bretagne,Basique,56,Élevée,"accompagnement,administratif",Administratif,Accès numérique,43.07,90,Facile,2025-09,1,1,Terminé
+C395,80+,Auvergne-Rhône-Alpes,Basique,11,Moyenne,loisirs,Santé,Séance kiné,20.55,60,Facile,2025-06,1,0,Terminé
+C396,70-79,PACA,Basique,48,Moyenne,"santé,accompagnement",Loisirs,Sortie culturelle,27.88,90,Facile,2025-11,1,1,Confirmé
+C397,70-79,PACA,Basique,27,Moyenne,"administratif,loisirs,santé",Loisirs,Atelier créatif,30.38,90,Facile,2025-04,1,1,Confirmé
+C398,80+,Île-de-France,Basique,56,Faible,"accompagnement,administratif",Santé,Séance kiné,44.67,60,Moyen,2025-12,1,0,Annulé
+C399,70-79,Auvergne-Rhône-Alpes,Basique,54,Moyenne,"santé,administratif",Administratif,Accès numérique,32.66,90,Facile,2025-02,1,1,Terminé
+C400,80+,PACA,Basique,60,Faible,accompagnement,Accompagnement,Visite à domicile,37.38,30,Facile,2025-03,1,1,Terminé
+C401,60-69,Auvergne-Rhône-Alpes,Basique,37,Élevée,"santé,loisirs,accompagnement",Loisirs,Sortie culturelle,41.52,30,Moyen,2025-04,1,0,Confirmé
+C402,70-79,Occitanie,Basique,34,Moyenne,"administratif,loisirs",Santé,Séance kiné,71.97,60,Facile,2025-07,1,0,Terminé
+C403,80+,Bretagne,Basique,38,Faible,administratif,Accompagnement,Visite à domicile,29.38,60,Moyen,2025-03,1,1,Terminé
+C404,70-79,Bretagne,Basique,41,Moyenne,"loisirs,santé,administratif",Loisirs,Atelier mémoire,38.61,30,Facile,2025-04,1,1,Annulé
+C405,70-79,Île-de-France,Basique,5,Moyenne,"santé,administratif,accompagnement",Administratif,Gestion courrier,57.7,90,Moyen,2025-08,1,0,Terminé
+C406,70-79,Bretagne,Basique,37,Faible,accompagnement,Santé,Séance kiné,28.0,60,Facile,2025-06,1,1,Terminé
+C407,70-79,Bretagne,Basique,58,Élevée,accompagnement,Accompagnement,Transport,38.94,30,Facile,2025-07,1,1,Annulé
+C408,70-79,Occitanie,Basique,14,Moyenne,"accompagnement,loisirs,santé",Loisirs,Atelier mémoire,30.24,90,Avancé,2025-03,1,0,Terminé
+C409,70-79,PACA,Basique,32,Élevée,"santé,administratif,accompagnement",Santé,Séance kiné,60.86,90,Moyen,2025-03,1,1,Annulé
+C410,80+,Auvergne-Rhône-Alpes,Basique,2,Faible,"santé,administratif",Accompagnement,Visite à domicile,23.31,60,Facile,2025-06,1,0,Terminé
+C411,70-79,Bretagne,Basique,5,Élevée,"administratif,accompagnement,santé",Administratif,Aide démarches,59.73,60,Facile,2025-10,1,1,Confirmé
+C412,70-79,Île-de-France,Basique,2,Élevée,"loisirs,accompagnement,administratif",Santé,Atelier bien-être,64.21,60,Facile,2025-11,1,1,Terminé
+C413,70-79,Île-de-France,Basique,37,Faible,"accompagnement,santé,administratif",Accompagnement,Visite à domicile,56.35,60,Facile,2025-09,1,1,Terminé
+C414,70-79,Occitanie,Basique,53,Moyenne,"accompagnement,loisirs,santé",Santé,Atelier bien-être,22.94,60,Facile,2025-05,1,1,Terminé
+C415,70-79,Bretagne,Basique,50,Faible,"administratif,loisirs,accompagnement",Santé,Suivi médical,27.57,60,Facile,2025-09,1,0,Terminé
+C416,70-79,Occitanie,Basique,60,Élevée,administratif,Accompagnement,Visite à domicile,59.62,60,Facile,2025-05,1,1,Terminé
+C417,60-69,Île-de-France,Basique,0,Faible,accompagnement,Accompagnement,Transport,30.55,60,Moyen,2025-10,1,0,Confirmé
+C418,80+,Occitanie,Basique,39,Faible,accompagnement,Santé,Suivi médical,41.05,30,Moyen,2025-03,1,0,Terminé
+C419,60-69,Auvergne-Rhône-Alpes,Basique,38,Élevée,"loisirs,santé",Loisirs,Atelier créatif,72.72,30,Facile,2025-02,1,0,Confirmé
+C420,80+,PACA,Basique,31,Moyenne,santé,Accompagnement,Aide courses,54.47,60,Moyen,2025-05,1,1,Confirmé
+C421,70-79,Occitanie,Premium,35,Faible,santé,Accompagnement,Visite à domicile,33.76,90,Facile,2025-06,1,1,Terminé
+C422,70-79,Auvergne-Rhône-Alpes,Premium,13,Faible,"santé,administratif",Administratif,Accès numérique,33.58,60,Facile,2025-04,1,1,Annulé
+C423,80+,PACA,Basique,11,Faible,"loisirs,santé",Accompagnement,Visite à domicile,46.96,90,Facile,2025-10,1,0,Annulé
+C424,60-69,Île-de-France,Basique,28,Moyenne,"accompagnement,loisirs",Accompagnement,Aide courses,60.83,60,Facile,2025-01,1,0,Annulé
+C425,70-79,Auvergne-Rhône-Alpes,Premium,41,Faible,santé,Santé,Atelier bien-être,20.42,30,Facile,2025-04,1,1,Terminé
+C426,60-69,Occitanie,Premium,4,Faible,"administratif,loisirs,accompagnement",Santé,Atelier bien-être,51.3,60,Facile,2025-03,1,1,Annulé
+C427,60-69,PACA,Premium,45,Moyenne,"accompagnement,loisirs,administratif",Santé,Séance kiné,36.89,30,Facile,2025-12,1,1,Terminé
+C428,80+,PACA,Basique,4,Faible,"loisirs,santé",Loisirs,Atelier mémoire,50.0,90,Facile,2025-07,1,1,Confirmé
+C429,70-79,Bretagne,Basique,59,Moyenne,"administratif,loisirs",Accompagnement,Transport,74.61,60,Facile,2025-08,1,1,Terminé
+C430,60-69,PACA,Basique,60,Moyenne,"loisirs,accompagnement",Santé,Suivi médical,59.86,90,Moyen,2025-08,1,1,Terminé
+C431,70-79,Auvergne-Rhône-Alpes,Basique,49,Faible,"loisirs,administratif,santé",Loisirs,Atelier créatif,36.15,90,Facile,2025-12,1,1,Terminé
+C432,60-69,Île-de-France,Basique,21,Élevée,loisirs,Loisirs,Sortie culturelle,23.34,60,Facile,2025-07,1,1,Terminé
+C433,60-69,PACA,Premium,45,Élevée,"administratif,santé",Administratif,Gestion courrier,24.9,60,Facile,2025-06,1,0,Terminé
+C434,70-79,Occitanie,Basique,21,Élevée,"administratif,santé,loisirs",Accompagnement,Aide courses,30.9,90,Facile,2025-04,1,1,Terminé
+C435,70-79,PACA,Basique,2,Faible,"santé,accompagnement,administratif",Accompagnement,Transport,26.57,90,Facile,2025-12,1,0,Annulé
+C436,70-79,Bretagne,Premium,27,Moyenne,"loisirs,administratif",Loisirs,Atelier mémoire,44.41,90,Moyen,2025-11,1,0,Annulé
+C437,60-69,Occitanie,Basique,40,Faible,"accompagnement,loisirs",Santé,Atelier bien-être,60.82,90,Facile,2025-03,1,1,Terminé
+C438,60-69,Bretagne,Basique,25,Élevée,"loisirs,accompagnement",Santé,Séance kiné,76.83,60,Moyen,2025-12,1,1,Terminé
+C439,80+,PACA,Premium,11,Moyenne,"santé,administratif",Administratif,Aide démarches,37.35,90,Facile,2025-11,1,1,Terminé
+C440,70-79,Bretagne,Premium,59,Faible,"accompagnement,administratif,loisirs",Accompagnement,Transport,22.97,30,Moyen,2025-05,1,0,Terminé
+C441,70-79,Bretagne,Basique,49,Faible,santé,Santé,Séance kiné,58.9,90,Avancé,2025-03,1,1,Confirmé
+C442,80+,Occitanie,Premium,33,Moyenne,accompagnement,Accompagnement,Aide courses,76.07,30,Facile,2025-06,1,0,Terminé
+C443,70-79,PACA,Basique,12,Élevée,"accompagnement,administratif,loisirs",Santé,Séance kiné,46.85,60,Facile,2025-02,1,0,Terminé
+C444,80+,Occitanie,Basique,4,Faible,administratif,Loisirs,Sortie culturelle,22.67,90,Facile,2025-10,1,0,Terminé
+C445,60-69,Île-de-France,Basique,20,Élevée,accompagnement,Loisirs,Sortie culturelle,70.89,90,Facile,2025-02,1,1,Terminé
+C446,80+,PACA,Basique,31,Faible,santé,Accompagnement,Aide courses,51.67,30,Facile,2025-10,1,0,Confirmé
+C447,80+,Bretagne,Basique,48,Faible,"santé,administratif,accompagnement",Santé,Suivi médical,77.93,30,Facile,2025-06,1,1,Terminé
+C448,60-69,Occitanie,Basique,37,Moyenne,"loisirs,accompagnement",Accompagnement,Visite à domicile,75.02,90,Facile,2025-10,1,0,Terminé
+C449,60-69,PACA,Basique,58,Élevée,"administratif,loisirs",Loisirs,Sortie culturelle,31.76,30,Moyen,2025-11,1,1,Terminé
+C450,70-79,PACA,Premium,8,Moyenne,"administratif,santé",Santé,Séance kiné,43.0,90,Moyen,2025-07,1,0,Terminé
+C451,60-69,Auvergne-Rhône-Alpes,Basique,14,Élevée,"santé,administratif,accompagnement",Santé,Atelier bien-être,75.99,90,Moyen,2025-03,1,0,Terminé
+C452,60-69,Bretagne,Basique,17,Faible,"santé,administratif",Accompagnement,Transport,30.49,90,Facile,2025-08,1,1,Confirmé
+C453,70-79,Auvergne-Rhône-Alpes,Premium,47,Élevée,"loisirs,accompagnement",Loisirs,Sortie culturelle,47.0,30,Avancé,2025-05,1,1,Terminé
+C454,70-79,Île-de-France,Basique,42,Faible,"administratif,santé",Accompagnement,Aide courses,39.9,90,Moyen,2025-01,1,1,Confirmé
+C455,70-79,Île-de-France,Basique,5,Faible,"santé,accompagnement",Accompagnement,Visite à domicile,66.96,90,Facile,2025-06,1,1,Annulé
+C456,80+,Île-de-France,Premium,39,Moyenne,"administratif,accompagnement,loisirs",Accompagnement,Transport,66.04,60,Facile,2025-02,1,1,Terminé
+C457,70-79,Bretagne,Basique,3,Moyenne,administratif,Santé,Séance kiné,53.94,60,Facile,2025-02,1,0,Terminé
+C458,80+,Occitanie,Basique,52,Faible,"accompagnement,administratif",Loisirs,Atelier mémoire,53.25,90,Facile,2025-10,1,0,Terminé
+C459,70-79,Auvergne-Rhône-Alpes,Basique,22,Élevée,"administratif,santé",Accompagnement,Transport,56.4,30,Moyen,2025-04,1,1,Terminé
+C460,80+,Auvergne-Rhône-Alpes,Basique,3,Faible,"loisirs,administratif,santé",Accompagnement,Aide courses,72.97,90,Avancé,2025-03,1,1,Terminé
+C461,80+,Occitanie,Premium,42,Faible,santé,Administratif,Gestion courrier,47.17,60,Moyen,2025-07,1,0,Terminé
+C462,70-79,Occitanie,Basique,44,Moyenne,"accompagnement,loisirs,administratif",Santé,Suivi médical,26.15,30,Facile,2025-09,1,1,Terminé
+C463,80+,Bretagne,Premium,49,Moyenne,"santé,accompagnement",Loisirs,Sortie culturelle,66.98,90,Facile,2025-01,1,1,Terminé
+C464,70-79,Occitanie,Basique,31,Moyenne,"loisirs,administratif,accompagnement",Loisirs,Sortie culturelle,36.17,30,Facile,2025-01,1,0,Terminé
+C465,70-79,PACA,Basique,50,Moyenne,loisirs,Santé,Atelier bien-être,60.12,30,Facile,2025-12,1,0,Annulé
+C466,80+,Occitanie,Basique,25,Faible,santé,Administratif,Accès numérique,58.71,90,Moyen,2025-07,1,1,Confirmé
+C467,60-69,Auvergne-Rhône-Alpes,Basique,57,Élevée,"santé,loisirs,accompagnement",Santé,Séance kiné,75.25,60,Moyen,2025-09,1,0,Terminé
+C468,60-69,Île-de-France,Basique,16,Moyenne,"accompagnement,administratif,loisirs",Administratif,Accès numérique,29.86,90,Facile,2025-10,1,0,Terminé
+C469,80+,Auvergne-Rhône-Alpes,Basique,54,Moyenne,"administratif,accompagnement,loisirs",Santé,Suivi médical,51.8,30,Moyen,2025-07,1,1,Terminé
+C470,80+,Bretagne,Premium,21,Faible,loisirs,Accompagnement,Visite à domicile,46.58,60,Facile,2025-08,1,1,Terminé
+C471,70-79,Auvergne-Rhône-Alpes,Premium,49,Élevée,santé,Loisirs,Sortie culturelle,44.82,30,Avancé,2025-10,1,1,Annulé
+C472,60-69,Île-de-France,Basique,47,Moyenne,accompagnement,Loisirs,Sortie culturelle,73.25,90,Facile,2025-08,1,1,Confirmé
+C473,80+,Île-de-France,Basique,25,Faible,"santé,accompagnement,loisirs",Loisirs,Atelier mémoire,66.48,90,Moyen,2025-07,1,1,Confirmé
+C474,70-79,Auvergne-Rhône-Alpes,Basique,13,Moyenne,"santé,accompagnement",Loisirs,Atelier créatif,37.29,60,Facile,2025-10,1,0,Terminé
+C475,80+,Île-de-France,Premium,58,Faible,"administratif,accompagnement",Administratif,Accès numérique,68.69,60,Avancé,2025-11,1,1,Terminé
+C476,80+,PACA,Basique,5,Élevée,"santé,accompagnement",Accompagnement,Visite à domicile,64.98,90,Moyen,2025-05,1,0,Confirmé
+C477,60-69,PACA,Basique,42,Moyenne,administratif,Accompagnement,Transport,33.06,30,Facile,2025-08,1,1,Confirmé
+C478,70-79,Bretagne,Basique,32,Élevée,"loisirs,accompagnement,administratif",Loisirs,Atelier mémoire,36.76,90,Moyen,2025-07,1,1,Terminé
+C479,60-69,Auvergne-Rhône-Alpes,Basique,12,Élevée,"loisirs,accompagnement,santé",Administratif,Accès numérique,48.3,30,Facile,2025-05,1,0,Confirmé
+C480,80+,Bretagne,Premium,40,Élevée,"administratif,accompagnement",Administratif,Accès numérique,60.16,30,Facile,2025-02,1,1,Confirmé
+C481,80+,Bretagne,Basique,29,Faible,loisirs,Accompagnement,Visite à domicile,64.62,90,Facile,2025-05,1,1,Confirmé
+C482,80+,Auvergne-Rhône-Alpes,Basique,45,Moyenne,accompagnement,Santé,Suivi médical,44.2,60,Facile,2025-04,1,0,Confirmé
+C483,70-79,Île-de-France,Premium,38,Faible,"loisirs,administratif",Administratif,Gestion courrier,75.2,30,Facile,2025-08,1,1,Terminé
+C484,80+,Occitanie,Basique,21,Faible,"loisirs,administratif,accompagnement",Santé,Séance kiné,41.37,60,Facile,2025-03,1,0,Terminé
+C485,60-69,Occitanie,Basique,28,Élevée,loisirs,Loisirs,Atelier créatif,51.21,60,Facile,2025-11,1,0,Terminé
+C486,80+,Auvergne-Rhône-Alpes,Premium,44,Faible,santé,Accompagnement,Aide courses,42.28,60,Facile,2025-08,1,1,Terminé
+C487,70-79,PACA,Premium,45,Faible,"santé,accompagnement",Accompagnement,Transport,69.07,90,Moyen,2025-02,1,0,Confirmé
+C488,70-79,Bretagne,Basique,59,Moyenne,"loisirs,santé,accompagnement",Accompagnement,Transport,49.85,30,Avancé,2025-10,1,1,Terminé
+C489,70-79,PACA,Basique,40,Faible,"accompagnement,santé",Santé,Atelier bien-être,63.76,30,Moyen,2025-01,1,0,Terminé
+C490,80+,Bretagne,Premium,11,Moyenne,"accompagnement,administratif",Santé,Atelier bien-être,72.4,90,Facile,2025-07,1,0,Terminé
+C491,60-69,PACA,Basique,37,Élevée,loisirs,Loisirs,Atelier mémoire,51.77,60,Facile,2025-12,1,0,Annulé
+C492,80+,PACA,Basique,46,Faible,"administratif,santé",Loisirs,Atelier mémoire,68.53,60,Facile,2025-08,1,1,Terminé
+C493,70-79,PACA,Premium,0,Élevée,accompagnement,Loisirs,Sortie culturelle,33.1,60,Avancé,2025-09,1,1,Terminé
+C494,60-69,Bretagne,Basique,50,Faible,"accompagnement,administratif,santé",Accompagnement,Visite à domicile,67.2,30,Moyen,2025-02,1,0,Terminé
+C495,60-69,Île-de-France,Basique,55,Faible,administratif,Accompagnement,Visite à domicile,28.57,60,Facile,2025-12,1,1,Terminé
+C496,70-79,PACA,Basique,59,Moyenne,"loisirs,administratif,accompagnement",Santé,Suivi médical,55.24,90,Avancé,2025-11,1,1,Terminé
+C497,80+,Occitanie,Basique,32,Faible,"accompagnement,loisirs",Accompagnement,Aide courses,53.59,30,Avancé,2025-10,1,1,Terminé
+C498,80+,Occitanie,Basique,39,Faible,accompagnement,Accompagnement,Transport,41.3,90,Moyen,2025-04,1,1,Terminé
+C499,80+,PACA,Premium,47,Moyenne,"accompagnement,administratif,loisirs",Santé,Suivi médical,39.01,90,Facile,2025-07,1,1,Confirmé
+C500,70-79,Bretagne,Basique,27,Faible,"accompagnement,loisirs,administratif",Accompagnement,Transport,77.47,30,Moyen,2025-02,1,0,Confirmé

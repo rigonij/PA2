@@ -328,22 +328,25 @@ func StripeWebhook(database *sql.DB) http.HandlerFunc {
 						`UPDATE subscribe SET Is_Active = 0 WHERE Id_USER = ?`,
 						userID,
 					)
+
 					startDate := time.Now()
 					endDate := startDate.AddDate(0, duration, 0)
+
 					_, err := database.Exec(`
-                        INSERT INTO subscribe (Id_USER, Id_SUBSCRIPTION_PLAN, Start_Date, End_Date, Is_Active)
-                        VALUES (?, ?, ?, ?, 1)
-                    `, userID, planID, startDate.Format("2006-01-02"), endDate.Format("2006-01-02"))
+						INSERT INTO subscribe (Id_USER, Id_SUBSCRIPTION_PLAN, Start_Date, End_Date, Is_Active)
+						VALUES (?, ?, ?, ?, 1)
+					`, userID, planID, startDate.Format("2006-01-02"), endDate.Format("2006-01-02"))
+
 					if err != nil {
 						fmt.Println("Erreur INSERT subscribe:", err.Error())
 					} else {
 						fmt.Println("Abonnement créé avec succès pour userID:", userID)
 					}
 				}
-
 			} else if typeVal == "shop" {
 				orderIDStr := checkoutSess.Metadata["order_id"]
 				userIDStr := checkoutSess.Metadata["user_id"]
+
 				orderID, _ := strconv.Atoi(orderIDStr)
 				userID, _ := strconv.Atoi(userIDStr)
 
@@ -359,10 +362,10 @@ func StripeWebhook(database *sql.DB) http.HandlerFunc {
 					}
 					fmt.Println("Commande boutique payée:", orderID)
 				}
-
 			} else if typeVal == "event" {
 				userIDStr := checkoutSess.Metadata["user_id"]
 				eventIDStr := checkoutSess.Metadata["event_id"]
+
 				userID, _ := strconv.Atoi(userIDStr)
 				eventID, _ := strconv.Atoi(eventIDStr)
 
@@ -382,9 +385,9 @@ func StripeWebhook(database *sql.DB) http.HandlerFunc {
 					)
 					if err := row.Scan(&title, &location, &dt); err == nil {
 						_, _ = database.Exec(`
-                            INSERT INTO planning_item (Id_USER, Item_Type, Ref_ID, Title, Start_At, Location, Details)
-                            VALUES (?, 'event', ?, ?, ?, ?, '')
-                        `, userID, eventID, title, dt, location)
+							INSERT INTO planning_item (Id_USER, Item_Type, Ref_ID, Title, Start_At, Location, Details)
+							VALUES (?, 'event', ?, ?, ?, ?, '')
+						`, userID, eventID, title, dt, location)
 					}
 
 					fmt.Println("Inscription event confirmée: userID=", userID, "eventID=", eventID)
@@ -411,7 +414,6 @@ func GetSeniorSubscription(database *sql.DB) http.HandlerFunc {
 		var name string
 		var displayDate string
 		var isActive int
-
 		err = database.QueryRow(`
 			SELECT sp.Name,
 			       DATE_FORMAT(s.End_Date, '%d/%m/%Y'),
@@ -479,7 +481,6 @@ func GetSeniorPayments(database *sql.DB) http.HandlerFunc {
 			var planName string
 			var startDateRaw []byte
 			var price float64
-
 			if err := rows.Scan(&planName, &price, &startDateRaw); err != nil {
 				continue
 			}
@@ -523,7 +524,7 @@ func EventCheckout(database *sql.DB) http.HandlerFunc {
 		}
 
 		var title string
-		var price int
+		var price float64
 		row := database.QueryRow(`SELECT Title, COALESCE(Price, 0) FROM event WHERE Id_EVENT = ? LIMIT 1`, req.EventID)
 		if err := row.Scan(&title, &price); err != nil || price <= 0 {
 			w.WriteHeader(http.StatusBadRequest)
@@ -532,7 +533,12 @@ func EventCheckout(database *sql.DB) http.HandlerFunc {
 		}
 
 		stripe.Key = os.Getenv("STRIPE_SECRET_KEY")
-		baseURL := os.Getenv("APP_BASE_URL")
+
+		appBase := os.Getenv("APP_BASE_URL")
+		if appBase == "" {
+			appBase = "http://localhost/PA_2i2/public"
+		}
+
 		userIDStr := strconv.Itoa(userID)
 		eventIDStr := strconv.Itoa(req.EventID)
 
@@ -545,14 +551,14 @@ func EventCheckout(database *sql.DB) http.HandlerFunc {
 						ProductData: &stripe.CheckoutSessionLineItemPriceDataProductDataParams{
 							Name: stripe.String("Événement : " + title),
 						},
-						UnitAmount: stripe.Int64(int64(price)),
+						UnitAmount: stripe.Int64(int64(math.Round(price * 100))),
 					},
 					Quantity: stripe.Int64(1),
 				},
 			},
 			Mode:       stripe.String("payment"),
-			SuccessURL: stripe.String(baseURL + "/catalogue-evenements.php?status=success&event_id=" + eventIDStr),
-			CancelURL:  stripe.String(baseURL + "/catalogue-evenements.php?status=cancel"),
+			SuccessURL: stripe.String(appBase + "/catalogue-evenements.php?status=success&event_id=" + eventIDStr),
+			CancelURL:  stripe.String(appBase + "/catalogue-evenements.php?status=cancel"),
 			Metadata: map[string]string{
 				"type":     "event",
 				"user_id":  userIDStr,

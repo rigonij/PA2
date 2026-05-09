@@ -124,14 +124,12 @@ type SigninResponse struct {
 func Signin(database *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-
 		var req SigninRequest
 		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			json.NewEncoder(w).Encode(SigninResponse{Success: false, Message: "Corps de requête invalide"})
 			return
 		}
-
 		row := database.QueryRow("SELECT Id_USER, Password FROM user WHERE Email = ?", req.Email)
 		var userID int
 		var hashedPassword string
@@ -144,7 +142,6 @@ func Signin(database *sql.DB) http.HandlerFunc {
 			json.NewEncoder(w).Encode(SigninResponse{Success: false, Message: "Erreur serveur"})
 			return
 		}
-
 		if err := bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(req.Password)); err != nil {
 			w.WriteHeader(http.StatusUnauthorized)
 			json.NewEncoder(w).Encode(SigninResponse{Success: false, Message: "Identifiants incorrects"})
@@ -163,29 +160,36 @@ func Signin(database *sql.DB) http.HandlerFunc {
 			return
 		}
 
+		banned, banType, banReason, bannedUntil, errBan := CheckActiveBan(database, userID)
+		if errBan == nil && banned {
+			msg := "Votre compte est banni définitivement."
+			code := "BANNED_PERM"
+			if banType == "ban_temp" && bannedUntil != nil {
+				msg = "Votre compte est suspendu jusqu'au " + bannedUntil.Format("02/01/2006 à 15:04") + "."
+				code = "BANNED_TEMP"
+			}
+			if banReason != "" {
+				msg += " Raison : " + banReason
+			}
+			w.WriteHeader(http.StatusForbidden)
+			json.NewEncoder(w).Encode(map[string]any{
+				"success": false,
+				"message": msg,
+				"code":    code,
+			})
+			return
+		}
+
 		role := "senior"
-
-		var validationStatus int
+		validationStatus := -1
 		err := database.QueryRow(`
-	SELECT Validation_Status
-	FROM provider
-	WHERE Id_USER = ?
-	LIMIT 1
-`, userID).Scan(&validationStatus)
-
+            SELECT Validation_Status
+            FROM provider
+            WHERE Id_USER = ?
+            LIMIT 1
+        `, userID).Scan(&validationStatus)
 		if err == nil {
 			role = "provider"
-
-			if validationStatus == 0 {
-				w.WriteHeader(http.StatusForbidden)
-				json.NewEncoder(w).Encode(map[string]any{
-					"success": false,
-					"message": "Compte prestataire en attente de validation",
-					"code":    "PROVIDER_PENDING",
-				})
-				return
-			}
-
 			if validationStatus == 2 {
 				w.WriteHeader(http.StatusForbidden)
 				json.NewEncoder(w).Encode(map[string]any{
@@ -195,7 +199,6 @@ func Signin(database *sql.DB) http.HandlerFunc {
 				})
 				return
 			}
-
 		} else if err != sql.ErrNoRows {
 			w.WriteHeader(http.StatusInternalServerError)
 			json.NewEncoder(w).Encode(map[string]any{
@@ -214,7 +217,6 @@ func Signin(database *sql.DB) http.HandlerFunc {
 			})
 			return
 		}
-
 		_, err = database.Exec("UPDATE user SET authentication_token = ? WHERE Id_USER = ?", token, userID)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
@@ -226,10 +228,11 @@ func Signin(database *sql.DB) http.HandlerFunc {
 		}
 
 		json.NewEncoder(w).Encode(map[string]any{
-			"success": true,
-			"token":   token,
-			"role":    role,
-			"message": "Connexion réussie",
+			"success":           true,
+			"token":             token,
+			"role":              role,
+			"validation_status": validationStatus,
+			"message":           "Connexion réussie",
 		})
 	}
 }

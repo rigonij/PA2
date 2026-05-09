@@ -1,10 +1,5 @@
 <?php
-session_start();
-$apiBase = "http://127.0.0.1:8081";
-if (empty($_SESSION["token"])) {
-    header("Location: login.php");
-    exit;
-}
+require __DIR__ . "/provider_guard.php";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && !empty($_POST["receiver_id"]) && !empty($_POST["content"])) {
     $ch = curl_init($apiBase . "/api/messages/send");
