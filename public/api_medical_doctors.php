@@ -9,7 +9,7 @@ if (empty($_SESSION["token"])) {
     exit;
 }
 
-$ch = curl_init("http://127.0.0.1:8081/api/medical/doctors");
+$ch = curl_init("http://backend:8080/api/medical/doctors");
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_HTTPHEADER, [
     "X-Token: " . $_SESSION["token"],

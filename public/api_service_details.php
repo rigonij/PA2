@@ -9,7 +9,7 @@ if (empty($_SESSION["token"])) {
 $serviceTypeId = (int)($_GET["service_type_id"] ?? 0);
 $providerId = (int)($_GET["provider_id"] ?? 0);
 
-$url = "http://127.0.0.1:8081/api/services/details?service_type_id=" . $serviceTypeId . "&provider_id=" . $providerId;
+$url = "http://backend:8080/api/services/details?service_type_id=" . $serviceTypeId . "&provider_id=" . $providerId;
 
 $ch = curl_init($url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

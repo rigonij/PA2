@@ -1,0 +1,38 @@
+services:
+  database:
+    image: mysql:8.0.31
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - app_network
+
+  backend:
+    image: ghcr.io/doggobest doggy/pa_2i2/backend:1.0.0
+    restart: always
+    depends_on:
+      - database
+    networks:
+      - app_network
+
+  frontend:
+    image: ghcr.io/doggobest doggy/pa_2i2/frontend:1.0.0
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - app_network
+
+networks:
+  app_network:
+    driver: bridge
+
+volumes:
+  db_data:

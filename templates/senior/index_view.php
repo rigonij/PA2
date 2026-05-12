@@ -37,11 +37,23 @@ $userName = $userName ?? "";
                 <div class="col-md-6">
                     <div class="sh-card p-3">
                         <div class="fw-bold mb-2">État du compte</div>
-                        <ul class="mb-0 text-secondary">
-                            <li>Abonnement : Premium • Renouvellement dans 21 jours</li>
-                            <li>Prochain RDV : Mardi 10:30</li>
-                            <li>Nouveaux messages : 2</li>
-                        </ul>
+                        <?php
+                $stApiBase = "http://backend:8080";
+                $stToken   = $_SESSION["token"] ?? "";
+                $stSub = null;
+                if ($stToken) {
+                    $stCh = curl_init($stApiBase . "/api/senior/subscription");
+                    curl_setopt($stCh, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($stCh, CURLOPT_HTTPHEADER, ["X-Token: " . $stToken]);
+                    $stResp = curl_exec($stCh);
+                    curl_close($stCh);
+                    $stData = json_decode((string)$stResp, true);
+                    if (!empty($stData["has_subscription"])) $stSub = $stData;
+                }
+                ?>
+                <ul class="mb-0 text-secondary">
+                    <li>Abonnement : <?php if ($stSub && !empty($stSub["is_active"])): ?><?= htmlspecialchars($stSub["name"] ?? "Actif") ?><?php if (!empty($stSub["end_date"])): ?> &middot; Renouvellement le <?= htmlspecialchars($stSub["end_date"]) ?><?php endif; ?><?php else: ?>Aucun abonnement actif<?php endif; ?></li>
+                </ul>
                     </div>
                 </div>
             </div>

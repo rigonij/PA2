@@ -1,6 +1,7 @@
 services:
   database:
     image: mysql:8.0.31
+    command: --default-time-zone=+02:00
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -13,22 +14,34 @@ services:
       - app_network
 
   backend:
-    image: ghcr.io/doggobest doggy/pa_2i2/backend:1.0.0
+    image: ghcr.io/doggobestdoggy/pa_2i2/backend:1.0.0
     restart: always
+    env_file:
+      - .env
     depends_on:
       - database
     networks:
       - app_network
 
   frontend:
-    image: ghcr.io/doggobest doggy/pa_2i2/frontend:1.0.0
+    image: ghcr.io/doggobestdoggy/pa_2i2/frontend:1.0.0
     restart: always
+    env_file:
+      - .env
+    volumes:
+      - ./apache-vhost.conf:/etc/apache2/sites-available/000-default.conf:ro
+      - ./public:/var/www/html/public
+      - ./templates:/var/www/html/templates
+      - ./src:/var/www/html/src
     ports:
       - "80:80"
     depends_on:
       - backend
     networks:
       - app_network
+    command: >
+      bash -c "a2enmod remoteip headers setenvif rewrite proxy proxy_http &&
+               apache2-foreground"
 
 networks:
   app_network:

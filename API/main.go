@@ -75,6 +75,12 @@ func main() {
 	mux.HandleFunc("/api/admin/advice/create", middleware.CORS(routes.CreateAdvice(database)))
 	mux.HandleFunc("/api/admin/advice/update", middleware.CORS(routes.UpdateAdvice(database)))
 	mux.HandleFunc("/api/admin/advice/delete", middleware.CORS(routes.DeleteAdvice(database)))
+	mux.HandleFunc("/api/admin/products", middleware.CORS(routes.AdminGetProducts(database)))
+	mux.HandleFunc("/api/admin/products/create", middleware.CORS(routes.AdminCreateProduct(database)))
+	mux.HandleFunc("/api/admin/products/update", middleware.CORS(routes.AdminUpdateProduct(database)))
+	mux.HandleFunc("/api/admin/products/delete", middleware.CORS(routes.AdminDeleteProduct(database)))
+	mux.HandleFunc("/api/admin/subscription-plans", middleware.CORS(routes.AdminGetSubscriptionPlans(database)))
+	mux.HandleFunc("/api/admin/subscription-plans/update", middleware.CORS(routes.AdminUpdateSubscriptionPlan(database)))
 
 	mux.HandleFunc("/api/provider/senior-info", middleware.CORS(routes.GetProviderSeniorInfo(database)))
 
@@ -206,6 +212,10 @@ func main() {
 	mux.HandleFunc("POST /api/stripe/webhook", middleware.CORS(routes.StripeWebhook(database)))
 
 	mux.HandleFunc("GET /api/senior/subscription", middleware.CORS(routes.GetSeniorSubscription(database)))
+	mux.HandleFunc("GET /api/senior/subscription-plans", middleware.CORS(routes.GetSubscriptionPlansPublic(database)))
+	mux.HandleFunc("POST /api/senior/subscription/cancel", middleware.CORS(routes.CancelSubscription(database)))
+	mux.HandleFunc("GET /api/senior/subscription-notifications", middleware.CORS(routes.GetPriceChangeNotifications(database)))
+	mux.HandleFunc("POST /api/senior/subscription-notifications/ack", middleware.CORS(routes.AcknowledgePriceChangeNotification(database)))
 	mux.HandleFunc("GET /api/senior/payments", middleware.CORS(routes.GetSeniorPayments(database)))
 
 	mux.HandleFunc("/api/stripe/checkout/shop", middleware.CORS(routes.ShopCheckout(database)))
@@ -236,10 +246,13 @@ func main() {
 	mux.HandleFunc("/api/provider/document/me", middleware.CORS(routes.GetMyProviderDocument(database)))
 	mux.HandleFunc("/api/admin/providers/pending", middleware.CORS(routes.AdminGetPendingProviders(database)))
 	mux.HandleFunc("/api/admin/providers/document/", middleware.CORS(routes.AdminDownloadProviderDocument(database)))
+    mux.HandleFunc("/api/admin/providers/document-meta/", middleware.CORS(routes.AdminGetProviderDocumentMeta(database)))
 	mux.HandleFunc("/api/admin/providers/validate", middleware.CORS(routes.AdminValidateProvider(database)))
 	mux.HandleFunc("/api/admin/provider-authorized-services/", middleware.CORS(routes.AdminGetProviderAuthorizedServices(database)))
 	mux.HandleFunc("/api/admin/provider-validate-with-services", middleware.CORS(routes.AdminValidateProviderWithServices(database)))
 	mux.HandleFunc("/api/admin/provider-services", middleware.CORS(routes.AdminProviderServices(database)))
+	mux.HandleFunc("/api/admin/categories", routes.AdminCategories(database))
+	mux.HandleFunc("/api/admin/service-types", routes.AdminServiceTypes(database))
 
 	mux.HandleFunc("/api/providers/", middleware.CORS(routes.ProviderReviews(database)))
 	mux.HandleFunc("/api/senior/reviews", middleware.CORS(routes.SeniorReviews(database)))
@@ -248,6 +261,7 @@ func main() {
 	mux.HandleFunc("POST /api/provider/reviews/report", middleware.CORS(routes.ProviderReportReview(database)))
 	mux.HandleFunc("GET /api/admin/review-reports", middleware.CORS(routes.AdminReviewReports(database)))
 	mux.HandleFunc("/api/admin/review-reports/", middleware.CORS(routes.AdminUpdateReviewReport(database)))
+	mux.HandleFunc("POST /api/admin/review-reports/{id}/warn", middleware.CORS(routes.AdminWarnReviewAuthor(database)))
 	mux.HandleFunc("/api/admin/reviews/", middleware.CORS(routes.AdminDeleteReview(database)))
 
 	mux.HandleFunc("/api/user/report", middleware.CORS(routes.UserReport(database)))

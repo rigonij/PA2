@@ -12,7 +12,7 @@ if ($id <= 0) {
     exit;
 }
 
-$ch = curl_init("http://127.0.0.1:8081/api/provider/invoice/" . $id . "/pdf");
+$ch = curl_init("http://backend:8080/api/provider/invoice/" . $id . "/pdf");
 curl_setopt_array($ch, [
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_HTTPHEADER => ["X-Token: " . $_SESSION["token"]],

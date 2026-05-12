@@ -6,7 +6,7 @@ if (empty($_SESSION["token"])) {
     exit;
 }
 
-$apiBase = "http://127.0.0.1:8081";
+$apiBase = "http://backend:8080";
 $errorMsg = "";
 
 $action = $_GET["action"] ?? "";
@@ -39,7 +39,7 @@ if ($id > 0 && ($action === "subscribe" || $action === "unsubscribe")) {
 }
 
 if ($action === "pay_event" && $id > 0) {
-    $ch = curl_init("http://127.0.0.1:8081/api/events/checkout");
+    $ch = curl_init("http://backend:8080/api/events/checkout");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [

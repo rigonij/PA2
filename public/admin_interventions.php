@@ -4,7 +4,7 @@ if (empty($_SESSION["admin_token"])) {
     header("Location: admin_login.php");
     exit;
 }
-$apiBase = "http://127.0.0.1:8081";
+$apiBase = "http://backend:8080";
 
 $action         = $_GET["action"] ?? "";
 $interventionId = (int)($_GET["id"] ?? 0);

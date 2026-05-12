@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     ];
 
 
-    $ch = curl_init("http://127.0.0.1:8081/api/auth/signup");
+    $ch = curl_init("http://backend:8080/api/auth/signup");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);

@@ -55,7 +55,9 @@ $categories = $categories ?? [];
                                         <div style="height: 140px; background-color: #e9ecef; background-image: url('<?= htmlspecialchars($absoluteImgPath) ?>'); background-size: cover; background-position: center;">
                                         </div>
                                         <div class="p-3" style="background-color: var(--sh-blue); color: white;">
-                                            <div class="fw-bold text-center mb-2"><?= htmlspecialchars($provider['Company_Name']) ?></div>
+                                            <div class="fw-bold text-center"><?= htmlspecialchars($provider['ServiceName'] ?? '') ?></div>
+                                        <div class="text-center small opacity-75 mb-1"><?= htmlspecialchars($categoryName) ?></div>
+                                        <div class="text-center small mb-2"><?= htmlspecialchars($provider['Company_Name'] ?? '') ?></div>
                                             <div class="d-flex justify-content-center gap-2">
                                                 <button
                                                     class="btn btn-outline-light btn-sm"

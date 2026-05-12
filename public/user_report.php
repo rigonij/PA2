@@ -9,7 +9,7 @@ if (empty($_SESSION["token"])) {
 $token = $_SESSION["token"];
 $body = file_get_contents("php://input");
 
-$ch = curl_init("http://127.0.0.1:8081/api/user/report");
+$ch = curl_init("http://backend:8080/api/user/report");
 curl_setopt_array($ch, [
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_POST => true,

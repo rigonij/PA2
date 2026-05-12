@@ -5,12 +5,12 @@ if (empty($_SESSION["admin_token"])) {
     exit;
 }
 
-$apiBase = "http://127.0.0.1:8081";
+$apiBase = "http://backend:8080";
 $error = $_SESSION["admin_event_error"] ?? "";
 unset($_SESSION["admin_event_error"]);
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && ($_POST["action"] ?? "") === "clear_history") {
-    $ch = curl_init("http://127.0.0.1:8081/api/admin/events/history");
+    $ch = curl_init("http://backend:8080/api/admin/events/history");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
     curl_setopt($ch, CURLOPT_HTTPHEADER, ["X-Token: " . $_SESSION["admin_token"]]);

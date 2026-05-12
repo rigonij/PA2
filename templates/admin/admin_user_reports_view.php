@@ -35,7 +35,7 @@ $fmt = function ($iso) {
         <div class="d-flex justify-content-between align-items-start">
             <div>
                 <h1 class="h4 fw-bold mb-1">Signalements d'utilisateurs</h1>
-                <p class="text-secondary mb-0">Liste des signalements remontés par les utilisateurs. Cliquez sur "Voir le casier" pour gérer les sanctions.</p>
+                <p class="text-secondary mb-0">Liste des signalements remontés par les utilisateurs.</p>
             </div>
             <a href="admin_dashboard.php" class="btn btn-outline-secondary btn-sm">Retour</a>
         </div>
@@ -100,6 +100,8 @@ $fmt = function ($iso) {
                             $badgeClass = $status === "pending" ? "bg-warning text-dark" : ($status === "resolved" ? "bg-success" : "bg-secondary");
                             $badgeLabel = $status === "pending" ? "En attente" : ($status === "resolved" ? "Traité" : "Rejeté");
                             $reportedId = (int)($r["reported_id"] ?? 0);
+                            $reportId = (int)($r["id"] ?? 0);
+                            $reasonAttr = htmlspecialchars($r["reason"] ?? "", ENT_QUOTES);
                             ?>
                             <tr>
                                 <td><?= $fmt($r["created_at"] ?? "") ?></td>
@@ -112,10 +114,20 @@ $fmt = function ($iso) {
                                     <div class="small text-secondary"><?= htmlspecialchars($r["reported_email"] ?? "") ?></div>
                                 </td>
                                 <td style="max-width:320px;">
-                                    <div class="text-truncate" title="<?= htmlspecialchars($r["reason"] ?? "") ?>"><?= htmlspecialchars($r["reason"] ?? "") ?></div>
+                                    <?php $reasonText = (string)($r["reason"] ?? ""); $reasonShort = mb_strimwidth($reasonText, 0, 25, "..."); ?>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <span class="text-truncate flex-grow-1"><?= htmlspecialchars($reasonShort) ?></span>
+                                        <?php if (mb_strlen($reasonText) > 25): ?>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary detail-btn flex-shrink-0" data-detail-title="Raison du signalement" data-detail-text="<?= htmlspecialchars($reasonText, ENT_QUOTES) ?>">Détails</button>
+                                        <?php endif; ?>
+                                    </div>
                                 </td>
                                 <td><span class="badge <?= $badgeClass ?>"><?= $badgeLabel ?></span></td>
                                 <td class="text-end">
+                                    <?php if ($status === "pending" && $reportId > 0): ?>
+                                        <button class="btn btn-sm btn-outline-warning me-1 warn-btn" data-report-id="<?= $reportId ?>" data-reason="<?= $reasonAttr ?>">Avertir</button>
+                                        <button class="btn btn-sm btn-outline-secondary me-1 dismiss-btn" data-report-id="<?= $reportId ?>">Rejeter</button>
+                                    <?php endif; ?>
                                     <?php if ($reportedId > 0): ?>
                                         <a href="admin_user_sanctions.php?id=<?= $reportedId ?>" class="btn btn-sm btn-outline-primary">Voir le casier</a>
                                     <?php else: ?>
@@ -131,6 +143,61 @@ $fmt = function ($iso) {
     </div>
 </div>
 
+<script>
+(function() {
+    async function callResolve(reportId, action, reason) {
+        const r = await fetch("admin_user_reports.php?api=1", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ report_id: reportId, action: action, reason: reason || "" })
+        });
+        return r.json();
+    }
+
+    document.querySelectorAll(".warn-btn").forEach(function(b) {
+        b.addEventListener("click", async function() {
+            const defaultReason = b.dataset.reason || "Comportement signalé";
+            const reason = prompt("Raison de l'avertissement :", defaultReason);
+            if (reason === null) return;
+            if (!reason.trim()) { alert("Raison obligatoire"); return; }
+            const j = await callResolve(parseInt(b.dataset.reportId), "warning", reason.trim());
+            if (!j.success) { alert(j.message || "Erreur"); return; }
+            location.reload();
+        });
+    });
+
+    document.querySelectorAll(".dismiss-btn").forEach(function(b) {
+        b.addEventListener("click", async function() {
+            if (!confirm("Rejeter ce signalement ?")) return;
+            const j = await callResolve(parseInt(b.dataset.reportId), "dismiss", "");
+            if (!j.success) { alert(j.message || "Erreur"); return; }
+            location.reload();
+        });
+    });
+})();
+</script>
+
 <?php
 include __DIR__ . "/../common/footer-scripts.php";
 ?>
+
+<div class="modal fade" id="detailModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailModalTitle">Détails</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+            </div>
+            <div class="modal-body" id="detailModalBody" style="white-space:pre-wrap; word-break:break-word;"></div>
+        </div>
+    </div>
+</div>
+<script>
+document.addEventListener("click", function(e) {
+    const b = e.target.closest(".detail-btn");
+    if (!b) return;
+    document.getElementById("detailModalTitle").textContent = b.dataset.detailTitle || "Détails";
+    document.getElementById("detailModalBody").textContent = b.dataset.detailText || "";
+    bootstrap.Modal.getOrCreateInstance(document.getElementById("detailModal")).show();
+});
+</script>

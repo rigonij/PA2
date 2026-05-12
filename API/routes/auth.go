@@ -9,6 +9,7 @@ import (
 
 	"github.com/PA_2i2/api/lib"
 	"golang.org/x/crypto/bcrypt"
+	"time"
 )
 
 type SignupRequest struct {
@@ -81,6 +82,13 @@ func Signup(database *sql.DB) http.HandlerFunc {
 		if req.Role == "senior" {
 			var birthDate interface{}
 			if req.BirthDate != "" {
+				t, perr := time.Parse("2006-01-02", req.BirthDate)
+				if perr != nil || t.After(time.Now()) {
+					database.Exec("DELETE FROM user WHERE Id_USER = ?", userID)
+					w.WriteHeader(http.StatusBadRequest)
+					json.NewEncoder(w).Encode(SignupResponse{Success: false, Message: "Date de naissance invalide ou dans le futur"})
+					return
+				}
 				birthDate = req.BirthDate
 			} else {
 				birthDate = nil

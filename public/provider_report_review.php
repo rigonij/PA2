@@ -9,7 +9,7 @@ if (!$token) {
 }
 
 $body = file_get_contents("php://input");
-$ch = curl_init("http://127.0.0.1:8081/api/provider/reviews/report");
+$ch = curl_init("http://backend:8080/api/provider/reviews/report");
 curl_setopt_array($ch, [
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_CUSTOMREQUEST => "POST",

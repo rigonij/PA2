@@ -8,7 +8,7 @@ if (empty($_SESSION["token"])) {
 
 $userName = "Utilisateur";
 
-$ch = curl_init("http://localhost:8081/api/me");
+$ch = curl_init("http://backend:8080/api/me");
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_HTTPHEADER, [
     "X-Token: " . $_SESSION["token"]

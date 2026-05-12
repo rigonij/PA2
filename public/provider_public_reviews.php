@@ -15,7 +15,7 @@ if ($providerId <= 0) {
     exit;
 }
 
-$url = "http://127.0.0.1:8081/api/providers/" . $providerId . "/reviews";
+$url = "http://backend:8080/api/providers/" . $providerId . "/reviews";
 $ch = curl_init($url);
 curl_setopt_array($ch, [
     CURLOPT_RETURNTRANSFER => true,

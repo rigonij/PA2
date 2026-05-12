@@ -9,7 +9,7 @@ if (!$token) {
 }
 
 $method = $_SERVER["REQUEST_METHOD"];
-$base = "http://127.0.0.1:8081/api/senior/reviews";
+$base = "http://backend:8080/api/senior/reviews";
 
 if ($method === "GET" || $method === "DELETE") {
     $providerId = (int)($_GET["provider_id"] ?? 0);

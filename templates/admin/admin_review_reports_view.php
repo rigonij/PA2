@@ -23,18 +23,25 @@ include __DIR__ . "/../common/header.php";
         const listEl = document.getElementById("reportsList");
 
         function escapeHtml(s) {
-            return String(s).replace(/[&<>"']/g, function(c) {
-                return {
-                    "&": "&amp;",
-                    "<": "&lt;",
-                    ">": "&gt;",
-                    '"': "&quot;",
-                    "'": "&#39;"
-                } [c];
-            });
-        }
+    return String(s).replace(/[&<>"']/g, function(c) {
+        return {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+        }[c];
+    });
+}
 
-        function fmtDate(iso) {
+function truncBtn(text, title) {
+    if (!text) return '';
+    if (text.length <= 25) return escapeHtml(text);
+    const short = text.substring(0, 25) + '...';
+    return escapeHtml(short) + ' <button type="button" class="btn btn-sm btn-outline-secondary detail-btn ms-1" data-detail-title="' + escapeHtml(title) + '" data-detail-text="' + escapeHtml(text) + '">Détails</button>';
+}
+
+function fmtDate(iso) {
             if (!iso) return "";
             try {
                 const d = new Date(iso);
@@ -70,8 +77,9 @@ include __DIR__ . "/../common/header.php";
                     '<thead><tr><th>Date</th><th>Prestataire</th><th>Avis</th><th>Raison signalement</th><th>Statut</th><th>Actions</th></tr></thead><tbody>' +
                     j.reports.map(function(rep) {
                         const stars = "★".repeat(rep.rating) + "☆".repeat(5 - rep.rating);
-                        const comment = rep.comment ? '<div class="small">' + escapeHtml(rep.comment) + '</div>' : '<div class="small text-secondary">(pas de commentaire)</div>';
+                        const comment = rep.comment ? '<div class="small">' + truncBtn(rep.comment, "Commentaire de l\'avis") + '</div>' : '<div class="small text-secondary">(pas de commentaire)</div>';
                         const actions = rep.status === "pending" ?
+                            '<button class="btn btn-outline-warning btn-sm me-1 warn-btn" data-report-id="' + rep.id + '">Avertir le senior</button>' +
                             '<button class="btn btn-outline-danger btn-sm me-1 del-btn" data-review-id="' + rep.review_id + '" data-report-id="' + rep.id + '">Supprimer l\'avis</button>' +
                             '<button class="btn btn-outline-secondary btn-sm dismiss-btn" data-report-id="' + rep.id + '">Rejeter signalement</button>' :
                             '—';
@@ -79,13 +87,23 @@ include __DIR__ . "/../common/header.php";
                             '<td class="small">' + fmtDate(rep.created_at) + '</td>' +
                             '<td>' + escapeHtml(rep.company_name) + '</td>' +
                             '<td><span class="text-warning">' + stars + '</span> par ' + escapeHtml(rep.senior_name) + comment + '</td>' +
-                            '<td class="small">' + escapeHtml(rep.reason) + '</td>' +
+                            '<td class="small">' + truncBtn(rep.reason, "Raison du signalement") + '</td>' +
                             '<td>' + statusBadge(rep.status) + '</td>' +
                             '<td>' + actions + '</td></tr>';
                     }).join("") +
                     '</tbody></table></div>';
 
-                document.querySelectorAll(".del-btn").forEach(function(b) {
+                
+                    document.querySelectorAll(".warn-btn").forEach(function(b) {
+                        b.addEventListener("click", async function() {
+                            if (!confirm("Avertir le senior auteur de l'avis ? (3 avertissements = suspension auto)")) return;
+                            const r = await fetch("admin_review_reports.php?api=1&action=warn&report_id=" + b.dataset.reportId, { method: "POST" });
+                            const j = await r.json();
+                            if (!j.success) alert(j.message || "Erreur");
+                            load();
+                        });
+                    });
+                    document.querySelectorAll(".del-btn").forEach(function(b) {
                     b.addEventListener("click", async function() {
                         if (!confirm("Supprimer cet avis ?")) return;
                         await fetch("admin_review_reports.php?api=1&review_id=" + b.dataset.reviewId, {
@@ -127,3 +145,25 @@ include __DIR__ . "/../common/header.php";
 
 <?php
 include __DIR__ . "/../common/footer-scripts.php";
+?>
+
+<div class="modal fade" id="detailModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailModalTitle">Détails</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+            </div>
+            <div class="modal-body" id="detailModalBody" style="white-space:pre-wrap; word-break:break-word;"></div>
+        </div>
+    </div>
+</div>
+<script>
+document.addEventListener("click", function(e) {
+    const b = e.target.closest(".detail-btn");
+    if (!b) return;
+    document.getElementById("detailModalTitle").textContent = b.dataset.detailTitle || "Détails";
+    document.getElementById("detailModalBody").textContent = b.dataset.detailText || "";
+    bootstrap.Modal.getOrCreateInstance(document.getElementById("detailModal")).show();
+});
+</script>

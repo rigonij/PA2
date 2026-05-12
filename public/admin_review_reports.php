@@ -10,15 +10,27 @@ if (!$token) {
 if (isset($_GET["api"])) {
     $method = $_SERVER["REQUEST_METHOD"];
     if ($method === "GET") {
-        $ch = curl_init("http://127.0.0.1:8081/api/admin/review-reports");
+        $ch = curl_init("http://backend:8080/api/admin/review-reports");
         curl_setopt_array($ch, [
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HTTPHEADER => ["X-Token: " . $token],
         ]);
+    } elseif ($method === "POST" && (($_GET["action"] ?? "") === "warn")) {
+        $reportId = (int)($_GET["report_id"] ?? 0);
+        $ch = curl_init("http://backend:8080/api/admin/review-reports/" . $reportId . "/warn");
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => "{}",
+            CURLOPT_HTTPHEADER => [
+                "X-Token: " . $token,
+                "Content-Type: application/json",
+            ],
+        ]);
     } elseif ($method === "PUT") {
         $reportId = (int)($_GET["report_id"] ?? 0);
         $body = file_get_contents("php://input");
-        $ch = curl_init("http://127.0.0.1:8081/api/admin/review-reports/" . $reportId);
+        $ch = curl_init("http://backend:8080/api/admin/review-reports/" . $reportId);
         curl_setopt_array($ch, [
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CUSTOMREQUEST => "PUT",
@@ -30,7 +42,7 @@ if (isset($_GET["api"])) {
         ]);
     } elseif ($method === "DELETE") {
         $reviewId = (int)($_GET["review_id"] ?? 0);
-        $ch = curl_init("http://127.0.0.1:8081/api/admin/reviews/" . $reviewId);
+        $ch = curl_init("http://backend:8080/api/admin/reviews/" . $reviewId);
         curl_setopt_array($ch, [
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CUSTOMREQUEST => "DELETE",

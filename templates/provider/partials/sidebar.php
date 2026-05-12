@@ -1,7 +1,7 @@
 <?php
 $newInterventionsCount = 0;
 if (!empty($_SESSION["token"])) {
-    $apiBaseSidebar = $apiBase ?? "http://127.0.0.1:8081";
+    $apiBaseSidebar = $apiBase ?? "http://backend:8080";
     $ch = curl_init($apiBaseSidebar . "/api/provider/interventions/new-count");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, ["X-Token: " . $_SESSION["token"]]);

@@ -40,7 +40,7 @@ $accountAddress = $accountAddress ?? "";
 
                     <div class="mb-3">
                         <label class="form-label">Date et heure</label>
-                        <input type="datetime-local" class="form-control" name="start_at" required>
+                        <input type="datetime-local" class="form-control" name="start_at" required min="<?= date("Y-m-d\TH:i") ?>">
                     </div>
 
                     <div class="mb-3">

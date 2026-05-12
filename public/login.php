@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = $_POST["email"] ?? "";
     $password = $_POST["password"] ?? "";
 
-    $ch = curl_init("http://127.0.0.1:8081/api/auth/signin");
+    $ch = curl_init("http://backend:8080/api/auth/signin");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);

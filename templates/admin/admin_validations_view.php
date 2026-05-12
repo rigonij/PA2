@@ -55,6 +55,7 @@ function renderValidationBadge($status)
                         <th>Société</th>
                         <th>Statut</th>
                         <th>Document</th>
+                            <th>Description</th>
                         <th style="width:1%;" class="text-end">Actions</th>
                     </tr>
                 </thead>
@@ -80,6 +81,15 @@ function renderValidationBadge($status)
                                         <span class="text-secondary small">Aucun</span>
                                     <?php endif; ?>
                                 </td>
+                                <td class="text-secondary small" style="max-width:260px;">
+                                    <?php $descText = (string)($p["description"] ?? ""); $descShort = mb_strimwidth($descText, 0, 25, "..."); ?>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <span class="text-truncate flex-grow-1"><?= htmlspecialchars($descShort) ?></span>
+                                        <?php if (mb_strlen($descText) > 25): ?>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary detail-btn flex-shrink-0" data-detail-title="Description du prestataire" data-detail-text="<?= htmlspecialchars($descText, ENT_QUOTES) ?>">Détails</button>
+                                        <?php endif; ?>
+                                    </div>
+                                </td>
                                 <td class="text-end" style="white-space:nowrap;">
                                     <?php if ($status !== 1): ?>
                                         <button type="button" class="btn btn-success btn-sm"
@@ -103,7 +113,7 @@ function renderValidationBadge($status)
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="7" class="text-secondary">Aucune demande.</td>
+                            <td colspan="8" class="text-secondary">Aucune demande.</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>
@@ -187,3 +197,24 @@ function renderValidationBadge($status)
 </script>
 
 <?php include __DIR__ . "/../common/footer-scripts.php"; ?>
+
+<div class="modal fade" id="detailModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailModalTitle">Détails</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+            </div>
+            <div class="modal-body" id="detailModalBody" style="white-space:pre-wrap; word-break:break-word;"></div>
+        </div>
+    </div>
+</div>
+<script>
+document.addEventListener("click", function(e) {
+    const b = e.target.closest(".detail-btn");
+    if (!b) return;
+    document.getElementById("detailModalTitle").textContent = b.dataset.detailTitle || "Détails";
+    document.getElementById("detailModalBody").textContent = b.dataset.detailText || "";
+    bootstrap.Modal.getOrCreateInstance(document.getElementById("detailModal")).show();
+});
+</script>

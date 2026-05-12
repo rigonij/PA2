@@ -7,7 +7,7 @@ if (empty($_SESSION["token"])) {
 }
 $token = $_SESSION["token"];
 
-$ch = curl_init("http://127.0.0.1:8081/api/me/pending-sanction");
+$ch = curl_init("http://backend:8080/api/me/pending-sanction");
 curl_setopt_array($ch, [
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_HTTPHEADER => ["X-Token: " . $token],

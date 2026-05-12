@@ -73,7 +73,7 @@ include __DIR__ . "/../common/head.php";
 
                 <div>
                     <label class="form-label fw-semibold" for="birth_date">Date de naissance</label>
-                    <input class="form-control" id="birth_date" name="birth_date" type="date"
+                    <input class="form-control" id="birth_date" name="birth_date" type="date" max="<?= date('Y-m-d') ?>"
                         value="<?= htmlspecialchars($_POST['birth_date'] ?? '') ?>">
                 </div>
 

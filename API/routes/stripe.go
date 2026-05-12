@@ -82,19 +82,26 @@ func CreateSubscriptionCheckout(database *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		cents := planToCents(req.Plan)
-		if cents == 0 {
-			w.WriteHeader(http.StatusBadRequest)
-			json.NewEncoder(w).Encode(map[string]any{"success": false, "message": "Plan invalide"})
-			return
-		}
-
 		var planID int
 		var durationMonths int
+		var price float64
+		var displayName string
 		err = database.QueryRow(
-			`SELECT Id_SUBSCRIPTION_PLAN, Duration_Months FROM subscription_plan WHERE Name = ? LIMIT 1`,
+			`SELECT Id_SUBSCRIPTION_PLAN, COALESCE(Display_Name, Name, ''), COALESCE(Price, 0), COALESCE(Duration_Months, 1) FROM subscription_plan WHERE Name = ? LIMIT 1`,
 			req.Plan,
-		).Scan(&planID, &durationMonths)
+		).Scan(&planID, &displayName, &price, &durationMonths)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(map[string]any{"success": false, "message": "Plan introuvable en DB"})
+			return
+		}
+		cents := int64(math.Round(price * 100))
+		if cents == 0 {
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(map[string]any{"success": false, "message": "Prix invalide"})
+			return
+		}
+		
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			json.NewEncoder(w).Encode(map[string]any{"success": false, "message": "Plan introuvable en DB"})
@@ -122,7 +129,7 @@ func CreateSubscriptionCheckout(database *sql.DB) http.HandlerFunc {
 							Interval: stripe.String(interval),
 						},
 						ProductData: &stripe.CheckoutSessionLineItemPriceDataProductDataParams{
-							Name: stripe.String(planToLabel(req.Plan)),
+							Name: stripe.String(displayName),
 						},
 					},
 					Quantity: stripe.Int64(1),
@@ -332,10 +339,31 @@ func StripeWebhook(database *sql.DB) http.HandlerFunc {
 					startDate := time.Now()
 					endDate := startDate.AddDate(0, duration, 0)
 
+					var planName2, planDisplayName2 string
+					var planPrice2 float64
+					_ = database.QueryRow(`SELECT COALESCE(Name,''), COALESCE(Display_Name, Name, ''), COALESCE(Price, 0) FROM subscription_plan WHERE Id_SUBSCRIPTION_PLAN = ?`, planID).Scan(&planName2, &planDisplayName2, &planPrice2)
+					planPriceCents2 := int(math.Round(planPrice2 * 100))
+					stripeSubIDValue := ""
+					if checkoutSess.Subscription != nil { stripeSubIDValue = checkoutSess.Subscription.ID }
+					if stripeSubIDValue == "" {
+						var rawSess map[string]interface{}
+						if err := json.Unmarshal(event.Data.Raw, &rawSess); err == nil {
+							if v, ok := rawSess["subscription"]; ok {
+								switch t := v.(type) {
+								case string:
+									stripeSubIDValue = t
+								case map[string]interface{}:
+									if id, ok := t["id"].(string); ok { stripeSubIDValue = id }
+								}
+							}
+						}
+					}
+					fmt.Println("Stripe sub ID resolved:", stripeSubIDValue)
 					_, err := database.Exec(`
-						INSERT INTO subscribe (Id_USER, Id_SUBSCRIPTION_PLAN, Start_Date, End_Date, Is_Active)
-						VALUES (?, ?, ?, ?, 1)
-					`, userID, planID, startDate.Format("2006-01-02"), endDate.Format("2006-01-02"))
+						INSERT INTO subscribe (Id_USER, Id_SUBSCRIPTION_PLAN, Start_Date, End_Date, Is_Active, Plan_Name_Snapshot, Plan_Display_Name_Snapshot, Plan_Price_Cents_Snapshot, Stripe_Subscription_ID)
+						VALUES (?, ?, ?, ?, 1, ?, ?, ?, ?)
+						ON DUPLICATE KEY UPDATE Start_Date=VALUES(Start_Date), End_Date=VALUES(End_Date), Is_Active=1, Plan_Name_Snapshot=VALUES(Plan_Name_Snapshot), Plan_Display_Name_Snapshot=VALUES(Plan_Display_Name_Snapshot), Plan_Price_Cents_Snapshot=VALUES(Plan_Price_Cents_Snapshot), Stripe_Subscription_ID=VALUES(Stripe_Subscription_ID)
+					`, userID, planID, startDate.Format("2006-01-02"), endDate.Format("2006-01-02"), planName2, planDisplayName2, planPriceCents2, stripeSubIDValue)
 
 					if err != nil {
 						fmt.Println("Erreur INSERT subscribe:", err.Error())
@@ -402,50 +430,47 @@ func StripeWebhook(database *sql.DB) http.HandlerFunc {
 func GetSeniorSubscription(database *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-
 		token := r.Header.Get("X-Token")
 		userID, err := lib.GetUserIDFromToken(database, token)
 		if err != nil {
 			w.WriteHeader(http.StatusUnauthorized)
-			json.NewEncoder(w).Encode(map[string]any{"success": false, "message": "Non authentifié"})
+			json.NewEncoder(w).Encode(map[string]any{"success": false, "message": "Non authentifie"})
 			return
 		}
-
-		var name string
-		var displayDate string
+		var planID int
+		var displayName, planName, endDate string
+		var priceCentsSnap sql.NullInt64
+		var planPrice float64
+		var planDuration int
 		var isActive int
-		err = database.QueryRow(`
-			SELECT sp.Name,
-			       DATE_FORMAT(s.End_Date, '%d/%m/%Y'),
-			       s.Is_Active
-			FROM subscribe s
-			JOIN subscription_plan sp ON sp.Id_SUBSCRIPTION_PLAN = s.Id_SUBSCRIPTION_PLAN
-			WHERE s.Id_USER = ?
-			ORDER BY s.Start_Date DESC
-			LIMIT 1
-		`, userID).Scan(&name, &displayDate, &isActive)
-
+		var inPeriod int
+		err = database.QueryRow(`SELECT s.Id_SUBSCRIPTION_PLAN, COALESCE(s.Plan_Display_Name_Snapshot, sp.Display_Name, sp.Name, ''), COALESCE(sp.Name,''), DATE_FORMAT(s.End_Date, '%d/%m/%Y'), s.Plan_Price_Cents_Snapshot, COALESCE(sp.Price,0), COALESCE(sp.Duration_Months,1), s.Is_Active, CASE WHEN s.End_Date >= CURDATE() THEN 1 ELSE 0 END FROM subscribe s JOIN subscription_plan sp ON sp.Id_SUBSCRIPTION_PLAN = s.Id_SUBSCRIPTION_PLAN WHERE s.Id_USER = ? AND (s.Is_Active = 1 OR s.End_Date >= CURDATE()) ORDER BY s.Is_Active DESC, s.Start_Date DESC LIMIT 1`, userID).Scan(&planID, &displayName, &planName, &endDate, &priceCentsSnap, &planPrice, &planDuration, &isActive, &inPeriod)
 		if err != nil {
-			fmt.Println("GetSeniorSubscription error:", err)
-			json.NewEncoder(w).Encode(map[string]any{
-				"success":          true,
-				"has_subscription": false,
-			})
+			json.NewEncoder(w).Encode(map[string]any{"success": true, "has_subscription": false})
 			return
 		}
-
-		status := "Inactif"
-		if isActive == 1 {
-			status = "Actif"
-		}
-
+		paidCents := int64(planPrice * 100)
+		if priceCentsSnap.Valid && priceCentsSnap.Int64 > 0 { paidCents = priceCentsSnap.Int64 }
+		renewalKey := "monthly_renewal"
+		if planDuration == 12 { renewalKey = "yearly_renewal" }
+		var renewalPrice float64
+		var renewalDisplay sql.NullString
+		_ = database.QueryRow(`SELECT COALESCE(Price,0), COALESCE(Display_Name, Name) FROM subscription_plan WHERE Name = ?`, renewalKey).Scan(&renewalPrice, &renewalDisplay)
+		nextRenewalCents := int64(renewalPrice * 100)
+		renewalLabel := ""
+		if renewalDisplay.Valid { renewalLabel = renewalDisplay.String }
+		statusLabel := "Actif"
+		if isActive == 0 { statusLabel = "Desinscrit (jusqu au " + endDate + ")" }
 		json.NewEncoder(w).Encode(map[string]any{
-			"success":          true,
-			"has_subscription": true,
-			"name":             planLabel(name),
-			"status":           status,
-			"end_date":         displayDate,
-			"is_renewal":       false,
+			"success": true, "has_subscription": true,
+			"name": displayName, "plan_name": planName, "plan_id": planID,
+			"status": statusLabel, "end_date": endDate,
+			"paid_price_cents": paidCents,
+			"next_renewal_price_cents": nextRenewalCents,
+			"next_renewal_label": renewalLabel,
+			"duration_months": planDuration,
+			"is_active": isActive == 1,
+			"in_period": inPeriod == 1,
 		})
 	}
 }
@@ -463,12 +488,15 @@ func GetSeniorPayments(database *sql.DB) http.HandlerFunc {
 		}
 
 		rows, err := database.Query(`
-			SELECT sp.Name, sp.Price, s.Start_Date
-			FROM subscribe s
-			JOIN subscription_plan sp ON sp.Id_SUBSCRIPTION_PLAN = s.Id_SUBSCRIPTION_PLAN
-			WHERE s.Id_USER = ?
-			ORDER BY s.Start_Date DESC
-		`, userID)
+		SELECT
+			COALESCE(s.Plan_Display_Name_Snapshot, sp.Display_Name, sp.Name, '') AS display_name,
+			COALESCE(s.Plan_Price_Cents_Snapshot / 100.0, sp.Price, 0) AS price,
+			s.Start_Date
+		FROM subscribe s
+		LEFT JOIN subscription_plan sp ON sp.Id_SUBSCRIPTION_PLAN = s.Id_SUBSCRIPTION_PLAN
+		WHERE s.Id_USER = ?
+		ORDER BY s.Start_Date DESC
+	`, userID)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			json.NewEncoder(w).Encode(map[string]any{"success": false, "message": err.Error()})
@@ -481,9 +509,7 @@ func GetSeniorPayments(database *sql.DB) http.HandlerFunc {
 			var planName string
 			var startDateRaw []byte
 			var price float64
-			if err := rows.Scan(&planName, &price, &startDateRaw); err != nil {
-				continue
-			}
+			if err := rows.Scan(&planName, &price, &startDateRaw); err != nil { continue }
 
 			startStr := string(startDateRaw)
 			displayDate := startStr
@@ -492,7 +518,7 @@ func GetSeniorPayments(database *sql.DB) http.HandlerFunc {
 			}
 
 			payments = append(payments, map[string]any{
-				"type_label":   planLabel(planName),
+				"type_label":   planName,
 				"amount_euros": price,
 				"date":         displayDate,
 			})

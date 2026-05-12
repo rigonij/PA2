@@ -225,3 +225,70 @@ func AdminDeleteReview(database *sql.DB) http.HandlerFunc {
 		_ = json.NewEncoder(w).Encode(map[string]any{"success": true, "message": "Avis supprimé"})
 	}
 }
+
+func AdminWarnReviewAuthor(database *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		if !requireAdmin(database, w, r) {
+			return
+		}
+		if r.Method != http.MethodPost {
+			w.WriteHeader(http.StatusMethodNotAllowed)
+			return
+		}
+		path := strings.TrimPrefix(r.URL.Path, "/api/admin/review-reports/")
+		path = strings.TrimSuffix(path, "/warn")
+		path = strings.Trim(path, "/")
+		reportID, err := strconv.Atoi(path)
+		if err != nil || reportID <= 0 {
+			w.WriteHeader(http.StatusBadRequest)
+			_ = json.NewEncoder(w).Encode(map[string]any{"success": false, "message": "ID invalide"})
+			return
+		}
+		var seniorID int
+		var reason string
+		if err := database.QueryRow(`
+			SELECT r.Id_SENIOR, rr.Reason
+			FROM review_report rr
+			JOIN review r ON r.Id_REVIEW = rr.Id_REVIEW
+			WHERE rr.Id_REPORT = ?
+		`, reportID).Scan(&seniorID, &reason); err != nil {
+			w.WriteHeader(http.StatusNotFound)
+			_ = json.NewEncoder(w).Encode(map[string]any{"success": false, "message": "Signalement introuvable"})
+			return
+		}
+		tx, err := database.Begin()
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			_ = json.NewEncoder(w).Encode(map[string]any{"success": false, "message": err.Error()})
+			return
+		}
+		if _, err := tx.Exec(`
+			INSERT INTO user_sanction (Id_USER, Type, Reason, Source)
+			VALUES (?, 'warning', ?, 'admin_review_report')
+		`, seniorID, "Avis signalé : "+reason); err != nil {
+			tx.Rollback()
+			w.WriteHeader(http.StatusInternalServerError)
+			_ = json.NewEncoder(w).Encode(map[string]any{"success": false, "message": err.Error()})
+			return
+		}
+		if err := applyAutoEscalation(tx, seniorID, 0); err != nil {
+			tx.Rollback()
+			w.WriteHeader(http.StatusInternalServerError)
+			_ = json.NewEncoder(w).Encode(map[string]any{"success": false, "message": err.Error()})
+			return
+		}
+		if _, err := tx.Exec(`UPDATE review_report SET Status = 'reviewed', Reviewed_At = CURRENT_TIMESTAMP WHERE Id_REPORT = ?`, reportID); err != nil {
+			tx.Rollback()
+			w.WriteHeader(http.StatusInternalServerError)
+			_ = json.NewEncoder(w).Encode(map[string]any{"success": false, "message": err.Error()})
+			return
+		}
+		if err := tx.Commit(); err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			_ = json.NewEncoder(w).Encode(map[string]any{"success": false, "message": err.Error()})
+			return
+		}
+		_ = json.NewEncoder(w).Encode(map[string]any{"success": true})
+	}
+}
