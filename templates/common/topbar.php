@@ -3,7 +3,7 @@
         <div class="sh-logo-dot"></div>
         <div>
             <div class="sh-brand fs-4">SilverHappy</div>
-            <div class="sh-subtitle">Espace Senior • Maquette front</div>
+            <div class="sh-subtitle">Espace Senior</div>
         </div>
     </div>
 

@@ -88,6 +88,9 @@ function renderAdminDashboard(array $stats, string $error = ''): void
                 <a href="admin_event.php" class="btn btn-outline-secondary">Evenements</a>
                 <a href="admin_paiement.php" class="btn btn-outline-secondary">Paiements</a>
                 <a href="admin_advice.php" class="btn btn-outline-secondary">Conseils</a>
+                <a href="admin_boutique.php" class="btn btn-outline-secondary">Boutique</a>
+                <a href="admin_abonnement.php" class="btn btn-outline-secondary">Abonnements</a>
+                        <a href="admin_categories.php" class="btn btn-outline-secondary">Categories</a>
                 <a href="admin_stats.php" class="btn btn-outline-primary">Statistiques detaillees</a>
                 <a href="admin_logout.php" class="btn btn-outline-danger ms-auto">Deconnexion</a>
             </div>

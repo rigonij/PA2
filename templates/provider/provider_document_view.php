@@ -28,7 +28,7 @@ $success = $success ?? "";
                 <div class="alert alert-success"><?= htmlspecialchars($success) ?></div>
             <?php endif; ?>
 
-            <?php if (!empty($existing["has_document"])): ?>
+            <?php if (!empty($existing["has_document"]) && !empty($existing["filename"])): ?>
                 <div class="sh-card p-4 mb-3">
                     <div class="fw-bold mb-2">Dernier document envoyé</div>
                     <div class="d-flex flex-wrap gap-2 mb-2">
@@ -38,7 +38,16 @@ $success = $success ?? "";
                         <div><strong>Fichier :</strong> <?= htmlspecialchars($existing["filename"]) ?></div>
                         <div><strong>Taille :</strong> <?= round($existing["size"] / 1024, 1) ?> Ko</div>
                         <div><strong>Envoyé le :</strong> <?= htmlspecialchars(fmt_dt($existing["uploaded_at"])) ?></div>
+                        <?php if (!empty($existing["description"])): ?>
+                            <div class="mt-2"><strong>Description :</strong></div>
+                            <div class="border rounded p-2 mt-1 bg-light" style="white-space: pre-wrap;"><?= htmlspecialchars($existing["description"]) ?></div>
+                        <?php endif; ?>
                     </div>
+                </div>
+            <?php else: ?>
+                <div class="sh-card p-4 mb-3">
+                    <div class="fw-bold mb-2">Aucun document envoyé</div>
+                    <div class="text-secondary small">Envoyez votre PDF ci-dessous pour démarrer la validation de votre compte.</div>
                 </div>
             <?php endif; ?>
 
@@ -46,12 +55,16 @@ $success = $success ?? "";
                 <div class="fw-bold mb-3">
                     <?= !empty($existing["has_document"]) ? "Remplacer le document" : "Envoyer un document" ?>
                 </div>
-                <form method="POST" enctype="multipart/form-data" class="row g-2 align-items-end">
-                    <div class="col-md-9">
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="mb-3">
                         <label class="form-label">Fichier PDF (max 5 Mo)</label>
                         <input type="file" name="document" class="form-control" accept="application/pdf" required>
                     </div>
-                    <div class="col-md-3 d-grid">
+                    <div class="mb-3">
+                        <label class="form-label">Description (optionnel)</label>
+                        <textarea name="description" class="form-control" rows="3" maxlength="2000" placeholder="Décris brièvement le contenu du document (diplômes, certifications, prestations souhaitées...)."></textarea>
+                    </div>
+                    <div class="d-flex justify-content-end">
                         <button class="btn btn-sh-gold" type="submit">Envoyer</button>
                     </div>
                 </form>

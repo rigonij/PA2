@@ -33,11 +33,16 @@ func UploadProviderDocument(database *sql.DB) http.HandlerFunc {
 			return
 		}
 
-		r.Body = http.MaxBytesReader(w, r.Body, maxPDFSize+1024)
-		if err := r.ParseMultipartForm(maxPDFSize + 1024); err != nil {
+		r.Body = http.MaxBytesReader(w, r.Body, maxPDFSize+8192)
+		if err := r.ParseMultipartForm(maxPDFSize + 8192); err != nil {
 			w.WriteHeader(http.StatusRequestEntityTooLarge)
 			json.NewEncoder(w).Encode(map[string]any{"success": false, "message": "Fichier trop volumineux (max 5 Mo)"})
 			return
+		}
+
+		description := strings.TrimSpace(r.FormValue("description"))
+		if len(description) > 2000 {
+			description = description[:2000]
 		}
 
 		file, header, err := r.FormFile("document")
@@ -67,10 +72,18 @@ func UploadProviderDocument(database *sql.DB) http.HandlerFunc {
 			return
 		}
 
+		var descParam any
+		if description == "" {
+			descParam = nil
+		} else {
+			descParam = description
+		}
+
 		_, err = database.Exec(
-			`INSERT INTO provider_document (Id_USER, File_Data, Original_Filename, File_Size) VALUES (?, ?, ?, ?)`,
-			userID, data, header.Filename, header.Size,
+			`INSERT INTO provider_document (Id_USER, File_Data, Original_Filename, File_Size, Description) VALUES (?, ?, ?, ?, ?)`,
+			userID, data, header.Filename, header.Size, descParam,
 		)
+		_, _ = database.Exec(`UPDATE provider SET Validation_Status = 0 WHERE Id_USER = ?`, userID)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			json.NewEncoder(w).Encode(map[string]any{"success": false, "message": err.Error()})
@@ -83,6 +96,8 @@ func UploadProviderDocument(database *sql.DB) http.HandlerFunc {
 
 func GetMyProviderDocument(database *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+
 		token := r.Header.Get("X-Token")
 		userID, err := lib.GetUserIDFromToken(database, token)
 		if err != nil {
@@ -92,25 +107,35 @@ func GetMyProviderDocument(database *sql.DB) http.HandlerFunc {
 
 		var filename, uploadedAt string
 		var size int
+		var description sql.NullString
 		err = database.QueryRow(`
-			SELECT Original_Filename, File_Size, Uploaded_At
+			SELECT Original_Filename, File_Size, Uploaded_At, Description
 			FROM provider_document WHERE Id_USER = ?
 			ORDER BY Uploaded_At DESC LIMIT 1
-		`, userID).Scan(&filename, &size, &uploadedAt)
+		`, userID).Scan(&filename, &size, &uploadedAt, &description)
 
 		if err == sql.ErrNoRows {
-			w.Header().Set("Content-Type", "application/json")
 			json.NewEncoder(w).Encode(map[string]any{"success": true, "has_document": false})
 			return
 		}
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			json.NewEncoder(w).Encode(map[string]any{"success": false, "message": err.Error()})
+			return
+		}
 
-		w.Header().Set("Content-Type", "application/json")
+		desc := ""
+		if description.Valid {
+			desc = description.String
+		}
+
 		json.NewEncoder(w).Encode(map[string]any{
 			"success":      true,
 			"has_document": true,
 			"filename":     filename,
 			"size":         size,
 			"uploaded_at":  uploadedAt,
+			"description":  desc,
 		})
 	}
 }
@@ -126,14 +151,16 @@ func AdminGetPendingProviders(database *sql.DB) http.HandlerFunc {
 
 		query := `
 			SELECT u.Id_USER, COALESCE(u.Nom,''), COALESCE(u.Prenom,''), u.Email,
-				COALESCE(p.Company_Name,''), p.Validation_Status,
-				CASE WHEN pd.Id_DOCUMENT IS NULL THEN 0 ELSE 1 END AS has_document
+			       COALESCE(p.Company_Name,''), p.Validation_Status,
+			       CASE WHEN latest.Id_DOCUMENT IS NULL THEN 0 ELSE 1 END AS has_document,
+			       COALESCE(pd.Description, '') AS description
 			FROM provider p
 			JOIN user u ON u.Id_USER = p.Id_USER
 			LEFT JOIN (
 				SELECT Id_USER, MAX(Id_DOCUMENT) AS Id_DOCUMENT
 				FROM provider_document GROUP BY Id_USER
-			) pd ON pd.Id_USER = p.Id_USER
+			) latest ON latest.Id_USER = p.Id_USER
+			LEFT JOIN provider_document pd ON pd.Id_DOCUMENT = latest.Id_DOCUMENT
 		`
 		args := []any{}
 		if statusFilter != "" {
@@ -154,8 +181,8 @@ func AdminGetPendingProviders(database *sql.DB) http.HandlerFunc {
 		items := []map[string]any{}
 		for rows.Next() {
 			var id, status, hasDoc int
-			var nom, prenom, email, company string
-			rows.Scan(&id, &nom, &prenom, &email, &company, &status, &hasDoc)
+			var nom, prenom, email, company, description string
+			rows.Scan(&id, &nom, &prenom, &email, &company, &status, &hasDoc, &description)
 			items = append(items, map[string]any{
 				"id":                id,
 				"nom":               nom,
@@ -164,10 +191,60 @@ func AdminGetPendingProviders(database *sql.DB) http.HandlerFunc {
 				"company_name":      company,
 				"validation_status": status,
 				"has_document":      hasDoc == 1,
+				"description":       description,
 			})
 		}
 
 		json.NewEncoder(w).Encode(map[string]any{"success": true, "providers": items})
+	}
+}
+
+func AdminGetProviderDocumentMeta(database *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		if !requireAdmin(database, w, r) {
+			return
+		}
+
+		parts := strings.Split(strings.Trim(r.URL.Path, "/"), "/")
+		userID, err := strconv.Atoi(parts[len(parts)-1])
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		var filename, uploadedAt string
+		var size int
+		var description sql.NullString
+		err = database.QueryRow(`
+			SELECT Original_Filename, File_Size, Uploaded_At, Description
+			FROM provider_document WHERE Id_USER = ?
+			ORDER BY Uploaded_At DESC LIMIT 1
+		`, userID).Scan(&filename, &size, &uploadedAt, &description)
+
+		if err == sql.ErrNoRows {
+			json.NewEncoder(w).Encode(map[string]any{"success": true, "has_document": false})
+			return
+		}
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			json.NewEncoder(w).Encode(map[string]any{"success": false, "message": err.Error()})
+			return
+		}
+
+		desc := ""
+		if description.Valid {
+			desc = description.String
+		}
+
+		json.NewEncoder(w).Encode(map[string]any{
+			"success":      true,
+			"has_document": true,
+			"filename":     filename,
+			"size":         size,
+			"uploaded_at":  uploadedAt,
+			"description":  desc,
+		})
 	}
 }
 

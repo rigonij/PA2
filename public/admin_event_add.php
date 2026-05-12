@@ -6,7 +6,7 @@ if (empty($_SESSION["admin_token"])) {
     exit;
 }
 
-$apiBase = "http://127.0.0.1:8081";
+$apiBase = "http://backend:8080";
 $error = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && !empty($_POST["title"])) {

@@ -1,15 +1,11 @@
 <?php
-session_start();
-if (empty($_SESSION["token"])) {
-    header("Location: login.php");
-    exit;
-}
+require __DIR__ . "/provider_guard.php";
 
 $token = $_SESSION["token"];
 $reviews = [];
 $loadError = "";
 
-$ch = curl_init("http://127.0.0.1:8081/api/provider/reviews");
+$ch = curl_init("http://backend:8080/api/provider/reviews");
 curl_setopt_array($ch, [
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_HTTPHEADER => ["X-Token: " . $token],

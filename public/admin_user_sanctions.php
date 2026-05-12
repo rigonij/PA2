@@ -18,7 +18,7 @@ $warningCount = 0;
 $banCount = 0;
 $loadError = "";
 
-$ch = curl_init("http://127.0.0.1:8081/api/admin/user-sanctions/" . $userId);
+$ch = curl_init("http://backend:8080/api/admin/user-sanctions/" . $userId);
 curl_setopt_array($ch, [
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_HTTPHEADER => ["X-Token: " . $token],

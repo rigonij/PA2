@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-$apiBase = "http://127.0.0.1:8081";
+$apiBase = "http://backend:8080";
 
 if (!isset($_SESSION["admin_token"])) {
     header("Location: admin_login.php");

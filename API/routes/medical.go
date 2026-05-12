@@ -166,6 +166,12 @@ func CreateMedical(database *sql.DB) http.HandlerFunc {
 			}
 		}
 
+		if start.Before(time.Now()) {
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(map[string]any{"success": false, "message": "La date doit être dans le futur"})
+			return
+		}
+
 		var companyName, prenom, nom string
 		err = database.QueryRow(`
 			SELECT p.Company_Name, COALESCE(u.Prenom,''), COALESCE(u.Nom,'')

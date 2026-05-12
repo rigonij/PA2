@@ -1,7 +1,7 @@
 <?php
 session_start();
 header("Content-Type: application/json");
-$apiBase = "http://127.0.0.1:8081";
+$apiBase = "http://backend:8080";
 
 if (empty($_SESSION["admin_token"])) {
     http_response_code(401);

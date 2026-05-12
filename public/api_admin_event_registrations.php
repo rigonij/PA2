@@ -16,7 +16,7 @@ if ($id <= 0) {
     exit;
 }
 
-$ch = curl_init("http://127.0.0.1:8081/api/admin/events/registrations/" . $id);
+$ch = curl_init("http://backend:8080/api/admin/events/registrations/" . $id);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_HTTPHEADER, ["X-Token: " . $_SESSION["admin_token"]]);
 $resp = curl_exec($ch);

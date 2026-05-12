@@ -24,22 +24,22 @@ func GetServicesCatalog(database *sql.DB) http.HandlerFunc {
 		}
 
 		rows, err := database.Query(`
-			SELECT
-				c.Name AS CategoryName,
-				st.Id_SERVICE_TYPE,
-				st.Name AS ServiceName,
-				st.link_img,
-				p.Id_USER AS ProviderID,
-				p.Company_Name
-			FROM qualify q
-			JOIN service_type st ON st.Id_SERVICE_TYPE = q.Id_SERVICE_TYPE
-			JOIN category c ON c.Id_CATEGORY = st.Id_CATEGORY
-			JOIN provider p ON p.Id_USER = q.Id_USER
-			WHERE p.Validation_Status = 1
-				AND COALESCE(q.Is_Active, 1) = 1
-				AND COALESCE(q.Validation_Status, 0) = 1
-			ORDER BY c.Name, st.Name, p.Company_Name
-		`)
+                        SELECT
+                                c.Name AS CategoryName,
+                                st.Id_SERVICE_TYPE,
+                                st.Name AS ServiceName,
+                                st.link_img,
+                                p.Id_USER AS ProviderID,
+                                p.Company_Name
+                        FROM provider p
+                        JOIN qualify ps ON ps.Id_USER = p.Id_USER
+				AND COALESCE(ps.Is_Active, 1) = 1
+				AND COALESCE(ps.Validation_Status, 0) = 1
+                        JOIN service_type st ON st.Id_SERVICE_TYPE = ps.Id_SERVICE_TYPE
+                        JOIN category c ON c.Id_CATEGORY = st.Id_CATEGORY
+                        WHERE p.Validation_Status = 1
+                        ORDER BY c.Name, st.Name, p.Company_Name
+                `)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			json.NewEncoder(w).Encode(map[string]any{

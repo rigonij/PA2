@@ -13,7 +13,7 @@ if (!$type || !$id) {
     exit;
 }
 
-$ch = curl_init("http://127.0.0.1:8081/api/senior/invoice/pdf?type=" . urlencode($type) . "&id=" . $id);
+$ch = curl_init("http://backend:8080/api/senior/invoice/pdf?type=" . urlencode($type) . "&id=" . $id);
 curl_setopt_array($ch, [
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_HTTPHEADER => ["X-Token: " . $_SESSION["token"]],

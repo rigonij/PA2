@@ -10,7 +10,7 @@ $token = $_SESSION["admin_token"];
 
 $body = file_get_contents("php://input");
 
-$ch = curl_init("http://127.0.0.1:8081/api/admin/user-reports/resolve");
+$ch = curl_init("http://backend:8080/api/admin/user-reports/resolve");
 curl_setopt_array($ch, [
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_POST => true,

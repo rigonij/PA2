@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-$apiBase = "http://127.0.0.1:8081";
+$apiBase = "http://backend:8080";
 
 if (empty($_SESSION["token"])) {
     header("Location: login.php");
@@ -25,13 +25,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !empty($_FILES["document"])) {
         $_FILES["document"]["name"]
     );
 
+    $description = trim($_POST["description"] ?? "");
+    if (mb_strlen($description) > 2000) {
+        $description = mb_substr($description, 0, 2000);
+    }
+
     $ch = curl_init($apiBase . "/api/provider/document");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
         "X-Token: " . $_SESSION["token"],
     ]);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, ["document" => $cfile]);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, [
+        "document"    => $cfile,
+        "description" => $description,
+    ]);
     $response = curl_exec($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
@@ -60,9 +68,10 @@ $data = json_decode($response, true);
 
 $existing = [
     "has_document" => !empty($data["has_document"]),
-    "filename" => $data["filename"] ?? "",
-    "size" => (int)($data["size"] ?? 0),
-    "uploaded_at" => $data["uploaded_at"] ?? "",
+    "filename"     => $data["filename"] ?? "",
+    "size"         => (int)($data["size"] ?? 0),
+    "uploaded_at"  => $data["uploaded_at"] ?? "",
+    "description"  => $data["description"] ?? "",
 ];
 
 require_once __DIR__ . "/../templates/provider/provider_document_view.php";
