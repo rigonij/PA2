@@ -7,9 +7,10 @@ import (
 	"log"
 	"net/http"
 
+	"time"
+
 	"github.com/PA_2i2/api/lib"
 	"golang.org/x/crypto/bcrypt"
-	"time"
 )
 
 type SignupRequest struct {
@@ -30,6 +31,26 @@ type SignupRequest struct {
 type SignupResponse struct {
 	Success bool   `json:"success"`
 	Message string `json:"message"`
+}
+
+type Verifages struct {
+	BirthDate int `json:"birth_date"`
+}
+
+// Pour les seniors de moins de 60 ans
+func Verifage(database *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+
+		var req Verifages
+		if req.BirthDate < 60 {
+			w.WriteHeader(http.StatusBadRequest)
+			json.NewEncoder(w).Encode(SignupResponse{Success: false, Message: "Age trop bas"})
+			return
+		}
+
+	}
+
 }
 
 func Signup(database *sql.DB) http.HandlerFunc {
@@ -83,16 +104,18 @@ func Signup(database *sql.DB) http.HandlerFunc {
 			var birthDate interface{}
 			if req.BirthDate != "" {
 				t, perr := time.Parse("2006-01-02", req.BirthDate)
-				if perr != nil || t.After(time.Now()) {
+				if perr != nil || t.After(time.Now()) || t.Before(time.Time{}) {
 					database.Exec("DELETE FROM user WHERE Id_USER = ?", userID)
 					w.WriteHeader(http.StatusBadRequest)
-					json.NewEncoder(w).Encode(SignupResponse{Success: false, Message: "Date de naissance invalide ou dans le futur"})
+					json.NewEncoder(w).Encode(SignupResponse{Success: false, Message: "Date de naissance invalide ou dans le futur ou trop jeune"})
 					return
 				}
 				birthDate = req.BirthDate
 			} else {
 				birthDate = nil
-			}
+			} // else {
+			// birthDate <= 60
+			// }
 
 			query := "INSERT INTO senior(Id_USER, Birth_Date) VALUES(?, ?)"
 			_, err = database.Exec(query, userID, birthDate)
